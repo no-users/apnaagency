@@ -1,85 +1,107 @@
-// 🔹 Firebase Config (replace with your own config from Firebase console)
-var firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+
+  // ---------- Firebase Config ----------
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+  authDomain: "my-login-page-62659.firebaseapp.com",
+  projectId: "my-login-page-62659",
+  storageBucket: "my-login-page-62659.firebasestorage.app",
+  messagingSenderId: "265063991992",
+  appId: "1:265063991992:web:f1834f4664e5494779024d",
+  measurementId: "G-EJ7P52JB4N"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-let currentTab = 0;
-showTab(currentTab);
-
-function showTab(n) {
+  // ---------- Multi-step Form ----------
+  let currentTab = 0;
   const tabs = document.getElementsByClassName("tab");
-  for (let i = 0; i < tabs.length; i++) {
-    tabs[i].style.display = "none";
-  }
-  tabs[n].style.display = "block";
-
-  document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
-  if (n === (tabs.length - 1)) {
-    document.getElementById("nextBtn").style.display = "none";
-    document.getElementById("submitBtn").style.display = "inline";
-  } else {
-    document.getElementById("nextBtn").style.display = "inline";
-    document.getElementById("submitBtn").style.display = "none";
-  }
-}
-
-function nextPrev(n) {
-  const tabs = document.getElementsByClassName("tab");
-  tabs[currentTab].style.display = "none";
-  currentTab = currentTab + n;
-  if (currentTab >= tabs.length) return false;
   showTab(currentTab);
-}
 
-// Registration submit
-document.getElementById("regForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+  function showTab(n) {
+    for (let i = 0; i < tabs.length; i++) tabs[i].style.display = "none";
+    tabs[n].style.display = "block";
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const phone = document.getElementById("phone").value;
-  const aadhaar = document.getElementById("aadhaar").value;
-  const pan = document.getElementById("pan").value;
-  const gender = document.getElementById("gender").value;
-  const dob = document.getElementById("dob").value;
-  const userType = document.getElementById("userType").value;
-  const country = document.getElementById("country").value;
+    document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
+    document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
+    document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
+  }
 
-  // 🔹 Auto-generate a random password
-  const password = Math.random().toString(36).slice(-8);
+  window.nextPrev = function(n) {
+    if (n === 1 && !validateForm()) return false;
+    currentTab += n;
+    if (currentTab >= tabs.length) currentTab = tabs.length - 1;
+    if (currentTab < 0) currentTab = 0;
+    showTab(currentTab);
+  }
 
-  // Create user in Firebase Authentication
-  auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
+  function validateForm() {
+    const tab = tabs[currentTab];
+    const inputs = tab.querySelectorAll("input, select");
+    let valid = true;
+    for (let input of inputs) {
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        valid = false;
+        break;
+      }
+    }
+    return valid;
+  }
 
-      // Save extra info in Firestore
-      return db.collection("users").doc(user.uid).set({
-        name, email, phone, aadhaar, pan, gender, dob, userType, country
-      });
-    })
-    .then(() => {
-      // Show popup with email & password
-      document.getElementById("popupEmail").textContent = email;
-      document.getElementById("popupPassword").textContent = password;
-      document.getElementById("popup").style.display = "block";
-    })
-    .catch((error) => {
-      alert("Error: " + error.message);
+  // ---------- Password Auto-generate ----------
+  function generatePassword(length = 10) {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+  }
+
+  // ---------- Form Submit ----------
+  document.getElementById("regForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+
+    const existing = await db.collection("users").where("email", "==", email).get();
+    if (!existing.empty) {
+      document.getElementById("popupEmail").innerText = email;
+      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
+      document.getElementById("popup").classList.add("show");
+      document.getElementById("popup").style.display = "flex";
+      return;
+    }
+
+    const password = generatePassword(10);
+
+    db.collection("users").add({
+      name: document.getElementById("name").value,
+      email: email,
+      phone: document.getElementById("phone").value,
+      aadhaar: document.getElementById("aadhaar").value,
+      pan: document.getElementById("pan").value,
+      gender: document.getElementById("gender").value,
+      dob: document.getElementById("dob").value,
+      userType: document.getElementById("userType").value,
+      country: document.getElementById("country").value,
+      password: password,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      document.getElementById("popupEmail").innerText = email;
+      document.getElementById("popupPassword").innerText = password;
+      document.getElementById("popup").classList.add("show");
+      document.getElementById("popup").style.display = "flex";
+
+      document.getElementById("regForm").reset();
+      currentTab = 0;
+      showTab(currentTab);
+    }).catch((error) => {
+      alert("Error saving data: " + error.message);
     });
-});
+  });
 
-// Close popup
-document.getElementById("closePopup").onclick = function() {
-  document.getElementById("popup").style.display = "none";
-};
+  // ---------- Close Popup ----------
+  document.getElementById("closePopup").addEventListener("click", function() {
+    document.getElementById("popup").classList.remove("show");
+    document.getElementById("popup").style.display = "none";
+  });
+});
