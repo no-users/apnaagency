@@ -1,0 +1,232 @@
+*{
+    margin: 0;
+    padding:0;
+    font-family: Assistant,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    box-sizing: border-box;
+}
+header {
+    
+    display: flex;
+    background-color: #fff;
+    height: 80px;
+    justify-content: space-between;
+    border-bottom: 1px solid #e6e1e1;
+    align-items: center;
+    
+
+}
+.home-logo{
+    
+    height: 75px;
+}
+.logo-container{
+    margin-left: 4%;
+
+}
+.action-bar{
+    margin-right: 2%;
+}
+
+.nav-bar{
+    display: flex;
+    min-width: 500px;
+    justify-content: space-around;
+
+}
+.nav-bar a{
+     font-size: 14px;
+     letter-spacing: 3px;
+     color: #282c3f;
+     font-weight: 700;
+     text-transform: uppercase;
+     text-decoration: none;
+     padding: 27px 0;
+     border-bottom: 5px solid #fff;
+}
+.nav-bar .contact1:hover{
+    color: #0cc0e0;
+   border-bottom: 4px solid #0cc0e0;
+}
+.nav-bar .contact2:hover{
+   border-bottom: 4px solid #db09a7;
+   color: #db09a7;
+}
+.nav-bar .contact3:hover{
+    color: #d311ec;
+   border-bottom: 4px solid #d311ec;
+}
+.nav-bar .contact4:hover{
+   border-bottom: 4px solid #f3e417;
+   color: #f3e417;
+}
+.nav-bar a .new{
+    color: red;
+    font-size: 10px;
+}
+.search-bar{
+    height: 40px;
+    min-width: 200px;
+    width: 30%;
+    display: flex;
+
+}
+.search-icon{
+    box-sizing: content-box;
+    height: 20px;
+    padding: 10px;
+    background-color: #f5f5f6;
+    color: #2e3244;
+    font-weight: 50;
+    border-radius: 4px 0 0 4px;
+}
+.search-input{
+    color:#696e79;
+    background-color: #f5f5f6;
+    flex-grow: 1;
+    height: 40px;
+    border: 0;
+    border-radius: 0 4px 4px 0
+}
+.action-bar{
+    display: flex;
+    min-width: 200px;
+    flex: end;
+    justify-content: space-between;
+    
+    
+
+}
+.icon-bar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+
+}
+.icon-name3{
+    cursor: pointer;
+    
+}
+.icon-logo2{
+    cursor: pointer;
+    fill: red;
+    color: #097377;
+    
+}
+.action_icon{
+    cursor: pointer;
+    fill: red;
+    color: rgb(26, 68, 184);
+    
+}
+.icon-logo3{
+    cursor: pointer;
+    fill: red;
+    color: rgb(204, 9, 129);
+    
+}
+/* banner containt 8 */
+.banner-contaner{
+   
+ width: 99%;
+ margin: 37px 0;
+ align-items: center;
+    
+    
+
+}
+.banner-contaner .banner-image{
+    height: 520px;
+    width: 100%;
+}
+.category_heading {
+   
+    text-transform: uppercase;
+    color: #3e4152;
+    letter-spacing: .15em;
+    font-size: 1.8em;
+    margin: 50px 0 25px 30px;
+    max-height: 5em;
+    font-weight: 700;}
+
+.category_items{
+    text-decoration: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    box-shadow: #2e3244;
+    margin-bottom: 20px;
+    
+}
+.sale_item{
+    width: 240px;
+    height: 50px;
+    border-radius: 12px;
+    margin: 10px;
+    border: 1px dotted rgb(61, 64, 231);
+    box-shadow: 5px 5px 10px rgba(33, 84, 160, 0.5);
+    
+    
+    
+}
+.category_items a{
+    text-decoration: none;
+}
+.category_items h3{
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    color: rgb(4, 1, 20);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    font-synthesis-weight: 400;
+
+}
+.category_items p {
+    margin-top: 2px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    color: rgb(35, 39, 119);
+    cursor: pointer;
+}
+.sale_item2{
+    width: 100%;
+    height: 5px;
+    border-radius: 2px;
+}
+/**   jkhaqjksdchakshsh  **/
+
+.footer_container {
+    margin-top: 0px;
+    padding: 30px 0px 40px 0px;
+    background: #edf2f7;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.footer_column {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer_column h3 {
+    margin-top: 10px;
+    color: #282c3f;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.footer_column a {
+    color: #696b79;
+    font-size: 15px;
+    text-decoration: none;
+    padding-bottom: 5px;
+}
+
+.copyright {
+    color: #94969f;
+    text-align: end;
+    padding: 15px;
+}

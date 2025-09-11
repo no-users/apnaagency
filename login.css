@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0') no-repeat center center/cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.login-box {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  padding: 40px;
+  color: white;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #888;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.input-group label {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  color: #bbb;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+  top: -12px;
+  font-size: 12px;
+  color: #1abc9c;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 25px;
+}
+
+.options a {
+  text-decoration: none;
+  color: #1abc9c;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: #1abc9c;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #16a085;
+}
+
+.register {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.register a {
+  color: #1abc9c;
+  text-decoration: none;
+}

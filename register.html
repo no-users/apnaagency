@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Multi-Step Registration</title>
+  <link rel="stylesheet" href="register.css" />
+</head>
+<body>
+  <div class="container">
+    <form id="regForm">
+      <h2>Register</h2>
+
+      <!-- Step 1 -->
+      <div class="tab">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" required />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" required />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" required />
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="tab">
+        <div class="form-group">
+          <label>Aadhaar Number</label>
+          <input type="text" pattern="\d{12}" title="12-digit Aadhaar number" required />
+        </div>
+        <div class="form-group">
+          <label>PAN Number</label>
+          <input type="text" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" title="Valid PAN format" required />
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="gender">
+            <label><input type="radio" name="gender" value="male" /> Male</label>
+            <label><input type="radio" name="gender" value="female" /> Female</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" required />
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="tab">
+        <div class="form-group">
+          <label>User Type</label>
+          <select required>
+            <option value="">Select</option>
+            <option>Retailer</option>
+            <option>Distributor</option>
+            <option>Super Distributor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <select required>
+            <option value="">Select</option>
+            <option>India</option>
+            <option>USA</option>
+            <option>UK</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" required />
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" required />
+        </div>
+        <div class="form-group terms">
+          <label><input type="checkbox" required /> I agree to the Terms & Conditions</label>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="buttons">
+        <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+        <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
