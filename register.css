@@ -1,100 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
-* {
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-}
-
 body {
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  color: #fff;
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
 }
 
 .container {
-  width: 100%;
   max-width: 500px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
+  margin: 50px auto;
   padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 25px;
-  color: #00e3aa;
+  margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 label {
   display: block;
-  margin-bottom: 6px;
-  color: #ccc;
+  margin-bottom: 5px;
 }
 
 input, select {
   width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  font-size: 14px;
-  outline: none;
-  appearance: none;
-  -webkit-appearance: none;
-}
-
-input:focus, select:focus {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-select {
-  background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 16px;
-}
-
-.gender {
-  display: flex;
-  gap: 20px;
-}
-
-.tab {
-  display: none;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 .buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.buttons button:last-child {
-  margin-left: auto;
+  text-align: right;
 }
 
 button {
   padding: 10px 20px;
-  background: #00e3aa;
+  margin: 5px;
   border: none;
-  border-radius: 8px;
-  color: #000;
+  background: #007BFF;
+  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease;
 }
 
 button:hover {
-  background: #00c295;
+  background: #0056b3;
 }
