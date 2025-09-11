@@ -1,3 +1,4 @@
+// ---------- Firebase Config ----------
 const firebaseConfig = {
   apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
   authDomain: "my-login-page-62659.firebaseapp.com",
@@ -9,6 +10,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 // ---------- Multi-step Form ----------
 let currentTab = 0;
@@ -36,7 +38,6 @@ function validateForm() {
   const tab = document.getElementsByClassName("tab")[currentTab];
   const inputs = tab.querySelectorAll("input, select");
   let valid = true;
-
   for (let input of inputs) {
     if (!input.checkValidity()) {
       input.reportValidity();
@@ -47,7 +48,7 @@ function validateForm() {
   return valid;
 }
 
-// ---------- Password Auto-generate ----------
+// ---------- Password Generator ----------
 function generatePassword(length = 10) {
   const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
   let password = "";
@@ -58,46 +59,50 @@ function generatePassword(length = 10) {
 }
 
 // ---------- Form Submit ----------
-document.getElementById("regForm").addEventListener("submit", function(e) {
+document.getElementById("regForm").addEventListener("submit", async function(e) {
   e.preventDefault();
-
   const email = document.getElementById("email").value.trim().toLowerCase();
   const password = generatePassword(10);
 
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      const user = userCredential.user;
-      return db.collection("users").doc(user.uid).set({
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value,
-        dob: document.getElementById("dob").value,
-        gender: document.getElementById("gender").value,
-        aadhaar: document.getElementById("aadhaar").value,
-        pan: document.getElementById("pan").value,
-        userType: document.getElementById("userType").value,
-        country: document.getElementById("country").value,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        document.getElementById("popupEmail").innerText = email;
-        document.getElementById("popupPassword").innerText = password;
-        document.getElementById("popup").classList.add("show");
-        document.getElementById("popup").style.display = "flex";
+  try {
+    // Create user in Firebase Authentication
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const user = userCredential.user;
 
-        document.getElementById("regForm").reset();
-        currentTab = 0;
-        showTab(currentTab);
-      });
-    })
-    .catch(error => {
-      if(error.code === "auth/email-already-in-use"){
-        document.getElementById("popupEmail").innerText = email;
-        document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-        document.getElementById("popup").classList.add("show");
-        document.getElementById("popup").style.display = "flex";
-      } else {
-        alert("Error: " + error.message);
-      }
+    // Save extra info in Firestore
+    await db.collection("users").doc(user.uid).set({
+      name: document.getElementById("name").value,
+      phone: document.getElementById("phone").value,
+      dob: document.getElementById("dob").value,
+      gender: document.getElementById("gender").value,
+      aadhaar: document.getElementById("aadhaar").value,
+      pan: document.getElementById("pan").value,
+      userType: document.getElementById("userType").value,
+      country: document.getElementById("country").value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
+
+    // Show popup
+    document.getElementById("popupEmail").innerText = email;
+    document.getElementById("popupPassword").innerText = password;
+    document.getElementById("popup").classList.add("show");
+    document.getElementById("popup").style.display = "flex";
+
+    // Reset form
+    document.getElementById("regForm").reset();
+    currentTab = 0;
+    showTab(currentTab);
+
+  } catch (error) {
+    if (error.code === "auth/email-already-in-use") {
+      document.getElementById("popupEmail").innerText = email;
+      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
+      document.getElementById("popup").classList.add("show");
+      document.getElementById("popup").style.display = "flex";
+    } else {
+      alert("Error: " + error.message);
+    }
+  }
 });
 
 // ---------- Close Popup ----------
