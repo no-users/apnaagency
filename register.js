@@ -102,24 +102,16 @@ document.addEventListener("DOMContentLoaded", function () {
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-      document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = password;
-      document.getElementById("popup").style.display = "flex";
-      document.getElementById("popup").classList.add("show");
+      const popup = document.getElementById("popup");
+    document.getElementById("popupEmail").innerText = email;
+    document.getElementById("popupPassword").innerText = password;
+    popup.classList.add("show");
+    popup.style.display = "flex";
 
-
-      document.getElementById("regForm").reset();
-      currentTab = 0;
-      showTab(currentTab);
-    } catch (error) {
-      alert("Error: " + error.message);
-    }
-  });
-
-  // ---------- Close Popup ----------
-  document.getElementById("closePopup").addEventListener("click", function () {
-    document.getElementById("popup").classList.remove("show");
-document.getElementById("popup").style.display = "none";
-
-  });
+    document.getElementById("regForm").reset();
+    currentTab = 0;
+    showTab(currentTab);
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
 });
