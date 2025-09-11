@@ -2,14 +2,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.addEventListener("DOMContentLoaded", function() {
   // ---------- Firebase Config ----------
-  const firebaseConfig = {
-    apiKey: "AIzaSy***************",
-    authDomain: "my-app.firebaseapp.com",
-    projectId: "my-app",
-    storageBucket: "my-app.appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "1:1234567890:web:abcdef123456"
-  };
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+  authDomain: "my-login-page-62659.firebaseapp.com",
+  projectId: "my-login-page-62659",
+  storageBucket: "my-login-page-62659.firebasestorage.app",
+  messagingSenderId: "265063991992",
+  appId: "1:265063991992:web:f1834f4664e5494779024d",
+  measurementId: "G-EJ7P52JB4N"
+};
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
