@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
     appId: "1:265063991992:web:f1834f4664e5494779024d",
     measurementId: "G-EJ7P52JB4N"
   };
+  console.log("Tabs found:", tabs.length);
+
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
