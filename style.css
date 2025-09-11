@@ -97,6 +97,7 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 
 }
 .icon-name3{
@@ -269,4 +270,5 @@ header {
         transform: translateY(0);
     }
 }
+
 
