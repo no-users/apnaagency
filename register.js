@@ -1,79 +1,85 @@
-// ---------- Firebase Config ----------
-const firebaseConfig = {
-  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-  authDomain: "my-login-page-62659.firebaseapp.com",
-  projectId: "my-login-page-62659",
-  storageBucket: "my-login-page-62659.firebasestorage.app",
-  messagingSenderId: "265063991992",
-  appId: "1:265063991992:web:f1834f4664e5494779024d",
-  measurementId: "G-EJ7P52JB4N"
+// 🔹 Firebase Config (replace with your own config from Firebase console)
+var firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
-// Firebase init
-const app = firebase.initializeApp(firebaseConfig);
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ---------- Password Auto-generate ----------
-function generatePassword(length = 10) {
-  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
-  let password = "";
-  for (let i = 0; i < length; i++) {
-    password += chars.charAt(Math.floor(Math.random() * chars.length));
+let currentTab = 0;
+showTab(currentTab);
+
+function showTab(n) {
+  const tabs = document.getElementsByClassName("tab");
+  for (let i = 0; i < tabs.length; i++) {
+    tabs[i].style.display = "none";
   }
-  return password;
+  tabs[n].style.display = "block";
+
+  document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
+  if (n === (tabs.length - 1)) {
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("submitBtn").style.display = "inline";
+  } else {
+    document.getElementById("nextBtn").style.display = "inline";
+    document.getElementById("submitBtn").style.display = "none";
+  }
 }
 
-// ---------- Form Submit ----------
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("regForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
+function nextPrev(n) {
+  const tabs = document.getElementsByClassName("tab");
+  tabs[currentTab].style.display = "none";
+  currentTab = currentTab + n;
+  if (currentTab >= tabs.length) return false;
+  showTab(currentTab);
+}
 
-    const email = document.getElementById("email").value.trim().toLowerCase();
+// Registration submit
+document.getElementById("regForm").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-    // check already registered
-    const existing = await db.collection("users").where("email", "==", email).get();
-    if (!existing.empty) {
-      document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-      document.getElementById("popup").style.display = "flex";
-      return;
-    }
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const aadhaar = document.getElementById("aadhaar").value;
+  const pan = document.getElementById("pan").value;
+  const gender = document.getElementById("gender").value;
+  const dob = document.getElementById("dob").value;
+  const userType = document.getElementById("userType").value;
+  const country = document.getElementById("country").value;
 
-    // generate password
-    const password = generatePassword(10);
+  // 🔹 Auto-generate a random password
+  const password = Math.random().toString(36).slice(-8);
 
-    try {
-      // 1. Firebase Auth में user create करो
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+  // Create user in Firebase Authentication
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
 
-      // 2. Firestore में extra data save करो
-      await db.collection("users").doc(userCredential.user.uid).set({
-        name: document.getElementById("name").value,
-        email: email,
-        phone: document.getElementById("phone").value,
-        aadhaar: document.getElementById("aadhaar").value,
-        pan: document.getElementById("pan").value,
-        gender: document.getElementById("gender").value,
-        dob: document.getElementById("dob").value,
-        userType: document.getElementById("userType").value,
-        country: document.getElementById("country").value,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      // Save extra info in Firestore
+      return db.collection("users").doc(user.uid).set({
+        name, email, phone, aadhaar, pan, gender, dob, userType, country
       });
-
-      // 3. Popup में email + password दिखाओ
-      document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = password;
-      document.getElementById("popup").style.display = "flex";
-
-      document.getElementById("regForm").reset();
-    } catch (error) {
+    })
+    .then(() => {
+      // Show popup with email & password
+      document.getElementById("popupEmail").textContent = email;
+      document.getElementById("popupPassword").textContent = password;
+      document.getElementById("popup").style.display = "block";
+    })
+    .catch((error) => {
       alert("Error: " + error.message);
-    }
-  });
-
-  // ---------- Close Popup ----------
-  document.getElementById("closePopup").addEventListener("click", function () {
-    document.getElementById("popup").style.display = "none";
-  });
+    });
 });
+
+// Close popup
+document.getElementById("closePopup").onclick = function() {
+  document.getElementById("popup").style.display = "none";
+};
