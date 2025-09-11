@@ -6,7 +6,6 @@
   <title>Register</title>
   <link rel="stylesheet" href="register.css" />
   <script type="module" src="register.js"></script>
-
 </head>
 <body>
   <div class="container">
@@ -79,11 +78,11 @@
       </div>
 
       <!-- Buttons -->
-      <!-- Last step ke button -->
-             <div class="buttons">
-             <button type="button" onclick="nextPrev        
-              <button type="submit" id="submitBtn">Register</button>
-             </div>
+      <div class="buttons">
+        <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+        <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        <button type="submit" id="submitBtn" style="display:none;">Register</button>
+      </div>
 
     </form>
   </div>
