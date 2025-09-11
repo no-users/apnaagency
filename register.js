@@ -1,25 +1,21 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // ---------- Firebase Config ----------
-  const firebaseConfig = {
-    apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-    authDomain: "my-login-page-62659.firebaseapp.com",
-    projectId: "my-login-page-62659",
-    storageBucket: "my-login-page-62659.appspot.com",
-    messagingSenderId: "265063991992",
-    appId: "1:265063991992:web:f1834f4664e5494779024d"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  // ---------- Multi-step Form ----------
-  let currentTab = 0;
+window.addEventListener("DOMContentLoaded", function () {
   const tabs = document.getElementsByClassName("tab");
-
   if (!tabs.length) {
-    console.error("❌ No tabs found. Please check your HTML.");
+    console.error("No tabs found");
     return;
   }
+  let currentTab = 0;
+  function showTab(n) {
+    for (let i = 0; i < tabs.length; i++) tabs[i].style.display = "none";
+    tabs[n].style.display = "block";
+
+    document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
+    document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
+    document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
+  }
+  showTab(currentTab);
+});
+
 
   showTab(currentTab);
 
