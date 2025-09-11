@@ -88,6 +88,7 @@ header {
     min-width: 200px;
     flex: end;
     justify-content: space-between;
+    cursor: pointer;
     
     
 
@@ -268,3 +269,4 @@ header {
         transform: translateY(0);
     }
 }
+
