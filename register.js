@@ -9,18 +9,16 @@ document.addEventListener("DOMContentLoaded", function () {
     appId: "1:1234567890:web:abcdef123456"
   };
 
-  console.log("Tabs found:", tabs.length);
-
-  
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
   // ---------- Multi-step Form ----------
   let currentTab = 0;
   const tabs = document.getElementsByClassName("tab");
-  console.log("Tabs found:", tabs.length); // <- YAHAN lagao baad mein
+  console.log("Tabs found:", tabs.length); // <- YAHAN lagao, baad mein
 
   showTab(currentTab);
+
 
 
   function showTab(n) {
