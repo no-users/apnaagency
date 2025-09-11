@@ -1,68 +1,58 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+let currentTab = 0; 
+showTab(currentTab);
 
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-  authDomain: "my-login-page-62659.firebaseapp.com",
-  projectId: "my-login-page-62659",
-  storageBucket: "my-login-page-62659.appspot.com",
-  messagingSenderId: "265063991992",
-  appId: "1:265063991992:web:f1834f4664e5494779024d"
-};
+function showTab(n) {
+  const tabs = document.getElementsByClassName("tab");
+  tabs[n].style.display = "block";
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+  // Previous button hide on first step
+  document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
+  
+  // Next button hide on last step
+  document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
 
-// Generate random password
-function generatePassword(length = 10) {
-  const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
-  let password = "";
-  for (let i = 0; i < length; i++) {
-    password += charset.charAt(Math.floor(Math.random() * charset.length));
-  }
-  return password;
+  // Submit button show on last step
+  document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
 }
 
-// Handle registration
-document.getElementById("regForm").addEventListener("submit", (e) => {
-  e.preventDefault();
+function nextPrev(n) {
+  const tabs = document.getElementsByClassName("tab");
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const phone = document.getElementById("phone").value;
-  const password = generatePassword();
+  // Validate current tab
+  if (n === 1 && !validateForm()) return false;
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      showPopup(email, password); // Show premium popup
-    })
-    .catch((error) => {
-      alert("❌ Error: " + error.message);
-    });
-});
+  tabs[currentTab].style.display = "none";
+  currentTab += n;
+  
+  if (currentTab >= tabs.length) {
+    document.getElementById("regForm").submit();
+    return false;
+  }
 
-// Show premium popup
-function showPopup(email, password) {
-  const popup = document.createElement("div");
-  popup.style.position = "fixed";
-  popup.style.top = "50%";
-  popup.style.left = "50%";
-  popup.style.transform = "translate(-50%, -50%)";
-  popup.style.background = "linear-gradient(135deg, #1f1c2c, #928dab)";
-  popup.style.color = "#fff";
-  popup.style.padding = "30px";
-  popup.style.borderRadius = "15px";
-  popup.style.boxShadow = "0 0 20px rgba(0,0,0,0.4)";
-  popup.style.zIndex = "9999";
-  popup.style.textAlign = "center";
-  popup.style.fontSize = "16px";
-  popup.innerHTML = `
-    <h2 style="color: #00ffcc;">🎉 Registration Successful!</h2>
-    <p><strong>Email:</strong> ${email}</p>
-    <p><strong>Password:</strong> ${password}</p>
-    <button style="margin-top: 20px; padding: 10px 20px; border: none; border-radius: 8px; background: #00ffcc; color: #000; font-weight: bold; cursor: pointer;" onclick="this.parentElement.remove()">Close</button>
-  `;
-  document.body.appendChild(popup);
+  showTab(currentTab);
+}
+
+function validateForm() {
+  const tab = document.getElementsByClassName("tab")[currentTab];
+  const inputs = tab.getElementsByTagName("input");
+  const selects = tab.getElementsByTagName("select");
+  let valid = true;
+
+  for (let input of inputs) {
+    if (!input.checkValidity()) {
+      input.reportValidity();
+      valid = false;
+      break;
+    }
+  }
+
+  for (let select of selects) {
+    if (!select.checkValidity()) {
+      select.reportValidity();
+      valid = false;
+      break;
+    }
+  }
+
+  return valid;
 }
