@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
+
+document.addEventListener("DOMContentLoaded", function() {
   // ---------- Firebase Config ----------
   const firebaseConfig = {
     apiKey: "AIzaSy***************",
