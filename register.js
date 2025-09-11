@@ -79,6 +79,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const password = generatePassword();
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // User created in Auth
+  })
+  .catch((error) => {
+    console.error(error.message);
+  });
+
 
       await db.collection("users").add({
         name: document.getElementById("name").value,
@@ -97,6 +105,8 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("popupEmail").innerText = email;
       document.getElementById("popupPassword").innerText = password;
       document.getElementById("popup").style.display = "flex";
+      document.getElementById("popup").classList.add("show");
+
 
       document.getElementById("regForm").reset();
       currentTab = 0;
@@ -108,6 +118,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ---------- Close Popup ----------
   document.getElementById("closePopup").addEventListener("click", function () {
-    document.getElementById("popup").style.display = "none";
+    document.getElementById("popup").classList.remove("show");
+document.getElementById("popup").style.display = "none";
+
   });
 });
