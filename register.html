@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="register.js"></script>
+
+
+
+
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Premium Registration</title>
   <link rel="stylesheet" href="register.css">
 
-  <!-- Firebase v8 SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <div class="container">
@@ -40,7 +48,7 @@
         </div>
         <div class="form-group">
           <label>PAN Number</label>
-          <input type="text" id="pan" placeholder="Enter PAN" required>
+          <input type="text" id="pan" placeholder="Enter PAN" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" required>
         </div>
         <div class="form-group">
           <label>Gender</label>
@@ -91,7 +99,7 @@
   </div>
 
   <!-- Popup -->
-  <div id="popup" class="popup" style="display:none;">
+  <div id="popup" class="popup">
     <div class="popup-content">
       <span id="closePopup" class="close">&times;</span>
       <h3>Registration Info</h3>
@@ -104,6 +112,8 @@
     <p>&copy; 2025 Premium Registration. All rights reserved.</p>
   </footer>
 
-  <script src="register.js"></script>
+  
 </body>
 </html>
+
+
