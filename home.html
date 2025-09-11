@@ -29,12 +29,12 @@
         <div class="action-bar">
 
             <div class="icon-bar">
-             <span class="material-symbols-outlined action_icon">person</span> 
-                <span class="icon-name">Profile
-                </span> 
-                
-            
+              <span class="material-symbols-outlined action_icon" id="logoutBtn" style="cursor: pointer;">
+                logout
+                </span>
+                 <span class="icon-name">Logout</span>
             </div>
+
 
          <div class="icon-bar">
             <span class="material-symbols-outlined icon-logo2">
@@ -131,11 +131,43 @@
             © 2023 www.PanAgency.com. All rights reserved.
         </div>
     </footer>
+
+    <!-- Firebase Logout Script -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+    authDomain: "my-login-page-62659.firebaseapp.com",
+    projectId: "my-login-page-62659",
+    storageBucket: "my-login-page-62659.appspot.com",
+    messagingSenderId: "265063991992",
+    appId: "1:265063991992:web:f1834f4664e5494779024d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Logout function
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    signOut(auth)
+      .then(() => {
+        alert("Logged out successfully!");
+        window.location.href = "login.html";
+      })
+      .catch((error) => {
+        alert("Error logging out: " + error.message);
+      });
+  });
+</script>
+
     
     
 </body>
 
 </html>
+
 
 
 
