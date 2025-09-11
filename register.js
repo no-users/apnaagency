@@ -79,31 +79,53 @@ document.getElementById("regForm").addEventListener("submit", async function(e) 
   const password = generatePassword(10);
 
   // Save data
-  db.collection("users").add({
-    name: document.getElementById("name").value,
-    email: email,
-    phone: document.getElementById("phone").value,
-    aadhaar: document.getElementById("aadhaar").value,
-    pan: document.getElementById("pan").value,
-    gender: document.getElementById("gender").value,
-    dob: document.getElementById("dob").value,
-    userType: document.getElementById("userType").value,
-    country: document.getElementById("country").value,
-    password: password,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(() => {
-    document.getElementById("popupEmail").innerText = email;
-    document.getElementById("popupPassword").innerText = password;
-    document.getElementById("popup").classList.add("show");
-    document.getElementById("popup").style.display = "flex";
+ document.getElementById("regForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-    document.getElementById("regForm").reset();
-    currentTab = 0;
-    showTab(currentTab);
-  }).catch((error) => {
-    alert("Error saving data: " + error.message);
-  });
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const password = generatePassword(10); // Auto-generated password
+
+  // Create user in Firebase Auth
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user; // Auth user
+
+      // Save extra info in Firestore with UID as document ID
+      db.collection("users").doc(user.uid).set({
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        dob: document.getElementById("dob").value,
+        gender: document.getElementById("gender").value,
+        aadhaar: document.getElementById("aadhaar").value,
+        pan: document.getElementById("pan").value,
+        userType: document.getElementById("userType").value,
+        country: document.getElementById("country").value,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        // Show popup
+        document.getElementById("popupEmail").innerText = email;
+        document.getElementById("popupPassword").innerText = password;
+        document.getElementById("popup").classList.add("show");
+        document.getElementById("popup").style.display = "flex";
+
+        document.getElementById("regForm").reset();
+        currentTab = 0;
+        showTab(currentTab);
+      });
+    })
+    .catch((error) => {
+      if(error.code === "auth/email-already-in-use"){
+        // Already registered
+        document.getElementById("popupEmail").innerText = email;
+        document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
+        document.getElementById("popup").classList.add("show");
+        document.getElementById("popup").style.display = "flex";
+      } else {
+        alert("Error: " + error.message);
+      }
+    });
 });
+
 
 // ---------- Close Popup ----------
 document.getElementById("closePopup").addEventListener("click", function() {
