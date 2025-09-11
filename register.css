@@ -100,7 +100,7 @@ button:hover {
 
 /* ---------- Popup ---------- */
 .popup {
-  display: none;
+  display: none;  /* Sirf ye hona chahiye */
   position: fixed;
   z-index: 999;
   left: 0;
@@ -108,7 +108,6 @@ button:hover {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.5);
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -122,6 +121,14 @@ button:hover {
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
   color: #333;
   position: relative;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.popup.show .popup-content {
+  transform: scale(1);
+  opacity: 1;
 }
 
 .popup-content h3 {
@@ -136,6 +143,7 @@ button:hover {
   cursor: pointer;
   color: #333;
 }
+
 
 /* ---------- Footer ---------- */
 footer {
@@ -157,3 +165,4 @@ footer {
     margin-top: 10px;
   }
 }
+
