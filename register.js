@@ -1,12 +1,11 @@
 // ---------- Firebase Config ----------
 const firebaseConfig = {
-  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-  authDomain: "my-login-page-62659.firebaseapp.com",
-  projectId: "my-login-page-62659",
-  storageBucket: "my-login-page-62659.firebasestorage.app",
-  messagingSenderId: "265063991992",
-  appId: "1:265063991992:web:f1834f4664e5494779024d",
-  measurementId: "G-EJ7P52JB4N"
+  apiKey: "AIzaSy***************",
+  authDomain: "my-app.firebaseapp.com",
+  projectId: "my-app",
+  storageBucket: "my-app.appspot.com",
+  messagingSenderId: "1234567890",
+  appId: "1:1234567890:web:abcdef123456"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -65,11 +64,11 @@ document.getElementById("regForm").addEventListener("submit", async function(e) 
   const password = generatePassword(10);
 
   try {
-    // Create user in Firebase Authentication
+    // Firebase Authentication me user create karna
     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
     const user = userCredential.user;
 
-    // Save extra info in Firestore
+    // Extra info Firestore me save karna
     await db.collection("users").doc(user.uid).set({
       name: document.getElementById("name").value,
       phone: document.getElementById("phone").value,
@@ -82,13 +81,12 @@ document.getElementById("regForm").addEventListener("submit", async function(e) 
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    // Show popup
+    // Popup me email + password show karna
     document.getElementById("popupEmail").innerText = email;
     document.getElementById("popupPassword").innerText = password;
     document.getElementById("popup").classList.add("show");
     document.getElementById("popup").style.display = "flex";
 
-    // Reset form
     document.getElementById("regForm").reset();
     currentTab = 0;
     showTab(currentTab);
