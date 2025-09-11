@@ -1,30 +1,34 @@
+/* ---------- Body & Background ---------- */
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  margin: 0;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 100vh;
-  margin: 0;
   color: #333;
 }
 
+/* ---------- Form Container ---------- */
 .container {
   background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 40px;
+  border-radius: 16px;
+  padding: 40px 35px;
   width: 400px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
+/* ---------- Heading ---------- */
 h2 {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
+  margin-bottom: 25px;
+  font-size: 26px;
   color: #333;
 }
 
+/* ---------- Form Fields ---------- */
 .form-group {
   margin-bottom: 18px;
 }
@@ -39,19 +43,24 @@ label {
 input, select {
   width: 100%;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 14px;
   box-sizing: border-box;
   transition: 0.3s;
 }
 
+input::placeholder {
+  color: #aaa;
+}
+
 input:focus, select:focus {
   outline: none;
   border-color: #4e54c8;
-  box-shadow: 0 0 10px rgba(78, 84, 200, 0.4);
+  box-shadow: 0 0 8px rgba(78, 84, 200, 0.4);
 }
 
+/* ---------- Buttons ---------- */
 .buttons {
   text-align: right;
   margin-top: 20px;
@@ -60,14 +69,14 @@ input:focus, select:focus {
 button {
   padding: 10px 22px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   background: linear-gradient(90deg, #4e54c8, #8f94fb);
   color: #fff;
   font-size: 14px;
   cursor: pointer;
   margin-left: 5px;
   transition: 0.3s;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 button:hover {
@@ -75,6 +84,7 @@ button:hover {
   transform: translateY(-2px);
 }
 
+/* ---------- Terms & Conditions ---------- */
 .form-group.terms {
   display: flex;
   align-items: center;
@@ -88,44 +98,62 @@ button:hover {
   accent-color: #4e54c8;
 }
 
-.tab { display: none; }
-
+/* ---------- Popup ---------- */
 .popup {
   display: none;
   position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.6);
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .popup-content {
   background: #fff;
-  border-radius: 20px;
-  padding: 30px;
+  border-radius: 14px;
+  padding: 30px 25px;
   width: 320px;
   text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  color: #333;
   position: relative;
+}
+
+.popup-content h3 {
+  margin-bottom: 15px;
 }
 
 .close {
   position: absolute;
-  top:10px; right:15px;
+  top: 10px;
+  right: 15px;
   font-size: 26px;
   cursor: pointer;
+  color: #333;
 }
 
+/* ---------- Footer ---------- */
 footer {
-  margin-top: 20px;
+  margin-top: 25px;
   color: #fff;
   text-align: center;
   font-size: 14px;
   opacity: 0.8;
 }
 
+/* ---------- Responsive ---------- */
 @media (max-width: 450px) {
-  .container { width: 90%; padding: 25px; }
-  button { width: 100%; margin-top: 10px; }
+  .container {
+    width: 90%;
+    padding: 25px;
+  }
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
 }
