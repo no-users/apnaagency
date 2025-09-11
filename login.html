@@ -34,6 +34,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
+  // Your Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
     authDomain: "my-login-page-62659.firebaseapp.com",
@@ -46,28 +47,71 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // Listen for form submission
-  document.querySelector("form").addEventListener("submit", function (e) {
+  // Login form handler
+  document.getElementById("login-form").addEventListener("submit", function (e) {
     e.preventDefault();
-    
-    const email = document.querySelector("input[type='email']").value;
-    const password = document.querySelector("input[type='password']").value;
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        // ✅ Login successful
         const user = userCredential.user;
-        alert("Login Successful! Welcome " + user.email);
-        // Redirect user
-        window.location.href = "dashboard.html"; // aapka dashboard file
+        alert("Login successful! Redirecting to home page...");
+
+        // 👇 Redirect to home page
+        window.location.href = "home.html";
       })
       .catch((error) => {
-        alert("Login Failed: " + error.message);
+        // ❌ Login failed
+        alert("Login failed: " + error.message);
+      });
+  });
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+    authDomain: "my-login-page-62659.firebaseapp.com",
+    projectId: "my-login-page-62659",
+    storageBucket: "my-login-page-62659.firebasestorage.app",
+    messagingSenderId: "265063991992",
+    appId: "1:265063991992:web:f1834f4664e5494779024d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Login form handler
+  document.getElementById("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // ✅ Login successful
+        const user = userCredential.user;
+        alert("Login successful! Redirecting to home page...");
+
+        // 👇 Redirect to home page
+        window.location.href = "home.html";
+      })
+      .catch((error) => {
+        // ❌ Login failed
+        alert("Login failed: " + error.message);
       });
   });
 </script>
 
 </body>
 </html>
+
 
 
 
