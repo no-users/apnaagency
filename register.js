@@ -1,4 +1,4 @@
-// ---------- 1️⃣ Firebase Config ----------
+// ---------- Firebase Config ----------
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -10,7 +10,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ---------- 2️⃣ Multi-step form ----------
+// ---------- Multi-step Form ----------
 let currentTab = 0;
 showTab(currentTab);
 
@@ -55,7 +55,7 @@ function validateForm() {
   return valid;
 }
 
-// ---------- 3️⃣ Password Auto-generate ----------
+// ---------- Password Auto-generate ----------
 function generatePassword(length = 10) {
   const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
   let password = "";
@@ -65,13 +65,25 @@ function generatePassword(length = 10) {
   return password;
 }
 
-// ---------- 4️⃣ Form Submit ----------
-document.getElementById("regForm").addEventListener("submit", function(e) {
+// ---------- Form Submit ----------
+document.getElementById("regForm").addEventListener("submit", async function(e) {
   e.preventDefault();
-  
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value.trim();
+
+  // Check if email already exists
+  const existing = await db.collection("users").where("email", "==", email).get();
+  if (!existing.empty) {
+    // Already registered popup
+    document.getElementById("popupEmail").innerText = email;
+    document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
+    document.getElementById("popup").style.display = "block";
+    return;
+  }
+
+  // Generate password for new user
   const password = generatePassword(10);
 
+  // Save data to Firestore
   db.collection("users").add({
     name: document.getElementById("name").value,
     email: email,
@@ -86,6 +98,7 @@ document.getElementById("regForm").addEventListener("submit", function(e) {
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
   .then(() => {
+    // Show success popup
     document.getElementById("popupEmail").innerText = email;
     document.getElementById("popupPassword").innerText = password;
     document.getElementById("popup").style.display = "block";
@@ -95,7 +108,7 @@ document.getElementById("regForm").addEventListener("submit", function(e) {
   });
 });
 
-// ---------- 5️⃣ Popup Close ----------
+// ---------- Close Popup ----------
 document.getElementById("closePopup").addEventListener("click", function() {
   document.getElementById("popup").style.display = "none";
 });
