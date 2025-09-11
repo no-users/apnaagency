@@ -7,7 +7,6 @@ const firebaseConfig = {
   messagingSenderId: "YOUR_SENDER_ID",
   appId: "YOUR_APP_ID"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -38,30 +37,32 @@ function validateForm() {
   const inputs = tab.getElementsByTagName("input");
   const selects = tab.getElementsByTagName("select");
   let valid = true;
+
   for (let input of inputs) {
-    if (!input.checkValidity()) { input.reportValidity(); valid = false; break; }
+    if (!input.checkValidity()) {
+      input.reportValidity();
+      valid = false;
+      break;
+    }
   }
   for (let select of selects) {
-    if (!select.checkValidity()) { select.reportValidity(); valid = false; break; }
+    if (!select.checkValidity()) {
+      select.reportValidity();
+      valid = false;
+      break;
+    }
   }
   return valid;
 }
 
-// ---------- Password Generator ----------
-function generatePassword(length = 12) {
-  const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const lower = "abcdefghijklmnopqrstuvwxyz";
-  const digits = "0123456789";
-  const symbols = "@#$!&*";
-  let password = upper[Math.floor(Math.random()*upper.length)] +
-                 lower[Math.floor(Math.random()*lower.length)] +
-                 digits[Math.floor(Math.random()*digits.length)] +
-                 symbols[Math.floor(Math.random()*symbols.length)];
-  const all = upper + lower + digits + symbols;
-  for (let i = password.length; i < length; i++) {
-    password += all[Math.floor(Math.random()*all.length)];
+// ---------- Password Auto-generate ----------
+function generatePassword(length = 10) {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return password.split('').sort(()=>0.5-Math.random()).join('');
+  return password;
 }
 
 // ---------- Form Submit ----------
@@ -69,37 +70,42 @@ document.getElementById("regForm").addEventListener("submit", async function(e) 
   e.preventDefault();
   const email = document.getElementById("email").value.trim();
 
-  try {
-    const existing = await db.collection("users").where("email","==",email).get();
-    if(!existing.empty){
-      document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-      document.getElementById("popup").style.display = "flex";
-      return;
-    }
+  // Check if email already exists
+  const existing = await db.collection("users").where("email", "==", email).get();
+  if (!existing.empty) {
+    // Already registered popup
+    document.getElementById("popupEmail").innerText = email;
+    document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
+    document.getElementById("popup").style.display = "block";
+    return;
+  }
 
-    const password = generatePassword();
-    await db.collection("users").add({
-      name: document.getElementById("name").value,
-      email: email,
-      phone: document.getElementById("phone").value,
-      aadhaar: document.getElementById("aadhaar").value,
-      pan: document.getElementById("pan").value,
-      gender: document.getElementById("gender").value,
-      dob: document.getElementById("dob").value,
-      userType: document.getElementById("userType").value,
-      country: document.getElementById("country").value,
-      password: password,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+  // Generate password for new user
+  const password = generatePassword(10);
 
+  // Save data to Firestore
+  db.collection("users").add({
+    name: document.getElementById("name").value,
+    email: email,
+    phone: document.getElementById("phone").value,
+    aadhaar: document.getElementById("aadhaar").value,
+    pan: document.getElementById("pan").value,
+    gender: document.getElementById("gender").value,
+    dob: document.getElementById("dob").value,
+    userType: document.getElementById("userType").value,
+    country: document.getElementById("country").value,
+    password: password,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(() => {
+    // Show success popup
     document.getElementById("popupEmail").innerText = email;
     document.getElementById("popupPassword").innerText = password;
-    document.getElementById("popup").style.display = "flex";
-
-  } catch (err) {
-    alert("Error: " + err.message);
-  }
+    document.getElementById("popup").style.display = "block";
+  })
+  .catch((error) => {
+    alert("Error storing data: " + error.message);
+  });
 });
 
 // ---------- Close Popup ----------
