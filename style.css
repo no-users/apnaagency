@@ -211,4 +211,60 @@ header {
     color: #94969f;
     text-align: end;
     padding: 15px;
+
+}
+
+
+.icon-bar:hover .popup-menu-premium {
+    display: block;
+}
+
+
+/* === PROFILE POPUP STYLING === */
+.popup-menu-premium {
+    position: absolute;
+    top: 45px; /* below the icon */
+    right: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 180px;
+    z-index: 1000;
+    display: none;
+    padding: 10px 0;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Hover and layout */
+.popup-menu-premium ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.popup-menu-premium li {
+    padding: 10px 20px;
+    transition: background 0.3s;
+}
+.popup-menu-premium li:hover {
+    background-color: #f1f1f1;
+}
+.popup-menu-premium a {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+/* Optional: fade animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
