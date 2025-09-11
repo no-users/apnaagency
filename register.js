@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   // ---------- Firebase Config ----------
   const firebaseConfig = {
     apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
@@ -10,11 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
     measurementId: "G-EJ7P52JB4N"
   };
 
-  console.log("Tabs found:", tabs.length);
-
-  
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+  const auth = firebase.auth();
 
   // ---------- Multi-step Form ----------
   let currentTab = 0;
@@ -30,13 +28,13 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
   }
 
-  window.nextPrev = function(n) {
+  window.nextPrev = function (n) {
     if (n === 1 && !validateForm()) return false;
     currentTab += n;
     if (currentTab >= tabs.length) currentTab = tabs.length - 1;
     if (currentTab < 0) currentTab = 0;
     showTab(currentTab);
-  }
+  };
 
   function validateForm() {
     const tab = tabs[currentTab];
@@ -52,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
     return valid;
   }
 
-  // ---------- Password Auto-generate ----------
+  // ---------- Password Generator ----------
   function generatePassword(length = 10) {
     const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
     let password = "";
@@ -62,46 +60,66 @@ document.addEventListener("DOMContentLoaded", function() {
     return password;
   }
 
-  // ---------- Form Submit ----------
-  document.getElementById("regForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+  // ---------- Form Submission ----------
+  document.getElementById("regForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  const email = document.getElementById("email").value.trim().toLowerCase();
-  const password = generatePassword(10); // Auto-generated
+    const email = document.getElementById("email").value.trim().toLowerCase();
 
-  // Check if email already exists in Auth
-  try {
-    // 1. Create user in Firebase Authentication
-    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-    const user = userCredential.user;
+    try {
+      // Check if email already exists in Firestore
+      const existing = await db.collection("users").where("email", "==", email).get();
+      if (!existing.empty) {
+        document.getElementById("popupEmail").innerText = email;
+        document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
+        showPopup();
+        return;
+      }
 
-    // 2. Save data to Firestore using UID
-    await db.collection("users").doc(user.uid).set({
-      name: document.getElementById("name").value,
-      email: email,
-      phone: document.getElementById("phone").value,
-      aadhaar: document.getElementById("aadhaar").value,
-      pan: document.getElementById("pan").value,
-      gender: document.getElementById("gender").value,
-      dob: document.getElementById("dob").value,
-      userType: document.getElementById("userType").value,
-      country: document.getElementById("country").value,
-      password: password,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+      const password = generatePassword();
 
-    // 3. Show success popup
-    document.getElementById("popupEmail").innerText = email;
-    document.getElementById("popupPassword").innerText = password;
+      // Create user in Firebase Authentication
+      await auth.createUserWithEmailAndPassword(email, password);
+
+      // Save additional user info in Firestore
+      await db.collection("users").add({
+        name: document.getElementById("name").value,
+        email: email,
+        phone: document.getElementById("phone").value,
+        aadhaar: document.getElementById("aadhaar").value,
+        pan: document.getElementById("pan").value,
+        gender: document.getElementById("gender").value,
+        dob: document.getElementById("dob").value,
+        userType: document.getElementById("userType").value,
+        country: document.getElementById("country").value,
+        password: password,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Show popup with login details
+      document.getElementById("popupEmail").innerText = email;
+      document.getElementById("popupPassword").innerText = password;
+      showPopup();
+
+      // Reset form
+      document.getElementById("regForm").reset();
+      currentTab = 0;
+      showTab(currentTab);
+
+    } catch (error) {
+      alert("Registration failed: " + error.message);
+    }
+  });
+
+  // ---------- Show Popup ----------
+  function showPopup() {
     document.getElementById("popup").classList.add("show");
     document.getElementById("popup").style.display = "flex";
-
-    document.getElementById("regForm").reset();
-    currentTab = 0;
-    showTab(currentTab);
-
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Error: " + error.message);
   }
+
+  // ---------- Close Popup ----------
+  document.getElementById("closePopup").addEventListener("click", function () {
+    document.getElementById("popup").classList.remove("show");
+    document.getElementById("popup").style.display = "none";
+  });
 });
