@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Register</title>
+  <title>Premium Registration</title>
   <link rel="stylesheet" href="register.css" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <div class="container">
@@ -78,4 +82,27 @@
 
       <!-- Buttons -->
       <div class="buttons">
-        <button type="button" id="prevBtn" onclick="nextPrev(
+        <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+        <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        <button type="submit" id="submitBtn" style="display:none;">Register</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Popup -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span id="closePopup" class="close">&times;</span>
+      <h3>Registration Successful!</h3>
+      <p><strong>User ID:</strong> <span id="popupEmail"></span></p>
+      <p><strong>Password:</strong> <span id="popupPassword"></span></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Premium Registration. All rights reserved.</p>
+  </footer>
+
+  <script src="register.js"></script>
+</body>
+</html>
