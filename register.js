@@ -1,6 +1,4 @@
 // ---------- Firebase Config ----------
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
   authDomain: "my-login-page-62659.firebaseapp.com",
@@ -10,6 +8,7 @@ const firebaseConfig = {
   appId: "1:265063991992:web:f1834f4664e5494779024d",
   measurementId: "G-EJ7P52JB4N"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -63,24 +62,6 @@ function generatePassword(length = 10) {
 // ---------- Form Submit ----------
 document.getElementById("regForm").addEventListener("submit", async function(e) {
   e.preventDefault();
-  const email = document.getElementById("email").value.trim().toLowerCase();
-
-  // Check if email already exists
-  const existing = await db.collection("users").where("email", "==", email).get();
-  if (!existing.empty) {
-    document.getElementById("popupEmail").innerText = email;
-    document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-    document.getElementById("popup").classList.add("show");
-    document.getElementById("popup").style.display = "flex";
-    return;
-  }
-
-  // Generate password
-  const password = generatePassword(10);
-
-  // Save data
- document.getElementById("regForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
 
   const email = document.getElementById("email").value.trim().toLowerCase();
   const password = generatePassword(10); // Auto-generated password
@@ -102,20 +83,21 @@ document.getElementById("regForm").addEventListener("submit", async function(e) 
         country: document.getElementById("country").value,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then(() => {
-        // Show popup
+        // Show success popup with email and password
         document.getElementById("popupEmail").innerText = email;
         document.getElementById("popupPassword").innerText = password;
         document.getElementById("popup").classList.add("show");
         document.getElementById("popup").style.display = "flex";
 
+        // Reset form
         document.getElementById("regForm").reset();
         currentTab = 0;
         showTab(currentTab);
       });
     })
     .catch((error) => {
+      // Handle already registered
       if(error.code === "auth/email-already-in-use"){
-        // Already registered
         document.getElementById("popupEmail").innerText = email;
         document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
         document.getElementById("popup").classList.add("show");
@@ -126,10 +108,8 @@ document.getElementById("regForm").addEventListener("submit", async function(e) 
     });
 });
 
-
 // ---------- Close Popup ----------
 document.getElementById("closePopup").addEventListener("click", function() {
   document.getElementById("popup").classList.remove("show");
   document.getElementById("popup").style.display = "none";
-
 });
