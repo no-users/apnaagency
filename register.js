@@ -64,21 +64,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // ---------- Form Submit ----------
   document.getElementById("regForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const email = document.getElementById("email").value.trim().toLowerCase();
+  e.preventDefault();
 
-    const existing = await db.collection("users").where("email", "==", email).get();
-    if (!existing.empty) {
-      document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-      document.getElementById("popup").classList.add("show");
-      document.getElementById("popup").style.display = "flex";
-      return;
-    }
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const password = generatePassword(10); // Auto-generated
 
-    const password = generatePassword(10);
+  // Check if email already exists in Auth
+  try {
+    // 1. Create user in Firebase Authentication
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    const user = userCredential.user;
 
-    db.collection("users").add({
+    // 2. Save data to Firestore using UID
+    await db.collection("users").doc(user.uid).set({
       name: document.getElementById("name").value,
       email: email,
       phone: document.getElementById("phone").value,
@@ -90,23 +88,20 @@ document.addEventListener("DOMContentLoaded", function() {
       country: document.getElementById("country").value,
       password: password,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = password;
-      document.getElementById("popup").classList.add("show");
-      document.getElementById("popup").style.display = "flex";
-
-      document.getElementById("regForm").reset();
-      currentTab = 0;
-      showTab(currentTab);
-    }).catch((error) => {
-      alert("Error saving data: " + error.message);
     });
-  });
 
-  // ---------- Close Popup ----------
-  document.getElementById("closePopup").addEventListener("click", function() {
-    document.getElementById("popup").classList.remove("show");
-    document.getElementById("popup").style.display = "none";
-  });
+    // 3. Show success popup
+    document.getElementById("popupEmail").innerText = email;
+    document.getElementById("popupPassword").innerText = password;
+    document.getElementById("popup").classList.add("show");
+    document.getElementById("popup").style.display = "flex";
+
+    document.getElementById("regForm").reset();
+    currentTab = 0;
+    showTab(currentTab);
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error: " + error.message);
+  }
 });
