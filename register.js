@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
     messagingSenderId: "1234567890",
     appId: "1:1234567890:web:abcdef123456"
   };
+
+  console.log("Tabs found:", tabs.length);
+
   
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
