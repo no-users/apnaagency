@@ -1,12 +1,13 @@
 // ---------- Firebase Config ----------
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSy***************",
+  authDomain: "my-app.firebaseapp.com",
+  projectId: "my-app",
+  storageBucket: "my-app.appspot.com",
+  messagingSenderId: "1234567890",
+  appId: "1:1234567890:web:abcdef123456"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -34,20 +35,12 @@ function nextPrev(n) {
 
 function validateForm() {
   const tab = document.getElementsByClassName("tab")[currentTab];
-  const inputs = tab.getElementsByTagName("input");
-  const selects = tab.getElementsByTagName("select");
+  const inputs = tab.querySelectorAll("input, select");
   let valid = true;
 
   for (let input of inputs) {
     if (!input.checkValidity()) {
       input.reportValidity();
-      valid = false;
-      break;
-    }
-  }
-  for (let select of selects) {
-    if (!select.checkValidity()) {
-      select.reportValidity();
       valid = false;
       break;
     }
@@ -68,22 +61,22 @@ function generatePassword(length = 10) {
 // ---------- Form Submit ----------
 document.getElementById("regForm").addEventListener("submit", async function(e) {
   e.preventDefault();
-  const email = document.getElementById("email").value.trim();
+  const email = document.getElementById("email").value.trim().toLowerCase();
 
   // Check if email already exists
   const existing = await db.collection("users").where("email", "==", email).get();
   if (!existing.empty) {
-    // Already registered popup
     document.getElementById("popupEmail").innerText = email;
     document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-    document.getElementById("popup").style.display = "block";
+    document.getElementById("popup").classList.add("show");
+    document.getElementById("popup").style.display = "flex";
     return;
   }
 
-  // Generate password for new user
+  // Generate password
   const password = generatePassword(10);
 
-  // Save data to Firestore
+  // Save data
   db.collection("users").add({
     name: document.getElementById("name").value,
     email: email,
@@ -96,19 +89,23 @@ document.getElementById("regForm").addEventListener("submit", async function(e) 
     country: document.getElementById("country").value,
     password: password,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  })
-  .then(() => {
-    // Show success popup
+  }).then(() => {
     document.getElementById("popupEmail").innerText = email;
     document.getElementById("popupPassword").innerText = password;
-    document.getElementById("popup").style.display = "block";
-  })
-  .catch((error) => {
-    alert("Error storing data: " + error.message);
+    document.getElementById("popup").classList.add("show");
+    document.getElementById("popup").style.display = "flex";
+
+    document.getElementById("regForm").reset();
+    currentTab = 0;
+    showTab(currentTab);
+  }).catch((error) => {
+    alert("Error saving data: " + error.message);
   });
 });
 
 // ---------- Close Popup ----------
 document.getElementById("closePopup").addEventListener("click", function() {
+  document.getElementById("popup").classList.remove("show");
   document.getElementById("popup").style.display = "none";
+
 });
