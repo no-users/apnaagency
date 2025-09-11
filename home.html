@@ -6,6 +6,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
+    <button id="logoutBtn">Logout</button>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+  const firebaseConfig = { /* your same config here */ };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    signOut(auth).then(() => {
+      alert("Logged out!");
+      window.location.href = "login.html";
+    });
+  });
+</script>
+
     <header>
         <div class="logo-container">
             <a href="#"><img class="home-logo" src="logo.png" alt="Home logo"></a>
@@ -130,6 +148,8 @@
         </div>
     </footer>
     
+    
 </body>
 
 </html>
+
