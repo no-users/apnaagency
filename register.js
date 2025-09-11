@@ -1,34 +1,34 @@
-let currentTab = 0; 
+// ---------- 1️⃣ Firebase Config ----------
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ---------- 2️⃣ Multi-step form ----------
+let currentTab = 0;
 showTab(currentTab);
 
 function showTab(n) {
   const tabs = document.getElementsByClassName("tab");
+  for (let tab of tabs) tab.style.display = "none";
   tabs[n].style.display = "block";
 
-  // Previous button hide on first step
   document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
-  
-  // Next button hide on last step
   document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
-
-  // Submit button show on last step
   document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
 }
 
 function nextPrev(n) {
   const tabs = document.getElementsByClassName("tab");
-
-  // Validate current tab
   if (n === 1 && !validateForm()) return false;
-
   tabs[currentTab].style.display = "none";
   currentTab += n;
-  
-  if (currentTab >= tabs.length) {
-    document.getElementById("regForm").submit();
-    return false;
-  }
-
   showTab(currentTab);
 }
 
@@ -45,7 +45,6 @@ function validateForm() {
       break;
     }
   }
-
   for (let select of selects) {
     if (!select.checkValidity()) {
       select.reportValidity();
@@ -53,6 +52,50 @@ function validateForm() {
       break;
     }
   }
-
   return valid;
 }
+
+// ---------- 3️⃣ Password Auto-generate ----------
+function generatePassword(length = 10) {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+}
+
+// ---------- 4️⃣ Form Submit ----------
+document.getElementById("regForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById("email").value;
+  const password = generatePassword(10);
+
+  db.collection("users").add({
+    name: document.getElementById("name").value,
+    email: email,
+    phone: document.getElementById("phone").value,
+    aadhaar: document.getElementById("aadhaar").value,
+    pan: document.getElementById("pan").value,
+    gender: document.getElementById("gender").value,
+    dob: document.getElementById("dob").value,
+    userType: document.getElementById("userType").value,
+    country: document.getElementById("country").value,
+    password: password,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(() => {
+    document.getElementById("popupEmail").innerText = email;
+    document.getElementById("popupPassword").innerText = password;
+    document.getElementById("popup").style.display = "block";
+  })
+  .catch((error) => {
+    alert("Error storing data: " + error.message);
+  });
+});
+
+// ---------- 5️⃣ Popup Close ----------
+document.getElementById("closePopup").addEventListener("click", function() {
+  document.getElementById("popup").style.display = "none";
+});
