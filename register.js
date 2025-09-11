@@ -4,7 +4,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
   authDomain: "my-login-page-62659.firebaseapp.com",
   projectId: "my-login-page-62659",
-  storageBucket: "my-login-page-62659.firebasestorage.app",
+  storageBucket: "my-login-page-62659.firebasestorage.com",
   messagingSenderId: "265063991992",
   appId: "1:265063991992:web:f1834f4664e5494779024d",
   measurementId: "G-EJ7P52JB4N"
