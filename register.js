@@ -1,4 +1,3 @@
-// ---------- Firebase Config ----------
 const firebaseConfig = {
   apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
   authDomain: "my-login-page-62659.firebaseapp.com",
@@ -8,7 +7,6 @@ const firebaseConfig = {
   appId: "1:265063991992:web:f1834f4664e5494779024d",
   measurementId: "G-EJ7P52JB4N"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -60,19 +58,16 @@ function generatePassword(length = 10) {
 }
 
 // ---------- Form Submit ----------
-document.getElementById("regForm").addEventListener("submit", async function(e) {
+document.getElementById("regForm").addEventListener("submit", function(e) {
   e.preventDefault();
 
   const email = document.getElementById("email").value.trim().toLowerCase();
-  const password = generatePassword(10); // Auto-generated password
+  const password = generatePassword(10);
 
-  // Create user in Firebase Auth
   firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      const user = userCredential.user; // Auth user
-
-      // Save extra info in Firestore with UID as document ID
-      db.collection("users").doc(user.uid).set({
+    .then(userCredential => {
+      const user = userCredential.user;
+      return db.collection("users").doc(user.uid).set({
         name: document.getElementById("name").value,
         phone: document.getElementById("phone").value,
         dob: document.getElementById("dob").value,
@@ -83,20 +78,17 @@ document.getElementById("regForm").addEventListener("submit", async function(e) 
         country: document.getElementById("country").value,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then(() => {
-        // Show success popup with email and password
         document.getElementById("popupEmail").innerText = email;
         document.getElementById("popupPassword").innerText = password;
         document.getElementById("popup").classList.add("show");
         document.getElementById("popup").style.display = "flex";
 
-        // Reset form
         document.getElementById("regForm").reset();
         currentTab = 0;
         showTab(currentTab);
       });
     })
-    .catch((error) => {
-      // Handle already registered
+    .catch(error => {
       if(error.code === "auth/email-already-in-use"){
         document.getElementById("popupEmail").innerText = email;
         document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
