@@ -15,6 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------- Multi-step Form ----------
   let currentTab = 0;
   const tabs = document.getElementsByClassName("tab");
+
+  if (!tabs.length) {
+    console.error("❌ No tabs found. Please check your HTML.");
+    return;
+  }
+
   showTab(currentTab);
 
   function showTab(n) {
@@ -26,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
   }
 
-  window.nextPrev = function(n) {
+  window.nextPrev = function (n) {
     if (n === 1 && !validateForm()) return false;
     currentTab += n;
     if (currentTab >= tabs.length) currentTab = tabs.length - 1;
@@ -59,50 +65,49 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ---------- Form Submit ----------
-  document.getElementById("regForm").addEventListener("submit", async function(e) {
+  document.getElementById("regForm").addEventListener("submit", async function (e) {
     e.preventDefault();
     const email = document.getElementById("email").value.trim().toLowerCase();
 
-    const existing = await db.collection("users").where("email", "==", email).get();
-    if (!existing.empty) {
-      document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-      document.getElementById("popup").classList.add("show");
-      document.getElementById("popup").style.display = "flex";
-      return;
-    }
+    try {
+      const existing = await db.collection("users").where("email", "==", email).get();
+      if (!existing.empty) {
+        document.getElementById("popupEmail").innerText = email;
+        document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
+        document.getElementById("popup").style.display = "flex";
+        return;
+      }
 
-    const password = generatePassword(10);
+      const password = generatePassword();
 
-    db.collection("users").add({
-      name: document.getElementById("name").value,
-      email: email,
-      phone: document.getElementById("phone").value,
-      aadhaar: document.getElementById("aadhaar").value,
-      pan: document.getElementById("pan").value,
-      gender: document.getElementById("gender").value,
-      dob: document.getElementById("dob").value,
-      userType: document.getElementById("userType").value,
-      country: document.getElementById("country").value,
-      password: password,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
+      await db.collection("users").add({
+        name: document.getElementById("name").value,
+        email: email,
+        phone: document.getElementById("phone").value,
+        aadhaar: document.getElementById("aadhaar").value,
+        pan: document.getElementById("pan").value,
+        gender: document.getElementById("gender").value,
+        dob: document.getElementById("dob").value,
+        userType: document.getElementById("userType").value,
+        country: document.getElementById("country").value,
+        password: password,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
       document.getElementById("popupEmail").innerText = email;
       document.getElementById("popupPassword").innerText = password;
-      document.getElementById("popup").classList.add("show");
       document.getElementById("popup").style.display = "flex";
 
       document.getElementById("regForm").reset();
       currentTab = 0;
       showTab(currentTab);
-    }).catch((error) => {
-      alert("Error saving data: " + error.message);
-    });
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
   });
 
   // ---------- Close Popup ----------
-  document.getElementById("closePopup").addEventListener("click", function() {
-    document.getElementById("popup").classList.remove("show");
+  document.getElementById("closePopup").addEventListener("click", function () {
     document.getElementById("popup").style.display = "none";
   });
 });
