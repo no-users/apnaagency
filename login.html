@@ -10,24 +10,23 @@
   <div class="container">
     <div class="login-box">
       <h2>Login</h2>
-      <form>
-        <div class="input-group">
-          <input type="email" required name="email">
+      <form id="login-form"> <!-- ✅ id added here -->
+  <div class="input-group">
+    <input type="email" required name="email" id="email"> <!-- ✅ id added -->
+    <label>Email</label>
+  </div>
+  <div class="input-group">
+    <input type="password" required name="password" id="password"> <!-- ✅ id added -->
+    <label>Password</label>
+  </div>
+  <div class="options">
+    <label><input type="checkbox"> Remember me</label>
+    <a href="#">Forgot Password?</a>
+  </div>
+  <button type="submit" class="btn">Login</button>
+  <p class="register">Don’t have an account? <a href="register.html">Register</a></p>
+</form>
 
-
-          <label>Email</label>
-        </div>
-        <div class="input-group">
-          <input type="password" required name="password">
-          <label>Password</label>
-        </div>
-        <div class="options">
-          <label><input type="checkbox"> Remember me</label>
-          <a href="#">Forgot Password?</a>
-        </div>
-        <button type="submit" class="btn">Login</button>
-        <p class="register">Don’t have an account? <a href="register.html">Register</a></p>
-      </form>
     </div>
   </div>
   <script type="module">
@@ -68,12 +67,10 @@
         alert("Login failed: " + error.message);
       });
   });
-</script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-  // Your Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
     authDomain: "my-login-page-62659.firebaseapp.com",
@@ -86,7 +83,6 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // Login form handler
   document.getElementById("login-form").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -95,22 +91,19 @@
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // ✅ Login successful
-        const user = userCredential.user;
         alert("Login successful! Redirecting to home page...");
-
-        // 👇 Redirect to home page
         window.location.href = "home.html";
       })
       .catch((error) => {
-        // ❌ Login failed
         alert("Login failed: " + error.message);
       });
   });
 </script>
 
+
 </body>
 </html>
+
 
 
 
