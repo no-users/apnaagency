@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", function () {
     document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
     document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
   }
-  showTab(currentTab);
+ 
 });
 
 
