@@ -110,6 +110,11 @@ button:hover {
   align-items: center;
 }
 
+/* 🔧 Fix added here */
+.popup.show {
+  display: flex;
+}
+
 .popup-content {
   background: #fff;
   border-radius: 14px;
@@ -141,6 +146,7 @@ button:hover {
   cursor: pointer;
   color: #333;
 }
+
 
 footer {
   margin-top: 25px;
