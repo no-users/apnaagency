@@ -54,20 +54,14 @@ function validateStep(stepIndex) {
 }
 
 // Function to generate a random password
-function generatePassword(length = 8) {
-    // Sirf numbers ka charset
-    const charset = "0123456789";
+function generatePassword(length = 10) {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
     let password = "";
-    for (let i = 0; i < length; i++) {
-        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    for (let i = 0, n = charset.length; i < length; ++i) {
+        password += charset.charAt(Math.floor(Math.random() * n));
     }
     return password;
 }
-
-// Example use
-const newPassword = generatePassword();
-console.log(newPassword); // 8-digit number jaise "48392017"
-
 
 document.addEventListener('DOMContentLoaded', () => {
     showStep(currentStep);
