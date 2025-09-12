@@ -94,9 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.getElementById("popupEmail").innerText = email;
       document.getElementById("popupPassword").innerText = password;
-      document.getElementById("popup").classList.add("show");
       document.getElementById("popup").style.display = "flex";
-
 
       document.getElementById("regForm").reset();
       currentTab = 0;
