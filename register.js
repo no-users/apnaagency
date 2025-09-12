@@ -1,130 +1,151 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+document.addEventListener('DOMContentLoaded', () => {
+    // Make sure Firebase variables are available in the window scope from your HTML
+    const auth = window.auth;
+    const db = window.db;
 
-// ---------- Firebase Config ----------
-const firebaseConfig = {
-  apiKey: "AIzaSy***************",
-  authDomain: "my-app.firebaseapp.com",
-  projectId: "my-app",
-  storageBucket: "my-app.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef123456"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-// ---------- Generate 8-digit numeric password ----------
-function generateNumericPassword(length = 8) {
-  let pass = '';
-  for (let i = 0; i < length; i++) pass += Math.floor(Math.random() * 10);
-  return pass;
-}
-
-// ---------- Multi-step form ----------
-let currentTab = 0;
-const tabs = document.getElementsByClassName("tab");
-
-function showTab(n) {
-  for (let i = 0; i < tabs.length; i++) tabs[i].style.display = "none";
-  tabs[n].style.display = "block";
-
-  document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
-  document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
-  document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
-}
-
-function nextPrev(n) {
-  if (n === 1 && !validateForm()) return false;
-  currentTab += n;
-  if (currentTab >= tabs.length) currentTab = tabs.length - 1;
-  if (currentTab < 0) currentTab = 0;
-  showTab(currentTab);
-}
-
-function validateForm() {
-  const tab = tabs[currentTab];
-  const inputs = tab.querySelectorAll("input, select");
-  let valid = true;
-  for (let input of inputs) {
-    if (!input.checkValidity()) {
-      input.reportValidity();
-      valid = false;
-      break;
-    }
-  }
-  return valid;
-}
-
-// Initialize first tab
-showTab(currentTab);
-window.nextPrev = nextPrev;
-
-// ---------- Form submit ----------
-document.getElementById("regForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById("email").value.trim().toLowerCase();
-  const phone = document.getElementById("phone").value.trim();
-  const aadhaar = document.getElementById("aadhaar").value.trim();
-  const pan = document.getElementById("pan").value.trim();
-  const password = generateNumericPassword();
-
-  try {
-    // ---------- Duplicate check ----------
-    const usersRef = collection(db, "users");
-    const [emailExists, phoneExists, aadhaarExists, panExists] = await Promise.all([
-      getDocs(query(usersRef, where("email", "==", email))),
-      getDocs(query(usersRef, where("phone", "==", phone))),
-      getDocs(query(usersRef, where("aadhaar", "==", aadhaar))),
-      getDocs(query(usersRef, where("pan", "==", pan))),
-    ]);
-
-    if (!emailExists.empty || !phoneExists.empty || !aadhaarExists.empty || !panExists.empty) {
-      let field = !emailExists.empty ? "Email" : !phoneExists.empty ? "Phone" : !aadhaarExists.empty ? "Aadhaar" : "PAN";
-      document.getElementById("popupEmail").innerText = `${field} already registered`;
-      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-      document.getElementById("popup").style.display = "flex";
-      return;
+    if (!auth || !db) {
+        console.error("Firebase is not initialized. Please check your Firebase configuration script in index.html.");
+        alert("Firebase is not set up correctly.");
+        return;
     }
 
-    // ---------- Create user in Firebase Auth ----------
-    await createUserWithEmailAndPassword(auth, email, password);
+    const form = document.getElementById('multi-step-form');
+    const stepContents = document.querySelectorAll('.step-content');
+    const steps = document.querySelectorAll('.step');
+    const nextButtons = document.querySelectorAll('.next-btn');
+    const prevButtons = document.querySelectorAll('.prev-btn');
 
-    // ---------- Add user to Firestore ----------
-    await addDoc(usersRef, {
-      name: document.getElementById("name").value,
-      email,
-      phone,
-      aadhaar,
-      pan,
-      gender: document.getElementById("gender").value,
-      dob: document.getElementById("dob").value,
-      userType: document.getElementById("userType").value,
-      country: document.getElementById("country").value,
-      password,
-      createdAt: serverTimestamp()
+    let currentStep = 0;
+
+    function showStep(stepIndex) {
+        stepContents.forEach((step, index) => {
+            step.classList.remove('active');
+            if (index === stepIndex) {
+                step.classList.add('active');
+            }
+        });
+        steps.forEach((step, index) => {
+            if (index <= stepIndex) {
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+        });
+    }
+
+    function validateStep(stepIndex) {
+        let isValid = true;
+        let message = '';
+
+        if (stepIndex === 0) {
+            const fullName = document.getElementById('full-name').value.trim();
+            const mobileNumber = document.getElementById('mobile-number').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (!fullName || !mobileNumber || !email) {
+                isValid = false;
+                message = 'Please fill out all the fields.';
+            } else if (!/^\d{10}$/.test(mobileNumber)) {
+                isValid = false;
+                message = 'Please enter a valid 10-digit mobile number.';
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                isValid = false;
+                message = 'Please enter a valid email address.';
+            }
+        } else if (stepIndex === 1) {
+            const aadharCard = document.getElementById('aadhar-card').value.trim();
+            const panCard = document.getElementById('pan-card').value.trim();
+            const gender = document.getElementById('gender').value;
+
+            if (!aadharCard || !panCard || !gender) {
+                isValid = false;
+                message = 'Please fill out all the fields.';
+            } else if (!/^\d{12}$/.test(aadharCard)) {
+                isValid = false;
+                message = 'Please enter a valid 12-digit Aadhar number.';
+            } else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panCard.toUpperCase())) {
+                isValid = false;
+                message = 'Please enter a valid PAN number.';
+            }
+        } else if (stepIndex === 2) {
+            const registrationDate = document.getElementById('registration-date').value;
+            const registrationTime = document.getElementById('registration-time').value;
+            const userType = document.getElementById('user-type').value;
+
+            if (!registrationDate || !registrationTime || !userType) {
+                isValid = false;
+                message = 'Please fill out all the fields.';
+            }
+        }
+
+        if (!isValid) {
+            alert(message);
+        }
+
+        return isValid;
+    }
+
+    nextButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
     });
 
-    // ---------- Show success popup ----------
-    document.getElementById("popupEmail").innerText = email;
-    document.getElementById("popupPassword").innerText = password;
-    document.getElementById("popup").style.display = "flex";
+    prevButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            currentStep--;
+            showStep(currentStep);
+        });
+    });
 
-    // Reset form
-    document.getElementById("regForm").reset();
-    currentTab = 0;
-    showTab(currentTab);
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-  } catch (err) {
-    console.error("Error:", err.message);
-    alert("Error: " + err.message);
-  }
-});
+        if (validateStep(currentStep)) {
+            const formData = {
+                fullName: document.getElementById('full-name').value,
+                mobileNumber: document.getElementById('mobile-number').value,
+                email: document.getElementById('email').value,
+                aadharCard: document.getElementById('aadhar-card').value,
+                panCard: document.getElementById('pan-card').value,
+                gender: document.getElementById('gender').value,
+                registrationDate: document.getElementById('registration-date').value,
+                registrationTime: document.getElementById('registration-time').value,
+                userType: document.getElementById('user-type').value,
+            };
 
-// ---------- Close popup ----------
-document.getElementById("closePopup").addEventListener("click", () => {
-  document.getElementById("popup").style.display = "none";
+            // Firebase authentication and Firestore logic
+            createUserWithEmailAndPassword(auth, formData.email, 'default_password')
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return setDoc(doc(db, "users", user.uid), {
+                        fullName: formData.fullName,
+                        mobileNumber: formData.mobileNumber,
+                        aadharCard: formData.aadharCard,
+                        panCard: formData.panCard,
+                        gender: formData.gender,
+                        registrationDate: formData.registrationDate,
+                        registrationTime: formData.registrationTime,
+                        userType: formData.userType,
+                        email: formData.email,
+                    });
+                })
+                .then(() => {
+                    console.log("User registered and data stored successfully!");
+                    alert("Registration successful!");
+                    form.reset();
+                    showStep(0);
+                })
+                .catch((error) => {
+                    const errorMessage = error.message;
+                    console.error("Firebase registration error:", errorMessage);
+                    alert("Registration failed: " + errorMessage);
+                });
+        }
+    });
+
+    showStep(currentStep);
 });
