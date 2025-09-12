@@ -54,14 +54,15 @@ function validateStep(stepIndex) {
 }
 
 // अपने आप एक रैंडम पासवर्ड बनाने का फ़ंक्शन
-function generatePassword(length = 10) {
-    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+function generatePassword(length = 8) {
+    const digits = "0123456789";
     let password = "";
-    for (let i = 0, n = charset.length; i < length; ++i) {
-        password += charset.charAt(Math.floor(Math.random() * n));
+    for (let i = 0; i < length; i++) {
+        password += digits.charAt(Math.floor(Math.random() * digits.length));
     }
     return password;
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     showStep(currentStep);
@@ -94,42 +95,67 @@ document.addEventListener('DOMContentLoaded', () => {
         const fullName = document.getElementById('full-name').value;
         const mobileNumber = document.getElementById('mobile-number').value;
         const email = document.getElementById('email').value;
+        if (!/^\d{10}$/.test(mobileNumber)) {
+    alert("कृपया वैध 10 अंकों का मोबाइल नंबर दर्ज करें।");
+    return;
+}
+if (!/^\S+@\S+\.\S+$/.test(email)) {
+    alert("कृपया मान्य ईमेल पता दर्ज करें।");
+    return;
+}
+
         const aadharCard = document.getElementById('aadhar-card').value;
         const panCard = document.getElementById('pan-card').value;
         const gender = document.getElementById('gender').value;
-        const registrationDate = document.getElementById('registration-date').value;
-        const registrationTime = document.getElementById('registration-time').value;
+        const now = new Date();
+const registrationDate = now.toISOString().split('T')[0]; // yyyy-mm-dd
+const registrationTime = now.toTimeString().split(' ')[0]; // hh:mm:ss
+
         const userType = document.getElementById('user-type').value;
+        
+
 
         // उपयोगकर्ता के लिए अपने आप एक रैंडम पासवर्ड बनाएं
         const password = generatePassword(); 
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+       try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-            await setDoc(doc(db, "users", user.uid), {
-                fullName,
-                mobileNumber,
-                email,
-                aadharCard,
-                panCard,
-                gender,
-                registrationDate,
-                registrationTime,
-                userType,
-                uid: user.uid
-            });
-            alert('पंजीकरण सफल! आपका ईमेल ' + email + ' है और आपका पासवर्ड ' + password + ' है। कृपया इस पासवर्ड को बाद में लॉग इन करने के लिए सेव कर लें।');
-        } catch (error) {
-            // विशिष्ट त्रुटियों के लिए जाँच करें ताकि अधिक मददगार संदेश दिया जा सके
-            let errorMessage = error.message;
-            if (error.code === 'auth/email-already-in-use') {
-                errorMessage = 'यह ईमेल पहले से ही उपयोग में है। कृपया किसी अन्य ईमेल पते का उपयोग करें।';
-            } else if (error.code === 'auth/weak-password') {
-                errorMessage = 'पासवर्ड बहुत कमज़ोर है। कृपया एक मज़बूत पासवर्ड का उपयोग करें।';
-            }
-            alert(`त्रुटि: ${errorMessage}`);
-        }
+    await setDoc(doc(db, "users", user.uid), {
+        fullName,
+        mobileNumber,
+        email,
+        aadharCard,
+        panCard,
+        gender,
+        registrationDate,
+        registrationTime,
+        userType,
+        uid: user.uid
     });
-});
+
+    alert('पंजीकरण सफल! आपका ईमेल ' + email + ' है और आपका पासवर्ड ' + password + ' है। कृपया इसे सेव करें।');
+    
+    resetFormAndSteps(); // ✅ अब सही से काम करेगा
+
+} catch (error) {
+    console.error("Firebase Error:", error.code, error.message);
+
+    let errorMessage = error.message;
+    if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'यह ईमेल पहले से ही उपयोग में है।';
+    } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'पासवर्ड बहुत कमज़ोर है।';
+    }
+    alert(`त्रुटि: ${errorMessage}`);
+}
+
+// 🔁 try-catch block के बाहर रखना है
+function resetFormAndSteps() {
+    form.reset();
+    currentStep = 0;
+    showStep(currentStep);
+}
+
+
