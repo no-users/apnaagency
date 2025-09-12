@@ -3,16 +3,16 @@ import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-  authDomain: "my-login-page-62659.firebaseapp.com",
-  projectId: "my-login-page-62659",
-  storageBucket: "my-login-page-62659.firebasestorage.app",
-  messagingSenderId: "265063991992",
-  appId: "1:265063991992:web:f1834f4664e5494779024d",
-  measurementId: "G-EJ7P52JB4N"
+    apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+    authDomain: "my-login-page-62659.firebaseapp.com",
+    projectId: "my-login-page-62659",
+    storageBucket: "my-login-page-62659.firebasestorage.app",
+    messagingSenderId: "265063991992",
+    appId: "1:265063991992:web:f1834f4664e5494779024d",
+    measurementId: "G-EJ7P52JB4N"
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -46,11 +46,28 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
+            alert('Please fill out all required fields.'); // Custom alert to avoid browser default
             return false;
         }
     }
     return true;
 }
+
+// Function to generate a random password
+function generatePassword(length = 8) {
+    // Sirf numbers ka charset
+    const charset = "0123456789";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    return password;
+}
+
+// Example use
+const newPassword = generatePassword();
+console.log(newPassword); // 8-digit number jaise "48392017"
+
 
 document.addEventListener('DOMContentLoaded', () => {
     showStep(currentStep);
@@ -63,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentStep++;
                     showStep(currentStep);
                 }
-            } else {
-                alert('Please fill out all required fields.');
             }
         });
     });
@@ -92,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const registrationTime = document.getElementById('registration-time').value;
         const userType = document.getElementById('user-type').value;
 
-        // Generate a simple password (you would handle this securely in a real app)
-        const password = 'user_password_123'; // Replace with a real password generation or user input method
+        // Generate a random password for the user
+        const password = generatePassword(); 
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -111,9 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 userType,
                 uid: user.uid
             });
-            alert('Registration successful! User data saved to Firestore.');
+            alert('Registration successful! Your email is ' + email + ' and your password is ' + password + '. Please save this password to login later.');
         } catch (error) {
-            alert(`Error: ${error.message}`);
+            // Check for specific error to give a more helpful message
+            let errorMessage = error.message;
+            if (error.code === 'auth/email-already-in-use') {
+                errorMessage = 'This email is already in use. Please use a different email address.';
+            } else if (error.code === 'auth/weak-password') {
+                errorMessage = 'The password is too weak. Please use a stronger password.';
+            }
+            alert(`Error: ${errorMessage}`);
         }
     });
 });
