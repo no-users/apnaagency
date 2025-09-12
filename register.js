@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// आपकी वेब ऐप का Firebase कॉन्फ़िगरेशन
+// Firebase कॉन्फ़िगरेशन
 const firebaseConfig = {
     apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
     authDomain: "my-login-page-62659.firebaseapp.com",
@@ -46,23 +46,14 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
-            // custom alert to avoid browser default
-            const customAlert = document.createElement('div');
-            customAlert.className = 'custom-alert';
-            customAlert.innerHTML = `
-                <div class="alert-content">
-                    <p>कृपया सभी आवश्यक फ़ील्ड भरें।</p>
-                    <button onclick="this.parentElement.parentElement.remove()">ठीक है</button>
-                </div>
-            `;
-            document.body.appendChild(customAlert);
+            alert('कृपया सभी आवश्यक फ़ील्ड भरें।');
             return false;
         }
     }
     return true;
 }
 
-// अपने आप एक रैंडम पासवर्ड बनाने का फ़ंक्शन
+// रैंडम पासवर्ड बनाने का फ़ंक्शन
 function generatePassword(length = 10) {
     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
     let password = "";
@@ -110,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const registrationTime = document.getElementById('registration-time').value;
         const userType = document.getElementById('user-type').value;
 
-        // उपयोगकर्ता के लिए अपने आप एक रैंडम पासवर्ड बनाएं
+        // अपने आप एक रैंडम पासवर्ड बनाएं
         const password = generatePassword(); 
 
         try {
@@ -129,34 +120,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 userType,
                 uid: user.uid
             });
-            // custom alert to avoid browser default
-            const customAlert = document.createElement('div');
-            customAlert.className = 'custom-alert';
-            customAlert.innerHTML = `
-                <div class="alert-content">
-                    <p>पंजीकरण सफल! आपका ईमेल <strong>${email}</strong> है और आपका पासवर्ड <strong>${password}</strong> है। कृपया इस पासवर्ड को बाद में लॉग इन करने के लिए सेव कर लें।</p>
-                    <button onclick="this.parentElement.parentElement.remove()">ठीक है</button>
-                </div>
-            `;
-            document.body.appendChild(customAlert);
+            alert('पंजीकरण सफल! आपका ईमेल ' + email + ' है और आपका पासवर्ड ' + password + ' है। कृपया इस पासवर्ड को बाद में लॉग इन करने के लिए सेव कर लें।');
         } catch (error) {
-            // विशिष्ट त्रुटियों के लिए जाँच करें ताकि अधिक मददगार संदेश दिया जा सके
             let errorMessage = error.message;
             if (error.code === 'auth/email-already-in-use') {
                 errorMessage = 'यह ईमेल पहले से ही उपयोग में है। कृपया किसी अन्य ईमेल पते का उपयोग करें।';
             } else if (error.code === 'auth/weak-password') {
                 errorMessage = 'पासवर्ड बहुत कमज़ोर है। कृपया एक मज़बूत पासवर्ड का उपयोग करें।';
             }
-            // custom alert for errors
-            const customAlert = document.createElement('div');
-            customAlert.className = 'custom-alert';
-            customAlert.innerHTML = `
-                <div class="alert-content">
-                    <p>त्रुटि: ${errorMessage}</p>
-                    <button onclick="this.parentElement.parentElement.remove()">ठीक है</button>
-                </div>
-            `;
-            document.body.appendChild(customAlert);
+            alert(`Error: ${errorMessage}`);
         }
     });
 });
