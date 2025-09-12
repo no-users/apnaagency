@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!auth || !db) {
         console.error("Firebase is not initialized. Please check your Firebase configuration script in index.html.");
-        alert("Firebase is not set up correctly.");
+        alert("Firebase is not set up correctly. Please check the browser console for details.");
         return;
     }
 
@@ -81,10 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isValid) {
             alert(message);
         }
-
         return isValid;
     }
 
+    // Event listeners for 'Next' buttons
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (validateStep(currentStep)) {
@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Event listeners for 'Previous' buttons
     prevButtons.forEach(button => {
         button.addEventListener('click', () => {
             currentStep--;
@@ -101,49 +102,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    form.addEventListener('submit', (e) => {
+    // Event listener for form submission
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (validateStep(currentStep)) {
-            const formData = {
-                fullName: document.getElementById('full-name').value,
-                mobileNumber: document.getElementById('mobile-number').value,
-                email: document.getElementById('email').value,
-                aadharCard: document.getElementById('aadhar-card').value,
-                panCard: document.getElementById('pan-card').value,
-                gender: document.getElementById('gender').value,
-                registrationDate: document.getElementById('registration-date').value,
-                registrationTime: document.getElementById('registration-time').value,
-                userType: document.getElementById('user-type').value,
-            };
+        if (!validateStep(currentStep)) {
+            return; // If validation fails, stop the submission process
+        }
 
-            // Firebase authentication and Firestore logic
-            createUserWithEmailAndPassword(auth, formData.email, 'default_password')
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    return setDoc(doc(db, "users", user.uid), {
-                        fullName: formData.fullName,
-                        mobileNumber: formData.mobileNumber,
-                        aadharCard: formData.aadharCard,
-                        panCard: formData.panCard,
-                        gender: formData.gender,
-                        registrationDate: formData.registrationDate,
-                        registrationTime: formData.registrationTime,
-                        userType: formData.userType,
-                        email: formData.email,
-                    });
-                })
-                .then(() => {
-                    console.log("User registered and data stored successfully!");
-                    alert("Registration successful!");
-                    form.reset();
-                    showStep(0);
-                })
-                .catch((error) => {
-                    const errorMessage = error.message;
-                    console.error("Firebase registration error:", errorMessage);
-                    alert("Registration failed: " + errorMessage);
-                });
+        const formData = {
+            fullName: document.getElementById('full-name').value,
+            mobileNumber: document.getElementById('mobile-number').value,
+            email: document.getElementById('email').value,
+            aadharCard: document.getElementById('aadhar-card').value,
+            panCard: document.getElementById('pan-card').value,
+            gender: document.getElementById('gender').value,
+            registrationDate: document.getElementById('registration-date').value,
+            registrationTime: document.getElementById('registration-time').value,
+            userType: document.getElementById('user-type').value,
+        };
+
+        try {
+            // Step 1: Create a user in Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, formData.email, 'default_password');
+            const user = userCredential.user;
+            
+            // Step 2: Store other user details in Firestore
+            await setDoc(doc(db, "users", user.uid), {
+                fullName: formData.fullName,
+                mobileNumber: formData.mobileNumber,
+                aadharCard: formData.aadharCard,
+                panCard: formData.panCard,
+                gender: formData.gender,
+                registrationDate: formData.registrationDate,
+                registrationTime: formData.registrationTime,
+                userType: formData.userType,
+                email: formData.email,
+            });
+
+            console.log("User registered and data stored successfully!");
+            alert("Registration successful!");
+            form.reset();
+            showStep(0); // Reset to the first step
+        } catch (error) {
+            console.error("Firebase registration error:", error);
+            alert("Registration failed: " + error.message);
         }
     });
 
