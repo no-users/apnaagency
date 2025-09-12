@@ -48,14 +48,15 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ---------- Password Auto-generate ----------
-  function generatePassword(length = 10) {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
-    let password = "";
-    for (let i = 0; i < length; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return password;
+  function generatePassword(length = 8) {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
   }
+  return password;
+}
+
 
   // ---------- Form Submit ----------
   document.getElementById("regForm").addEventListener("submit", async function(e) {
@@ -87,9 +88,10 @@ document.addEventListener("DOMContentLoaded", function() {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
       document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = password;
-      document.getElementById("popup").classList.add("show");
-      document.getElementById("popup").style.display = "flex";
+document.getElementById("popupPassword").innerText = password;
+document.getElementById("popup").classList.add("show");
+document.getElementById("popup").style.display = "flex";
+
 
       document.getElementById("regForm").reset();
       currentTab = 0;
