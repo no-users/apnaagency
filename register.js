@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebas
 import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
+// ---------- Firebase Config ----------
 const firebaseConfig = { 
   apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
   authDomain: "my-login-page-62659.firebaseapp.com",
@@ -15,15 +16,52 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Generate numeric password
-function generateNumericPassword(length = 8){
-  let pass = '';
-  for(let i=0; i<length; i++) pass += Math.floor(Math.random()*10);
+// ---------- Multi-step Form ----------
+let currentTab = 0;
+const tabs = document.getElementsByClassName("tab");
+
+function showTab(n){
+  for(let i=0;i<tabs.length;i++) tabs[i].style.display="none";
+  tabs[n].style.display="block";
+
+  document.getElementById("prevBtn").style.display = n===0 ? "none" : "inline-block";
+  document.getElementById("nextBtn").style.display = n===(tabs.length-1) ? "none" : "inline-block";
+  document.getElementById("submitBtn").style.display = n===(tabs.length-1) ? "inline-block" : "none";
+}
+
+function nextPrev(n){
+  if(n===1 && !validateForm()) return false;
+  currentTab += n;
+  if(currentTab>=tabs.length) currentTab=tabs.length-1;
+  if(currentTab<0) currentTab=0;
+  showTab(currentTab);
+}
+
+function validateForm(){
+  const inputs = tabs[currentTab].querySelectorAll("input, select");
+  let valid=true;
+  inputs.forEach(input=>{
+    if(!input.checkValidity()){
+      input.reportValidity();
+      valid=false;
+    }
+  });
+  return valid;
+}
+
+showTab(currentTab);
+
+// ---------- Numeric Password ----------
+function generateNumericPassword(length=8){
+  let pass="";
+  for(let i=0;i<length;i++){
+    pass += Math.floor(Math.random()*10);
+  }
   return pass;
 }
 
-// Form submit
-document.getElementById("regForm").addEventListener("submit", async (e) => {
+// ---------- Form Submit ----------
+document.getElementById("regForm").addEventListener("submit", async (e)=>{
   e.preventDefault();
 
   const email = document.getElementById("email").value.trim().toLowerCase();
@@ -68,16 +106,22 @@ document.getElementById("regForm").addEventListener("submit", async (e) => {
       createdAt: serverTimestamp()
     });
 
+    // Show popup
     document.getElementById("popupEmail").innerText = email;
     document.getElementById("popupPassword").innerText = password;
     document.getElementById("popup").style.display="flex";
 
+    // Reset form
     document.getElementById("regForm").reset();
+    currentTab = 0;
+    showTab(currentTab);
+
   } catch(err){
     alert("Error: "+err.message);
   }
 });
 
+// ---------- Close popup ----------
 document.getElementById("closePopup").addEventListener("click", ()=>{
   document.getElementById("popup").style.display="none";
 });
