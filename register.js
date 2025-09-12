@@ -1,10 +1,27 @@
-window.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
+  // ---------- Firebase Config ----------
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+    authDomain: "my-login-page-62659.firebaseapp.com",
+    projectId: "my-login-page-62659",
+    storageBucket: "my-login-page-62659.appspot.com",
+    messagingSenderId: "265063991992",
+    appId: "1:265063991992:web:f1834f4664e5494779024d"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  // ---------- Multi-step Form ----------
+  let currentTab = 0;
   const tabs = document.getElementsByClassName("tab");
+
   if (!tabs.length) {
-    console.error("No tabs found");
+    console.error("❌ Tabs not found");
     return;
   }
-  let currentTab = 0;
+
   function showTab(n) {
     for (let i = 0; i < tabs.length; i++) tabs[i].style.display = "none";
     tabs[n].style.display = "block";
@@ -13,20 +30,8 @@ window.addEventListener("DOMContentLoaded", function () {
     document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
     document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
   }
- 
-});
-
 
   showTab(currentTab);
-
-  function showTab(n) {
-    for (let i = 0; i < tabs.length; i++) tabs[i].style.display = "none";
-    tabs[n].style.display = "block";
-
-    document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
-    document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
-    document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
-  }
 
   window.nextPrev = function (n) {
     if (n === 1 && !validateForm()) return false;
@@ -34,23 +39,19 @@ window.addEventListener("DOMContentLoaded", function () {
     if (currentTab >= tabs.length) currentTab = tabs.length - 1;
     if (currentTab < 0) currentTab = 0;
     showTab(currentTab);
-  }
+  };
 
   function validateForm() {
-    const tab = tabs[currentTab];
-    const inputs = tab.querySelectorAll("input, select");
-    let valid = true;
+    const inputs = tabs[currentTab].querySelectorAll("input, select");
     for (let input of inputs) {
       if (!input.checkValidity()) {
         input.reportValidity();
-        valid = false;
-        break;
+        return false;
       }
     }
-    return valid;
+    return true;
   }
 
-  // ---------- Password Auto-generate ----------
   function generatePassword(length = 10) {
     const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
     let password = "";
@@ -60,10 +61,19 @@ window.addEventListener("DOMContentLoaded", function () {
     return password;
   }
 
-  // ---------- Form Submit ----------
+  // ---------- Form Submission ----------
   document.getElementById("regForm").addEventListener("submit", async function (e) {
     e.preventDefault();
+
     const email = document.getElementById("email").value.trim().toLowerCase();
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const aadhaar = document.getElementById("aadhaar").value.trim();
+    const pan = document.getElementById("pan").value.trim();
+    const gender = document.getElementById("gender").value;
+    const dob = document.getElementById("dob").value;
+    const userType = document.getElementById("userType").value;
+    const country = document.getElementById("country").value;
 
     try {
       const existing = await db.collection("users").where("email", "==", email).get();
@@ -75,38 +85,31 @@ window.addEventListener("DOMContentLoaded", function () {
       }
 
       const password = generatePassword();
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // User created in Auth
-  })
-  .catch((error) => {
-    console.error(error.message);
-  });
 
+      // Create user in Firebase Authentication
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
 
+      // Store in Firestore
       await db.collection("users").add({
-        name: document.getElementById("name").value,
-        email: email,
-        phone: document.getElementById("phone").value,
-        aadhaar: document.getElementById("aadhaar").value,
-        pan: document.getElementById("pan").value,
-        gender: document.getElementById("gender").value,
-        dob: document.getElementById("dob").value,
-        userType: document.getElementById("userType").value,
-        country: document.getElementById("country").value,
-        password: password,
+        uid: userCredential.user.uid,
+        name, email, phone, aadhaar, pan,
+        gender, dob, userType, country,
+        password,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-   document.getElementById("popupEmail").innerText = email;
+      // Show Popup
+      document.getElementById("popupEmail").innerText = email;
       document.getElementById("popupPassword").innerText = password;
       document.getElementById("popup").style.display = "flex";
 
+      // Reset
       document.getElementById("regForm").reset();
       currentTab = 0;
       showTab(currentTab);
     } catch (error) {
-      alert("Error: " + error.message);
+      alert("❌ Error: " + error.message);
+      console.error(error);
     }
   });
 
