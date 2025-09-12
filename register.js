@@ -1,9 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-// ---------- Firebase Config ----------
-const firebaseConfig = { 
+// Firebase Config
+const firebaseConfig = {
   apiKey: "AIzaSy***************",
   authDomain: "my-app.firebaseapp.com",
   projectId: "my-app",
@@ -16,74 +16,44 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// ---------- Password Generator ----------
-function generateNumericPassword(length = 8){
+// Numeric password
+function generateNumericPassword(length = 8) {
   let pass = '';
-  for(let i=0; i<length; i++) pass += Math.floor(Math.random()*10);
+  for (let i = 0; i < length; i++) pass += Math.floor(Math.random() * 10);
   return pass;
 }
 
-// ---------- Form Submit ----------
+// Form Submit
 document.getElementById("regForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim().toLowerCase();
-  const phone = document.getElementById("phone").value.trim();
-  const aadhaar = document.getElementById("aadhaar").value.trim();
-  const pan = document.getElementById("pan").value.trim();
-  const gender = document.getElementById("gender").value;
-  const dob = document.getElementById("dob").value;
-  const userType = document.getElementById("userType").value;
-  const country = document.getElementById("country").value;
   const password = generateNumericPassword();
 
   try {
-    const usersRef = collection(db, "users");
-
-    // Check duplicates
-    const [emailExists, phoneExists, aadhaarExists, panExists] = await Promise.all([
-      getDocs(query(usersRef, where("email","==",email))),
-      getDocs(query(usersRef, where("phone","==",phone))),
-      getDocs(query(usersRef, where("aadhaar","==",aadhaar))),
-      getDocs(query(usersRef, where("pan","==",pan))),
-    ]);
-
-    if(!emailExists.empty || !phoneExists.empty || !aadhaarExists.empty || !panExists.empty){
-      let field = !emailExists.empty ? "Email" :
-                  !phoneExists.empty ? "Phone" :
-                  !aadhaarExists.empty ? "Aadhaar" : "PAN";
-
-      document.getElementById("popupEmail").innerText = `${field} already registered`;
-      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-      document.getElementById("popup").style.display="flex";
-      return;
-    }
-
-    // Create user in Firebase Auth
+    // Firebase Auth user create
     await createUserWithEmailAndPassword(auth, email, password);
 
-    // Add user in Firestore
-    await addDoc(usersRef, {
-      name, email, phone, aadhaar, pan, gender, dob, userType, country,
+    // Firestore save
+    await addDoc(collection(db, "users"), {
+      name: document.getElementById("name").value,
+      email,
+      phone: document.getElementById("phone").value,
+      aadhaar: document.getElementById("aadhaar").value,
+      pan: document.getElementById("pan").value,
+      gender: document.getElementById("gender").value,
+      dob: document.getElementById("dob").value,
+      userType: document.getElementById("userType").value,
+      country: document.getElementById("country").value,
       password,
       createdAt: serverTimestamp()
     });
 
-    // Show popup
-    document.getElementById("popupEmail").innerText = email;
-    document.getElementById("popupPassword").innerText = password;
-    document.getElementById("popup").style.display="flex";
-
-    // Reset form
+    alert("User registered successfully!");
     document.getElementById("regForm").reset();
 
-  } catch(err){
-    alert("Error: "+err.message);
+  } catch(err) {
+    console.error("Error:", err.message);
+    alert("Error: " + err.message);
   }
-});
-
-// ---------- Close Popup ----------
-document.getElementById("closePopup").addEventListener("click", () => {
-  document.getElementById("popup").style.display = "none";
 });
