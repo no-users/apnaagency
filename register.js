@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Your web app's Firebase configuration
+// आपकी वेब ऐप का Firebase कॉन्फ़िगरेशन
 const firebaseConfig = {
     apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
     authDomain: "my-login-page-62659.firebaseapp.com",
@@ -13,12 +13,12 @@ const firebaseConfig = {
     measurementId: "G-EJ7P52JB4N"
 };
 
-// Initialize Firebase
+// Firebase को प्रारंभ करें
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// --- Form Logic ---
+// --- फॉर्म लॉजिक ---
 const form = document.getElementById('multi-step-form');
 const steps = document.querySelectorAll('.step-content');
 const progressBarSteps = document.querySelectorAll('.progress-bar-container .step');
@@ -46,14 +46,14 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
-            alert('Please fill out all required fields.'); // Custom alert to avoid browser default
+            alert('कृपया सभी आवश्यक फ़ील्ड भरें।'); // ब्राउज़र के डिफ़ॉल्ट अलर्ट से बचने के लिए
             return false;
         }
     }
     return true;
 }
 
-// Function to generate a random password
+// अपने आप एक रैंडम पासवर्ड बनाने का फ़ंक्शन
 function generatePassword(length = 10) {
     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
     let password = "";
@@ -66,7 +66,7 @@ function generatePassword(length = 10) {
 document.addEventListener('DOMContentLoaded', () => {
     showStep(currentStep);
 
-    // Event listeners for Next and Previous buttons
+    // अगले और पिछले बटन के लिए इवेंट लिसनर्स
     document.querySelectorAll('.next-btn').forEach(button => {
         button.addEventListener('click', () => {
             if (validateStep(currentStep)) {
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Form submission
+    // फॉर्म सबमिशन
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const registrationTime = document.getElementById('registration-time').value;
         const userType = document.getElementById('user-type').value;
 
-        // Generate a random password for the user
+        // उपयोगकर्ता के लिए अपने आप एक रैंडम पासवर्ड बनाएं
         const password = generatePassword(); 
 
         try {
@@ -120,16 +120,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 userType,
                 uid: user.uid
             });
-            alert('Registration successful! Your email is ' + email + ' and your password is ' + password + '. Please save this password to login later.');
+            alert('पंजीकरण सफल! आपका ईमेल ' + email + ' है और आपका पासवर्ड ' + password + ' है। कृपया इस पासवर्ड को बाद में लॉग इन करने के लिए सेव कर लें।');
         } catch (error) {
-            // Check for specific error to give a more helpful message
+            // विशिष्ट त्रुटियों के लिए जाँच करें ताकि अधिक मददगार संदेश दिया जा सके
             let errorMessage = error.message;
             if (error.code === 'auth/email-already-in-use') {
-                errorMessage = 'This email is already in use. Please use a different email address.';
+                errorMessage = 'यह ईमेल पहले से ही उपयोग में है। कृपया किसी अन्य ईमेल पते का उपयोग करें।';
             } else if (error.code === 'auth/weak-password') {
-                errorMessage = 'The password is too weak. Please use a stronger password.';
+                errorMessage = 'पासवर्ड बहुत कमज़ोर है। कृपया एक मज़बूत पासवर्ड का उपयोग करें।';
             }
-            alert(`Error: ${errorMessage}`);
+            alert(`त्रुटि: ${errorMessage}`);
         }
     });
 });
