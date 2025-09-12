@@ -1,101 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
-    <link rel="stylesheet" href="register.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div class="container">
-        <div class="bg-section">
-            <h1 class="bg-title">Web Design & Development Course</h1>
-            <p class="bg-text">
-                Web Design is a specialization of the design stream. They also use HTML, CSS, WYSIWYG editing software, mark up validators etc., to create design elements.
-            </p>
-            <button class="join-btn">JOIN US</button>
-        </div>
-        <div class="form-section">
-            <h1 class="title">Register</h1>
-            <div class="progress-bar-container">
-                <div class="step active" id="step-1"></div>
-                <div class="step" id="step-2"></div>
-                <div class="step" id="step-3"></div>
-            </div>
-            
-            <form id="multi-step-form">
-                <div class="step-content active" id="step-1-content">
-                    <h3>Personal Details</h3>
-                    <div class="input-group">
-                        <input type="text" id="full-name" placeholder="Full Name" required>
-                        <i class="fas fa-user-circle"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="tel" id="mobile-number" placeholder="Mobile Number" required>
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="email" id="email" placeholder="Email" required>
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <button type="button" class="btn next-btn">Next</button>
-                </div>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-                <div class="step-content" id="step-2-content">
-                    <h3>Document Details</h3>
-                    <div class="input-group">
-                        <input type="text" id="aadhar-card" placeholder="Aadhar Card" required>
-                        <i class="fas fa-id-card"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="pan-card" placeholder="PAN Card" required>
-                        <i class="fas fa-address-card"></i>
-                    </div>
-                    <div class="input-group">
-                        <select id="gender" required>
-                            <option value="" disabled selected>Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                        <i class="fas fa-venus-mars"></i>
-                    </div>
-                    <div class="buttons-container">
-                        <button type="button" class="btn prev-btn">Previous</button>
-                        <button type="button" class="btn next-btn">Next</button>
-                    </div>
-                </div>
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+    authDomain: "my-login-page-62659.firebaseapp.com",
+    projectId: "my-login-page-62659",
+    storageBucket: "my-login-page-62659.firebasestorage.app",
+    messagingSenderId: "265063991992",
+    appId: "1:265063991992:web:f1834f4664e5494779024d",
+    measurementId: "G-EJ7P52JB4N"
+};
 
-                <div class="step-content" id="step-3-content">
-                    <h3>Registration Info</h3>
-                    <div class="input-group">
-                        <input type="date" id="registration-date" required>
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="input-group">
-                        <input type="time" id="registration-time" required>
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="input-group">
-                        <select id="user-type" required>
-                            <option value="" disabled selected>Select User Type</option>
-                            <option value="retailer">Retailer</option>
-                            <option value="distributor">Distributor</option>
-                            <option value="super-distributor">Super Distributor</option>
-                        </select>
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div class="buttons-container">
-                        <button type="button" class="btn prev-btn">Previous</button>
-                        <button type="submit" class="btn">Submit</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- JavaScript फ़ाइल को सही तरीके से लिंक करें -->
-    <script type="module" src="register.js"></script>
-</body>
-</html>
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// --- Form Logic ---
+const form = document.getElementById('multi-step-form');
+const steps = document.querySelectorAll('.step-content');
+const progressBarSteps = document.querySelectorAll('.progress-bar-container .step');
+let currentStep = 0;
+
+function showStep(stepIndex) {
+    steps.forEach((step, index) => {
+        if (index === stepIndex) {
+            step.classList.add('active');
+        } else {
+            step.classList.remove('active');
+        }
+    });
+
+    progressBarSteps.forEach((step, index) => {
+        if (index <= stepIndex) {
+            step.classList.add('active');
+        } else {
+            step.classList.remove('active');
+        }
+    });
+}
+
+function validateStep(stepIndex) {
+    const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
+    for (const input of currentStepInputs) {
+        if (!input.value) {
+            alert('Please fill out all required fields.'); // Custom alert to avoid browser default
+            return false;
+        }
+    }
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    showStep(currentStep);
+
+    // Event listeners for Next and Previous buttons
+    document.querySelectorAll('.next-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+        });
+    });
+
+    document.querySelectorAll('.prev-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+    });
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const fullName = document.getElementById('full-name').value;
+        const mobileNumber = document.getElementById('mobile-number').value;
+        const email = document.getElementById('email').value;
+        const aadharCard = document.getElementById('aadhar-card').value;
+        const panCard = document.getElementById('pan-card').value;
+        const gender = document.getElementById('gender').value;
+        const registrationDate = document.getElementById('registration-date').value;
+        const registrationTime = document.getElementById('registration-time').value;
+        const userType = document.getElementById('user-type').value;
+
+        // Generate a simple password (you would handle this securely in a real app)
+        const password = 'user_password_123'; 
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+                fullName,
+                mobileNumber,
+                email,
+                aadharCard,
+                panCard,
+                gender,
+                registrationDate,
+                registrationTime,
+                userType,
+                uid: user.uid
+            });
+            alert('Registration successful! User data saved to Firestore.');
+        } catch (error) {
+            // Check for specific error to give a more helpful message
+            let errorMessage = error.message;
+            if (error.code === 'auth/email-already-in-use') {
+                errorMessage = 'This email is already in use. Please use a different email address.';
+            } else if (error.code === 'auth/weak-password') {
+                errorMessage = 'The password is too weak. Please use a stronger password.';
+            }
+            alert(`Error: ${errorMessage}`);
+        }
+    });
+});
