@@ -14,24 +14,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let currentTab = 0;
   const tabs = document.getElementsByClassName("tab");
-
   if (!tabs.length) {
-    console.error("❌ No form tabs found.");
+    console.error("No .tab found! Check your HTML.");
     return;
   }
 
-  showTab(currentTab);
-
   function showTab(n) {
-    for (let i = 0; i < tabs.length; i++) {
-      tabs[i].style.display = "none";
-    }
+    for (let i = 0; i < tabs.length; i++) tabs[i].style.display = "none";
     tabs[n].style.display = "block";
 
     document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
     document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
     document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
   }
+
+  showTab(currentTab);
 
   window.nextPrev = function (n) {
     if (n === 1 && !validateForm()) return false;
@@ -66,25 +63,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("regForm").addEventListener("submit", async function (e) {
     e.preventDefault();
+
     const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = generatePassword();
 
     try {
       const existing = await db.collection("users").where("email", "==", email).get();
       if (!existing.empty) {
         document.getElementById("popupEmail").innerText = email;
-        document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
-        document.getElementById("popup").classList.add("show");
+        document.getElementById("popupPassword").innerText = "Already registered! Please login.";
         document.getElementById("popup").style.display = "flex";
         return;
       }
-
-      const password = generatePassword();
 
       await firebase.auth().createUserWithEmailAndPassword(email, password);
 
       await db.collection("users").add({
         name: document.getElementById("name").value,
-        email: email,
+        email,
         phone: document.getElementById("phone").value,
         aadhaar: document.getElementById("aadhaar").value,
         pan: document.getElementById("pan").value,
@@ -92,25 +88,23 @@ document.addEventListener("DOMContentLoaded", function () {
         dob: document.getElementById("dob").value,
         userType: document.getElementById("userType").value,
         country: document.getElementById("country").value,
-        password: password,
+        password,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
       document.getElementById("popupEmail").innerText = email;
       document.getElementById("popupPassword").innerText = password;
-      document.getElementById("popup").classList.add("show");
       document.getElementById("popup").style.display = "flex";
 
       document.getElementById("regForm").reset();
       currentTab = 0;
       showTab(currentTab);
-    } catch (error) {
-      alert("Error: " + error.message);
+    } catch (err) {
+      alert("❌ Error: " + err.message);
     }
   });
 
   document.getElementById("closePopup").addEventListener("click", function () {
     document.getElementById("popup").style.display = "none";
-    document.getElementById("popup").classList.remove("show");
   });
 });
