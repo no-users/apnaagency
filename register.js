@@ -52,30 +52,25 @@ document.addEventListener("DOMContentLoaded", function () {
     return valid;
   }
 
-  function generateNumericPassword(length = 8) {
+  // ---------- Form Submit ----------
+   function generateNumericPassword(length = 8) {
   let password = '';
   for (let i = 0; i < length; i++) {
     password += Math.floor(Math.random() * 10); // 0 to 9
   }
   return password;
 }
-
-
 document.getElementById("regForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const password = generatePassword(); // अब काम करेगा
-  ...
-});
-
-
+  const password = generateNumericPassword(); // ← यहाँ change
   const email = document.getElementById("email").value.trim().toLowerCase();
   const phone = document.getElementById("phone").value.trim();
   const aadhaar = document.getElementById("aadhaar").value.trim();
   const pan = document.getElementById("pan").value.trim();
 
   try {
-    // ✅ Check all 4 fields in parallel
+    // Check if already registered
     const [emailExists, phoneExists, aadhaarExists, panExists] = await Promise.all([
       db.collection("users").where("email", "==", email).get(),
       db.collection("users").where("phone", "==", phone).get(),
@@ -83,10 +78,8 @@ document.getElementById("regForm").addEventListener("submit", async function (e)
       db.collection("users").where("pan", "==", pan).get()
     ]);
 
-    // ✅ If any match found, show popup
     if (!emailExists.empty || !phoneExists.empty || !aadhaarExists.empty || !panExists.empty) {
       let matchedField = "";
-
       if (!emailExists.empty) matchedField = "Email";
       else if (!phoneExists.empty) matchedField = "Phone";
       else if (!aadhaarExists.empty) matchedField = "Aadhaar";
@@ -99,8 +92,7 @@ document.getElementById("regForm").addEventListener("submit", async function (e)
       return;
     }
 
-  
-
+    // Add user to Firestore
     await db.collection("users").add({
       name: document.getElementById("name").value,
       email: email,
@@ -115,11 +107,13 @@ document.getElementById("regForm").addEventListener("submit", async function (e)
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
+    // Show popup with email & password
     document.getElementById("popupEmail").innerText = email;
     document.getElementById("popupPassword").innerText = password;
     document.getElementById("popup").classList.add("show");
     document.getElementById("popup").style.display = "flex";
 
+    // Reset form
     document.getElementById("regForm").reset();
     currentTab = 0;
     showTab(currentTab);
@@ -127,6 +121,7 @@ document.getElementById("regForm").addEventListener("submit", async function (e)
     alert("Error: " + error.message);
   }
 });
+
 
 
   document.getElementById("closePopup").addEventListener("click", function () {
