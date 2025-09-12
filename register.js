@@ -61,50 +61,69 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 
 
-  document.getElementById("regForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
+document.getElementById("regForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-    const email = document.getElementById("email").value.trim().toLowerCase();
-    const password = generatePassword();
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const phone = document.getElementById("phone").value.trim();
+  const aadhaar = document.getElementById("aadhaar").value.trim();
+  const pan = document.getElementById("pan").value.trim();
 
-    try {
-      const existing = await db.collection("users").where("email", "==", email).get();
-      if (!existing.empty) {
-        document.getElementById("popupEmail").innerText = email;
-        document.getElementById("popupPassword").innerText = "Already registered! Please login.";
-        document.getElementById("popup").style.display = "flex";
-        return;
-      }
+  try {
+    // ✅ Check all 4 fields in parallel
+    const [emailExists, phoneExists, aadhaarExists, panExists] = await Promise.all([
+      db.collection("users").where("email", "==", email).get(),
+      db.collection("users").where("phone", "==", phone).get(),
+      db.collection("users").where("aadhaar", "==", aadhaar).get(),
+      db.collection("users").where("pan", "==", pan).get()
+    ]);
 
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
+    // ✅ If any match found, show popup
+    if (!emailExists.empty || !phoneExists.empty || !aadhaarExists.empty || !panExists.empty) {
+      let matchedField = "";
 
-      await db.collection("users").add({
-        name: document.getElementById("name").value,
-        email,
-        phone: document.getElementById("phone").value,
-        aadhaar: document.getElementById("aadhaar").value,
-        pan: document.getElementById("pan").value,
-        gender: document.getElementById("gender").value,
-        dob: document.getElementById("dob").value,
-        userType: document.getElementById("userType").value,
-        country: document.getElementById("country").value,
-        password,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+      if (!emailExists.empty) matchedField = "Email";
+      else if (!phoneExists.empty) matchedField = "Phone";
+      else if (!aadhaarExists.empty) matchedField = "Aadhaar";
+      else if (!panExists.empty) matchedField = "PAN";
 
-      document.getElementById("popupEmail").innerText = email;
-      document.getElementById("popupPassword").innerText = password;
+      document.getElementById("popupEmail").innerText = `${matchedField} already registered`;
+      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
       document.getElementById("popup").classList.add("show");
       document.getElementById("popup").style.display = "flex";
-
-
-      document.getElementById("regForm").reset();
-      currentTab = 0;
-      showTab(currentTab);
-    } catch (err) {
-      alert("❌ Error: " + err.message);
+      return;
     }
-  });
+
+    // ✅ If no match, continue to create user
+    const password = generatePassword(); // 8-digit numeric password
+
+    await db.collection("users").add({
+      name: document.getElementById("name").value,
+      email: email,
+      phone: phone,
+      aadhaar: aadhaar,
+      pan: pan,
+      gender: document.getElementById("gender").value,
+      dob: document.getElementById("dob").value,
+      userType: document.getElementById("userType").value,
+      country: document.getElementById("country").value,
+      password: password,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    document.getElementById("popupEmail").innerText = email;
+    document.getElementById("popupPassword").innerText = password;
+    document.getElementById("popup").classList.add("show");
+    document.getElementById("popup").style.display = "flex";
+
+    document.getElementById("regForm").reset();
+    currentTab = 0;
+    showTab(currentTab);
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+});
+
 
   document.getElementById("closePopup").addEventListener("click", function () {
     document.getElementById("popup").style.display = "none";
