@@ -46,12 +46,13 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
-            alert('कृपया सभी आवश्यक फ़ील्ड भरें।'); // ब्राउज़र के डिफ़ॉल्ट अलर्ट से बचने के लिए
+            alert('कृपया सभी आवश्यक फ़ील्ड भरें।');
             return false;
         }
     }
     return true;
 }
+
 
 // अपने आप एक रैंडम पासवर्ड बनाने का फ़ंक्शन
 function generatePassword(length = 8) {
