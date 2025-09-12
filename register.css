@@ -14,8 +14,7 @@ body {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   padding: 40px 35px;
-  width: 400px; /* desktop width */
-  max-width: 95%;
+  width: 400px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
@@ -111,16 +110,11 @@ button:hover {
   align-items: center;
 }
 
-.popup.show {
-  display: flex;
-}
-
 .popup-content {
   background: #fff;
   border-radius: 14px;
   padding: 30px 25px;
-  width: 350px;
-  max-width: 90%;
+  width: 320px;
   text-align: center;
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
   color: #333;
@@ -156,10 +150,9 @@ footer {
   opacity: 0.8;
 }
 
-/* Responsive for mobile */
-@media (max-width: 768px) {
+@media (max-width: 450px) {
   .container {
-    width: 95%;
+    width: 90%;
     padding: 25px;
   }
   button {
