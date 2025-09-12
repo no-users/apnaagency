@@ -64,6 +64,11 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("regForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
+  const password = generatePassword(); // अब काम करेगा
+  ...
+});
+
+
   const email = document.getElementById("email").value.trim().toLowerCase();
   const phone = document.getElementById("phone").value.trim();
   const aadhaar = document.getElementById("aadhaar").value.trim();
@@ -94,8 +99,7 @@ document.getElementById("regForm").addEventListener("submit", async function (e)
       return;
     }
 
-    // ✅ If no match, continue to create user
-    const password = generatePassword(); // 8-digit numeric password
+  
 
     await db.collection("users").add({
       name: document.getElementById("name").value,
