@@ -93,19 +93,24 @@ document.getElementById("regForm").addEventListener("submit", async function (e)
     }
 
     // Add user to Firestore
-    await db.collection("users").add({
-      name: document.getElementById("name").value,
-      email: email,
-      phone: phone,
-      aadhaar: aadhaar,
-      pan: pan,
-      gender: document.getElementById("gender").value,
-      dob: document.getElementById("dob").value,
-      userType: document.getElementById("userType").value,
-      country: document.getElementById("country").value,
-      password: password,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+   const password = generateNumericPassword();
+
+await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+await db.collection("users").add({
+  name: document.getElementById("name").value,
+  email: email,
+  phone: phone,
+  aadhaar: aadhaar,
+  pan: pan,
+  gender: document.getElementById("gender").value,
+  dob: document.getElementById("dob").value,
+  userType: document.getElementById("userType").value,
+  country: document.getElementById("country").value,
+  password: password,
+  createdAt: firebase.firestore.FieldValue.serverTimestamp()
+});
+
 
     // Show popup with email & password
     document.getElementById("popupEmail").innerText = email;
