@@ -52,14 +52,14 @@ document.addEventListener("DOMContentLoaded", function () {
     return valid;
   }
 
-  function generatePassword(length = 10) {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
-    let password = "";
-    for (let i = 0; i < length; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return password;
+  function generateNumericPassword(length = 8) {
+  let password = '';
+  for (let i = 0; i < length; i++) {
+    password += Math.floor(Math.random() * 10); // 0 to 9
   }
+  return password;
+}
+
 
   document.getElementById("regForm").addEventListener("submit", async function (e) {
     e.preventDefault();
