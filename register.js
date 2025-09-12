@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-// Firebase Config
+// ---------- Firebase Config ----------
 const firebaseConfig = {
   apiKey: "AIzaSy***************",
   authDomain: "my-app.firebaseapp.com",
@@ -16,31 +16,90 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Numeric password
+// ---------- Generate 8-digit numeric password ----------
 function generateNumericPassword(length = 8) {
   let pass = '';
   for (let i = 0; i < length; i++) pass += Math.floor(Math.random() * 10);
   return pass;
 }
 
-// Form Submit
+// ---------- Multi-step form ----------
+let currentTab = 0;
+const tabs = document.getElementsByClassName("tab");
+
+function showTab(n) {
+  for (let i = 0; i < tabs.length; i++) tabs[i].style.display = "none";
+  tabs[n].style.display = "block";
+
+  document.getElementById("prevBtn").style.display = n === 0 ? "none" : "inline";
+  document.getElementById("nextBtn").style.display = n === (tabs.length - 1) ? "none" : "inline";
+  document.getElementById("submitBtn").style.display = n === (tabs.length - 1) ? "inline" : "none";
+}
+
+function nextPrev(n) {
+  if (n === 1 && !validateForm()) return false;
+  currentTab += n;
+  if (currentTab >= tabs.length) currentTab = tabs.length - 1;
+  if (currentTab < 0) currentTab = 0;
+  showTab(currentTab);
+}
+
+function validateForm() {
+  const tab = tabs[currentTab];
+  const inputs = tab.querySelectorAll("input, select");
+  let valid = true;
+  for (let input of inputs) {
+    if (!input.checkValidity()) {
+      input.reportValidity();
+      valid = false;
+      break;
+    }
+  }
+  return valid;
+}
+
+// Initialize first tab
+showTab(currentTab);
+window.nextPrev = nextPrev;
+
+// ---------- Form submit ----------
 document.getElementById("regForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("email").value.trim().toLowerCase();
+  const phone = document.getElementById("phone").value.trim();
+  const aadhaar = document.getElementById("aadhaar").value.trim();
+  const pan = document.getElementById("pan").value.trim();
   const password = generateNumericPassword();
 
   try {
-    // Firebase Auth user create
+    // ---------- Duplicate check ----------
+    const usersRef = collection(db, "users");
+    const [emailExists, phoneExists, aadhaarExists, panExists] = await Promise.all([
+      getDocs(query(usersRef, where("email", "==", email))),
+      getDocs(query(usersRef, where("phone", "==", phone))),
+      getDocs(query(usersRef, where("aadhaar", "==", aadhaar))),
+      getDocs(query(usersRef, where("pan", "==", pan))),
+    ]);
+
+    if (!emailExists.empty || !phoneExists.empty || !aadhaarExists.empty || !panExists.empty) {
+      let field = !emailExists.empty ? "Email" : !phoneExists.empty ? "Phone" : !aadhaarExists.empty ? "Aadhaar" : "PAN";
+      document.getElementById("popupEmail").innerText = `${field} already registered`;
+      document.getElementById("popupPassword").innerText = "Already Registered! Please Login.";
+      document.getElementById("popup").style.display = "flex";
+      return;
+    }
+
+    // ---------- Create user in Firebase Auth ----------
     await createUserWithEmailAndPassword(auth, email, password);
 
-    // Firestore save
-    await addDoc(collection(db, "users"), {
+    // ---------- Add user to Firestore ----------
+    await addDoc(usersRef, {
       name: document.getElementById("name").value,
       email,
-      phone: document.getElementById("phone").value,
-      aadhaar: document.getElementById("aadhaar").value,
-      pan: document.getElementById("pan").value,
+      phone,
+      aadhaar,
+      pan,
       gender: document.getElementById("gender").value,
       dob: document.getElementById("dob").value,
       userType: document.getElementById("userType").value,
@@ -49,11 +108,23 @@ document.getElementById("regForm").addEventListener("submit", async (e) => {
       createdAt: serverTimestamp()
     });
 
-    alert("User registered successfully!");
-    document.getElementById("regForm").reset();
+    // ---------- Show success popup ----------
+    document.getElementById("popupEmail").innerText = email;
+    document.getElementById("popupPassword").innerText = password;
+    document.getElementById("popup").style.display = "flex";
 
-  } catch(err) {
+    // Reset form
+    document.getElementById("regForm").reset();
+    currentTab = 0;
+    showTab(currentTab);
+
+  } catch (err) {
     console.error("Error:", err.message);
     alert("Error: " + err.message);
   }
+});
+
+// ---------- Close popup ----------
+document.getElementById("closePopup").addEventListener("click", () => {
+  document.getElementById("popup").style.display = "none";
 });
