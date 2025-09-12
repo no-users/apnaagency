@@ -1,20 +1,57 @@
-console.log("Script is running!");
+// script.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM content is loaded!");
-    // ... rest of your code ...
-});
-document.addEventListener('DOMContentLoaded', () => {
-    // Make sure Firebase variables are available in the window scope from your HTML
-    const auth = window.auth;
-    const db = window.db;
+// Your Firebase configuration
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
 
-    if (!auth || !db) {
-        console.error("Firebase is not initialized. Please check your Firebase configuration script in index.html.");
-        alert("Firebase is not set up correctly. Please check the browser console for details.");
-        return;
+// Initialize Firebase app and services
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Function to generate an 8-digit random password
+function generateRandomPassword() {
+    return Math.floor(10000000 + Math.random() * 90000000).toString();
+}
+
+// Function to check if a user with given details already exists in Firestore
+async function checkIfUserExists(formData) {
+    const usersRef = collection(db, "users");
+
+    // Create a query to check for any of the unique fields
+    const q = query(usersRef, where("email", "==", formData.email));
+    
+    // You can add more 'or' conditions if needed, but Firebase queries are limited.
+    // For simplicity, we'll check for email first, which is a key unique identifier in Auth.
+    
+    // To check other fields, you might need separate queries
+    const qMobile = query(usersRef, where("mobileNumber", "==", formData.mobileNumber));
+    const qAadhar = query(usersRef, where("aadharCard", "==", formData.aadharCard));
+    const qPan = query(usersRef, where("panCard", "==", formData.panCard));
+
+    const [emailSnapshot, mobileSnapshot, aadharSnapshot, panSnapshot] = await Promise.all([
+        getDocs(q),
+        getDocs(qMobile),
+        getDocs(qAadhar),
+        getDocs(qPan)
+    ]);
+
+    if (!emailSnapshot.empty || !mobileSnapshot.empty || !aadharSnapshot.empty || !panSnapshot.empty) {
+        return true; // User exists
     }
+    return false; // User does not exist
+}
 
+document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('multi-step-form');
     const stepContents = document.querySelectorAll('.step-content');
     const steps = document.querySelectorAll('.step');
@@ -90,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
 
-    // Event listeners for 'Next' buttons
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (validateStep(currentStep)) {
@@ -100,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Event listeners for 'Previous' buttons
     prevButtons.forEach(button => {
         button.addEventListener('click', () => {
             currentStep--;
@@ -108,12 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Event listener for form submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         if (!validateStep(currentStep)) {
-            return; // If validation fails, stop the submission process
+            return;
         }
 
         const formData = {
@@ -129,30 +163,43 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Step 1: Create a user in Firebase Authentication
-            const userCredential = await createUserWithEmailAndPassword(auth, formData.email, 'default_password');
+            // Step 1: Check for duplicate user before registration
+            const userExists = await checkIfUserExists(formData);
+            if (userExists) {
+                alert("Error: A user with this email, mobile, Aadhar, or PAN already exists.");
+                return;
+            }
+
+            // Step 2: Generate a random password
+            const password = generateRandomPassword();
+
+            // Step 3: Create a user in Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, formData.email, password);
             const user = userCredential.user;
-            
-            // Step 2: Store other user details in Firestore
+
+            // Step 4: Store other user details in Firestore
             await setDoc(doc(db, "users", user.uid), {
-                fullName: formData.fullName,
-                mobileNumber: formData.mobileNumber,
-                aadharCard: formData.aadharCard,
-                panCard: formData.panCard,
-                gender: formData.gender,
-                registrationDate: formData.registrationDate,
-                registrationTime: formData.registrationTime,
-                userType: formData.userType,
-                email: formData.email,
+                ...formData, // Spread operator to add all form data
+                password: password, // Store the generated password (for admin purposes, not recommended for real apps)
+                registrationTimestamp: new Date().toISOString() // Add a timestamp
             });
 
             console.log("User registered and data stored successfully!");
-            alert("Registration successful!");
+            alert("Registration successful! Your generated password is: " + password); // Display the password to the user
             form.reset();
-            showStep(0); // Reset to the first step
+            showStep(0);
         } catch (error) {
             console.error("Firebase registration error:", error);
-            alert("Registration failed: " + error.message);
+            // Handle specific Firebase errors
+            let errorMessage = "Registration failed. Please try again.";
+            if (error.code === 'auth/email-already-in-use') {
+                errorMessage = "This email is already registered. Please use a different one.";
+            } else if (error.code === 'auth/weak-password') {
+                errorMessage = "The password is too weak. Please use a stronger one.";
+            } else {
+                errorMessage = error.message;
+            }
+            alert("Registration failed: " + errorMessage);
         }
     });
 
