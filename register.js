@@ -1,3 +1,9 @@
+console.log("Script is running!");
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM content is loaded!");
+    // ... rest of your code ...
+});
 document.addEventListener('DOMContentLoaded', () => {
     // Make sure Firebase variables are available in the window scope from your HTML
     const auth = window.auth;
