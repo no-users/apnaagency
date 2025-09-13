@@ -47,7 +47,7 @@ function validateStep(stepIndex) {
     for (const input of currentStepInputs) {
         if (!input.value) {
             // मल्टी-लाइन अलर्ट के लिए बैक-टिक्स का उपयोग करें
-            alert(`Fill All Collum।`);
+            alert('FILL ALL COLLUM !`);
             return false;
         }
     }
@@ -88,57 +88,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // फॉर्म सबमिशन
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        // अंतिम स्टेप को मान्य करें
-        if (!validateStep(currentStep)) {
+   // ... आपका मौजूदा कोड (Firebase कॉन्फ़िगरेशन, फ़ॉर्म लॉजिक, आदि)
+
+// फॉर्म सबमिशन
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // अंतिम स्टेप को मान्य करें
+    if (!validateStep(currentStep)) {
+        return;
+    }
+
+    const fullName = document.getElementById('full-name').value;
+    const mobileNumber = document.getElementById('mobile-number').value;
+    const email = document.getElementById('email').value;
+    const aadharCard = document.getElementById('aadhar-card').value;
+    const panCard = document.getElementById('pan-card').value;
+    const gender = document.getElementById('gender').value;
+    const registrationDate = document.getElementById('registration-date').value;
+    const registrationTime = document.getElementById('registration-time').value;
+    const userType = document.getElementById('user-type').value;
+
+    try {
+        // Step 1: मोबाइल नंबर, आधार और पैन की जाँच करें
+        const usersRef = db.collection('users');
+        const mobileSnapshot = await usersRef.where('mobileNumber', '==', mobileNumber).get();
+        const aadharSnapshot = await usersRef.where('aadharCard', '==', aadharCard).get();
+        const panSnapshot = await usersRef.where('panCard', '==', panCard).get();
+
+        if (!mobileSnapshot.empty) {
+            alert('MOBILE NUMBER ALREADY USED');
+            return;
+        }
+        if (!aadharSnapshot.empty) {
+            alert('ADHAR ALREADY USED');
+            return;
+        }
+        if (!panSnapshot.empty) {
+            alert('PAN ALREADY USED');
             return;
         }
 
-        const fullName = document.getElementById('full-name').value;
-        const mobileNumber = document.getElementById('mobile-number').value;
-        const email = document.getElementById('email').value;
-        const aadharCard = document.getElementById('aadhar-card').value;
-        const panCard = document.getElementById('pan-card').value;
-        const gender = document.getElementById('gender').value;
-        const registrationDate = document.getElementById('registration-date').value;
-        const registrationTime = document.getElementById('registration-time').value;
-        const userType = document.getElementById('user-type').value;
-
-        // सही फ़ंक्शन नाम का उपयोग करें
+        // Step 2: अगर सब कुछ ठीक है, तो Firebase Authentication के साथ उपयोगकर्ता बनाएँ
         const password = generateNumericPassword();
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+        // Step 3: Firestore में उपयोगकर्ता डेटा सहेजें
+        await setDoc(doc(db, "users", user.uid), {
+            fullName,
+            mobileNumber,
+            email,
+            aadharCard,
+            panCard,
+            gender,
+            registrationDate,
+            registrationTime,
+            userType,
+            uid: user.uid
+        });
 
-            await setDoc(doc(db, "users", user.uid), {
-                fullName,
-                mobileNumber,
-                email,
-                aadharCard,
-                panCard,
-                gender,
-                registrationDate,
-                registrationTime,
-                userType,
-                uid: user.uid
-            });
-            // अलर्ट में HTML टैग्स को हटाया
-            alert(`REGISTRATION SUCCESS!
+        alert(`REGISTRATION SUCCESS!
 USER ID - ${email}
 PASSWORD - ${password}
 Login के लिए Saveकर लें।`);
-        } catch (error) {
-            let errorMessage = error.message;
-            if (error.code === 'auth/email-already-in-use') {
-                errorMessage = 'This Gmail Is Already Used';
-            } else if (error.code === 'auth/weak-password') {
-                errorMessage = 'Chose Strong Password';
-            }
-            alert(`त्रुटि: ${errorMessage}`);
+
+    } catch (error) {
+        let errorMessage = error.message;
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = 'GMAIL ALREADY USED';
+        } else if (error.code === 'auth/weak-password') {
+            errorMessage = 'CHOSE STRPNG PASSWORD';
         }
-    });
+        alert(`त्रुटि: ${errorMessage}`);
+    }
 });
