@@ -1,63 +1,154 @@
-// Firebase Logout Script (Moved here for clarity)
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-  authDomain: "my-login-page-62659.firebaseapp.com",
-  projectId: "my-login-page-62659",
-  storageBucket: "my-login-page-62659.firebasestorage.app",
-  messagingSenderId: "265063991992",
-  appId: "1:265063991992:web:f1834f4664e5494779024d",
-  measurementId: "G-EJ7P52JB4N"
-};
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APNA AGENCY - Modern Solutions</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo-link">
+            <img class="logo" src="logo.png" alt="APNA AGENCY Logo">
+        </a>
+        <nav class="nav-menu">
+            <a href="#solutions" class="nav-item">Solutions</a>
+            <a href="#services" class="nav-item">Services</a>
+            <a href="#pricing" class="nav-item">Pricing</a>
+            <a href="#contact" class="nav-item">Contact</a>
+            <a href="#" class="nav-item">Blog <sup class="new-badge">New</sup></a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-container">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input class="search-input" type="text" placeholder="Search for services...">
+            </div>
+            <div class="user-actions">
+                <a href="#" class="action-btn">
+                    <span class="material-symbols-outlined action-icon">logout</span>
+                    <span class="action-text">Logout</span>
+                </a>
+                <a href="#" class="action-btn">
+                    <span class="material-symbols-outlined action-icon">favorite</span>
+                    <span class="action-text">Wishlist</span>
+                </a>
+                <a href="#" class="action-btn">
+                    <span class="material-symbols-outlined action-icon">person</span>
+                    <span class="action-text">Account</span>
+                </a>
+            </div>
+        </div>
+    </header>
 
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth(app);
+    <main class="main-content">
+        <section class="hero-slider">
+            <div class="slider-container">
+                <div class="slide slide-1 active">
+                    <div class="slide-content">
+                        <h1>Your One-Stop Digital Agency</h1>
+                        <p>We provide instant solutions, high commissions, and paperless services. Start your journey with us today!</p>
+                        <a href="#solutions" class="btn-primary">Explore Our Services</a>
+                    </div>
+                </div>
+                <div class="slide slide-2">
+                    <div class="slide-content">
+                        <h1>Build Your Perfect Resume</h1>
+                        <p>Our easy-to-use interface helps you create a professional resume in minutes. Stand out from the crowd.</p>
+                        <a href="#" class="btn-primary">Build Now</a>
+                    </div>
+                </div>
+                <div class="slide slide-3">
+                    <div class="slide-content">
+                        <h1>High-Margin Affiliate Program</h1>
+                        <p>Join our community and earn a high commission. We've helped thousands earn over ₹1 Lakh!</p>
+                        <a href="#" class="btn-primary">Join Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-nav">
+                <span class="dot active" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+            </div>
+        </section>
 
-const logoutBtn = document.querySelector('.action-btn .action-icon[data-action="logout"]');
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-        auth.signOut()
-            .then(() => {
-                alert("Logged out successfully!");
-                window.location.href = "login.html"; // Redirect to login page
-            })
-            .catch((error) => {
-                alert("Error logging out: " + error.message);
-            });
-    });
-}
+        <section id="solutions" class="solutions-section">
+            <h2 class="section-title">What Solutions We Provide...</h2>
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <img src="solution1.jpg" alt="Instant Help Support">
+                    <h3>Instant Help Support</h3>
+                    <p>24/7 support to assist you with any query.</p>
+                </div>
+                <div class="solution-card">
+                    <img src="solution2.jpg" alt="High Commission">
+                    <h3>High Commission Margin</h3>
+                    <p>People earn over ₹1 Lakh with our program.</p>
+                </div>
+                <div class="solution-card">
+                    <img src="solution3.jpg" alt="Instant Refund">
+                    <h3>Instant Amount Refund</h3>
+                    <p>Refunds go directly to your wallet, instantly.</p>
+                </div>
+                <div class="solution-card">
+                    <img src="solution4.jpg" alt="Easy Interface">
+                    <h3>Easy Web Interface</h3>
+                    <p>Simple and intuitive design for easy navigation.</p>
+                </div>
+                <div class="solution-card">
+                    <img src="solution5.jpg" alt="Resume Builder">
+                    <h3>Easy Resume Builder</h3>
+                    <p>High-level resumes in just a few clicks.</p>
+                </div>
+                <div class="solution-card">
+                    <img src="solution6.jpg" alt="Recharge & Bills">
+                    <h3>Recharge & Bills Viewer</h3>
+                    <p>Simple and secure bill payment interface.</p>
+                </div>
+            </div>
+        </section>
 
+        <section class="promo-banner">
+            <img src="buster.jpg" alt="Promotional Offer">
+        </section>
+    </main>
 
-// Banner Slider Script
-document.addEventListener("DOMContentLoaded", () => {
-    const slider = document.querySelector('.slider-container');
-    const dots = document.querySelectorAll('.dot');
-    const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
-    const totalSlides = slides.length;
-
-    const updateSlider = () => {
-        const offset = -currentSlide * 100;
-        slider.style.transform = `translateX(${offset}%)`;
-
-        dots.forEach(dot => dot.classList.remove('active'));
-        dots[currentSlide].classList.add('active');
-    };
-
-    const nextSlide = () => {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateSlider();
-    };
-
-    dots.forEach(dot => {
-        dot.addEventListener('click', (e) => {
-            const slideIndex = parseInt(e.target.dataset.slide) - 1;
-            currentSlide = slideIndex;
-            updateSlider();
-        });
-    });
-
-    // Auto-advance the slider every 5 seconds
-    setInterval(nextSlide, 5000);
-});
-
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Our Services</h3>
+                <a href="#">Mobile Recharge</a>
+                <a href="#">DTH Recharge</a>
+                <a href="#">PAN Services</a>
+                <a href="#">Paperless Work</a>
+                <a href="#">Gift Cards</a>
+            </div>
+            <div class="footer-column">
+                <h3>Connect With Us</h3>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Twitter</a>
+                <a href="#">YouTube</a>
+            </div>
+            <div class="footer-column">
+                <h3>Contact & Support</h3>
+                <a href="#">Contact Us</a>
+                <a href="#">Mail Us</a>
+                <a href="#">Support Portal</a>
+                <a href="#">FAQs</a>
+                <a href="#">Report an Issue</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 www.APNAAGENCY.com. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
