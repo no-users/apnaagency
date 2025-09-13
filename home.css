@@ -6,20 +6,21 @@
 }
 
 :root {
-    --primary-color: #2c3e50; /* A dark, professional blue/gray */
-    --secondary-color: #3498db; /* A vibrant blue for accents */
-    --accent-color: #e74c3c; /* A striking red for highlights */
-    --text-dark: #2c3e50;
-    --text-light: #ecf0f1;
+    --primary-color: #1a2a3a; /* Dark blue for main elements */
+    --secondary-color: #3498db; /* Vibrant blue for accents */
+    --accent-color: #e74c3c; /* Red for highlights */
+    --text-dark: #ecf0f1; /* Light text on dark background */
+    --text-light: #34495e; /* Darker text on light background */
+    --bg-dark-card: #2c3e50; /* Slightly lighter dark for cards */
     --bg-light: #f4f7f9;
-    --bg-dark: #293441;
-    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-light: rgba(0, 0, 0, 0.2);
+    --shadow-dark: rgba(0, 0, 0, 0.4);
 }
 
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-light);
-    color: var(--text-dark);
+    color: var(--text-light);
     line-height: 1.6;
 }
 
@@ -30,7 +31,7 @@ a {
 }
 
 a:hover {
-    color: var(--primary-color);
+    color: var(--accent-color);
 }
 
 img {
@@ -45,15 +46,21 @@ img {
     justify-content: space-between;
     align-items: center;
     padding: 1.2rem 5%;
-    background-color: #fff;
-    box-shadow: 0 2px 10px var(--shadow-light);
+    background-color: var(--primary-color); /* Dark header */
+    box-shadow: 0 4px 15px var(--shadow-dark);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
+.logo-link {
+    display: flex;
+    align-items: center;
+}
+
 .logo {
-    height: 40px;
+    height: 45px; /* Slightly larger logo */
+    filter: brightness(0) invert(1); /* Makes logo white if it's dark */
 }
 
 .nav-menu {
@@ -63,7 +70,7 @@ img {
 }
 
 .nav-item {
-    color: var(--primary-color);
+    color: var(--text-dark); /* Light text on dark header */
     position: relative;
     transition: all 0.3s ease;
 }
@@ -103,16 +110,23 @@ img {
 }
 
 .search-input {
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 0.6rem 1rem 0.6rem 2.5rem;
     font-size: 0.9em;
-    transition: border-color 0.3s ease;
+    color: var(--text-dark);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .search-input:focus {
     outline: none;
     border-color: var(--secondary-color);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .search-icon {
@@ -120,20 +134,20 @@ img {
     top: 50%;
     left: 10px;
     transform: translateY(-50%);
-    color: var(--primary-color);
+    color: var(--text-dark);
     font-size: 1.2em;
 }
 
 .user-actions {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem; /* Reduced gap */
 }
 
 .action-btn {
     display: flex;
+    flex-direction: column; /* Stack icon and text */
     align-items: center;
-    gap: 0.5rem;
-    color: var(--primary-color);
+    color: var(--text-dark);
     transition: color 0.3s ease;
 }
 
@@ -142,80 +156,64 @@ img {
 }
 
 .action-text {
-    font-size: 0.9em;
+    font-size: 0.75em; /* Smaller text for icons */
     font-weight: 500;
-    display: none;
+    margin-top: 0.2rem;
 }
 
 .action-icon {
-    font-size: 1.5em;
+    font-size: 1.8em; /* Larger icon */
 }
 
 
-/* --- Hero Slider Section --- */
-.hero-slider {
+/* --- Hero Section --- */
+.hero-section {
     position: relative;
-    width: 100%;
-    height: 60vh;
-    overflow: hidden;
-}
-
-.slider-container {
-    display: flex;
-    width: 300%;
-    height: 100%;
-    transition: transform 0.6s ease-in-out;
-}
-
-.slide {
-    width: 100%;
-    height: 100%;
+    height: 50vh; /* Adjust height as needed */
     display: flex;
     justify-content: center;
     align-items: center;
-    background-size: cover;
-    background-position: center;
     text-align: center;
     color: #fff;
-    position: relative;
+    background-image: url('header-banner.jpg'); /* This will be the generated image */
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
 }
 
-.slide-1 { background-image: url('banner1.jpg'); }
-.slide-2 { background-image: url('banner2.jpg'); }
-.slide-3 { background-image: url('banner3.jpg'); }
-
-.slide::before {
+.hero-section::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Overlay for readability */
+    background: rgba(0, 0, 0, 0.6); /* Dark overlay */
+    z-index: 1;
 }
 
-.slide-content {
+.hero-content {
     position: relative;
     z-index: 2;
     max-width: 800px;
     padding: 0 20px;
 }
 
-.slide-content h1 {
-    font-size: 3rem;
+.hero-content h1 {
+    font-size: 3.5rem;
     margin-bottom: 1rem;
     font-weight: 700;
 }
 
-.slide-content p {
-    font-size: 1.2rem;
+.hero-content p {
+    font-size: 1.3rem;
     margin-bottom: 2rem;
 }
 
 .btn-primary {
     background-color: var(--secondary-color);
     color: #fff;
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 2.5rem;
     border-radius: 5px;
     font-weight: 600;
     transition: background-color 0.3s ease;
@@ -226,117 +224,60 @@ img {
     background-color: #2980b9;
 }
 
-.slider-nav {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.dot.active {
-    background-color: #fff;
-}
-
-
-/* --- Sections & Content --- */
+/* --- Info Grid Section (Bihar Bhumi Style) --- */
 .main-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 5%;
 }
 
-.solutions-section {
-    text-align: center;
+.info-grid-section {
     margin: 4rem 0;
+    background-color: var(--primary-color); /* Dark background for the whole section */
+    padding: 3rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px var(--shadow-dark);
 }
 
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 3rem;
-    position: relative;
-    display: inline-block;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -10px;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 4px;
-    background-color: var(--secondary-color);
-    border-radius: 2px;
-}
-
-.solutions-grid {
+.grid-card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 4 columns for larger screens */
+    gap: 1.5rem;
 }
 
-.solution-card {
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px var(--shadow-light);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: left;
+.grid-card {
+    background-color: var(--bg-dark-card); /* Slightly lighter dark for cards */
+    padding: 1.5rem;
+    border-radius: 8px;
+    color: var(--text-dark);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    text-align: center;
 }
 
-.solution-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+.grid-card:hover {
+    transform: translateY(-5px);
+    background-color: var(--secondary-color); /* Highlight on hover */
 }
 
-.solution-card img {
-    height: 200px;
-    width: 100%;
-    object-fit: cover;
+.grid-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-dark); /* Ensure heading is light */
 }
 
-.solution-card h3 {
-    font-size: 1.4rem;
-    margin: 1rem 1.5rem 0.5rem;
-    color: var(--primary-color);
-}
-
-.solution-card p {
+.grid-card p {
     font-size: 0.95rem;
-    color: #666;
-    margin: 0 1.5rem 1.5rem;
-}
-
-.promo-banner {
-    margin: 4rem 0;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px var(--shadow-light);
-}
-
-.promo-banner img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 
 /* --- Footer --- */
 .footer {
     background-color: var(--primary-color);
-    color: var(--text-light);
+    color: var(--text-dark);
     padding: 3rem 5%;
 }
 
@@ -375,7 +316,7 @@ img {
 
 
 /* --- Responsive Design --- */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .header {
         flex-wrap: wrap;
         gap: 1rem;
@@ -395,28 +336,98 @@ img {
         margin-top: 1rem;
     }
 
+    .search-container {
+        flex-grow: 1; /* Allow search to take more space */
+        max-width: 300px;
+    }
+
     .user-actions {
         gap: 1rem;
     }
-
-    .search-container {
-        display: none;
-    }
     
     .action-text {
-        display: block;
+        display: block; /* Show text for icons on smaller screens */
     }
     
-    .slide-content h1 {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+
+    .info-grid-section {
+        padding: 2rem;
+    }
+
+    .grid-card-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 3 columns for medium screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .logo-link {
+        margin-bottom: 1rem;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    .nav-item::after {
+        left: unset;
+        right: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--secondary-color);
+        transition: width 0.3s ease;
+    }
+    
+    .nav-item:hover::after {
+        width: 100%;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .search-container {
+        width: 100%;
+        max-width: unset;
+    }
+
+    .user-actions {
+        width: 100%;
+        justify-content: space-around;
+    }
+    
+    .hero-content h1 {
         font-size: 2rem;
     }
     
-    .slide-content p {
+    .hero-content p {
         font-size: 1rem;
     }
 
-    .solutions-grid {
-        grid-template-columns: 1fr;
+    .info-grid-section {
+        padding: 1rem;
+    }
+
+    .grid-card-container {
+        grid-template-columns: 1fr; /* Single column for small screens */
     }
 
     .footer-container {
