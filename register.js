@@ -46,14 +46,15 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
-            alert('Fill All Details For Next');
+            // मल्टी-लाइन अलर्ट के लिए बैक-टिक्स का उपयोग करें
+            alert(`Fill All Collum।`);
             return false;
         }
     }
     return true;
 }
 
-// रैंडम पासवर्ड बनाने का फ़ंक्शन
+// रैंडम न्यूमेरिक पासवर्ड बनाने का फ़ंक्शन
 function generateNumericPassword(length = 8) {
     const charset = "0123456789";
     let password = "";
@@ -106,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const registrationTime = document.getElementById('registration-time').value;
         const userType = document.getElementById('user-type').value;
 
-        // अपने आप एक रैंडम पासवर्ड बनाएं
-        const password = generatePassword(); 
+        // सही फ़ंक्शन नाम का उपयोग करें
+        const password = generateNumericPassword();
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -125,15 +126,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 userType,
                 uid: user.uid
             });
-            alert('REGISTRATION SUCCESS! <BR/> USER ID -' + email + ' <BR/> PASSWORD - ' + password + ' <br/> Login के लिए Saveकर लें।');
+            // अलर्ट में HTML टैग्स को हटाया
+            alert(`REGISTRATION SUCCESS!
+USER ID - ${email}
+PASSWORD - ${password}
+Login के लिए Saveकर लें।`);
         } catch (error) {
             let errorMessage = error.message;
             if (error.code === 'auth/email-already-in-use') {
-                errorMessage = 'This Email Is Already Register।';
+                errorMessage = 'This Gmail Is Already Used';
             } else if (error.code === 'auth/weak-password') {
-                errorMessage = 'पासवर्ड बहुत कमज़ोर है। कृपया एक मज़बूत पासवर्ड का उपयोग करें।';
+                errorMessage = 'Chose Strong Password';
             }
-            alert(`Error: ${errorMessage}`);
+            alert(`त्रुटि: ${errorMessage}`);
         }
     });
 });
