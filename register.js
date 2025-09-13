@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Firebase कॉन्फ़िगरेशन
 const firebaseConfig = {
@@ -46,8 +46,7 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
-            // मल्टी-लाइन अलर्ट के लिए बैक-टिक्स का उपयोग करें
-            alert(`FILL ALL COLUMNS!`);
+            alert('कृपया सभी आवश्यक फ़ील्ड भरें।');
             return false;
         }
     }
@@ -88,78 +87,81 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-   // ... आपका मौजूदा कोड (Firebase कॉन्फ़िगरेशन, फ़ॉर्म लॉजिक, आदि)
-
-// फॉर्म सबमिशन
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // अंतिम स्टेप को मान्य करें
-    if (!validateStep(currentStep)) {
-        return;
-    }
-
-    const fullName = document.getElementById('full-name').value;
-    const mobileNumber = document.getElementById('mobile-number').value;
-    const email = document.getElementById('email').value;
-    const aadharCard = document.getElementById('aadhar-card').value;
-    const panCard = document.getElementById('pan-card').value;
-    const gender = document.getElementById('gender').value;
-    const registrationDate = document.getElementById('registration-date').value;
-    const registrationTime = document.getElementById('registration-time').value;
-    const userType = document.getElementById('user-type').value;
-
-    try {
-        // Step 1: मोबाइल नंबर, आधार और पैन की जाँच करें
-        const usersRef = db.collection('users');
-        const mobileSnapshot = await usersRef.where('mobileNumber', '==', mobileNumber).get();
-        const aadharSnapshot = await usersRef.where('aadharCard', '==', aadharCard).get();
-        const panSnapshot = await usersRef.where('panCard', '==', panCard).get();
-
-        if (!mobileSnapshot.empty) {
-            alert('MOBILE NUMBER ALREADY USED');
-            return;
-        }
-        if (!aadharSnapshot.empty) {
-            alert('ADHAR ALREADY USED');
-            return;
-        }
-        if (!panSnapshot.empty) {
-            alert('PAN ALREADY USED');
+    // फॉर्म सबमिशन
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // अंतिम स्टेप को मान्य करें
+        if (!validateStep(currentStep)) {
             return;
         }
 
-        // Step 2: अगर सब कुछ ठीक है, तो Firebase Authentication के साथ उपयोगकर्ता बनाएँ
-        const password = generateNumericPassword();
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+        const fullName = document.getElementById('full-name').value;
+        const mobileNumber = document.getElementById('mobile-number').value;
+        const email = document.getElementById('email').value;
+        const aadharCard = document.getElementById('aadhar-card').value;
+        const panCard = document.getElementById('pan-card').value;
+        const gender = document.getElementById('gender').value;
+        const registrationDate = document.getElementById('registration-date').value;
+        const registrationTime = document.getElementById('registration-time').value;
+        const userType = document.getElementById('user-type').value;
 
-        // Step 3: Firestore में उपयोगकर्ता डेटा सहेजें
-        await setDoc(doc(db, "users", user.uid), {
-            fullName,
-            mobileNumber,
-            email,
-            aadharCard,
-            panCard,
-            gender,
-            registrationDate,
-            registrationTime,
-            userType,
-            uid: user.uid
-        });
+        try {
+            // Firestore में मोबाइल नंबर, आधार और पैन की जाँच करें
+            const usersCollection = collection(db, "users");
+            const mobileQuery = query(usersCollection, where("mobileNumber", "==", mobileNumber));
+            const aadharQuery = query(usersCollection, where("aadharCard", "==", aadharCard));
+            const panQuery = query(usersCollection, where("panCard", "==", panCard));
 
-        alert(`REGISTRATION SUCCESS!
+            const mobileSnapshot = await getDocs(mobileQuery);
+            const aadharSnapshot = await getDocs(aadharQuery);
+            const panSnapshot = await getDocs(panQuery);
+
+            if (!mobileSnapshot.empty) {
+                alert('यह मोबाइल नंबर पहले से ही पंजीकृत है।');
+                return;
+            }
+            if (!aadharSnapshot.empty) {
+                alert('यह आधार कार्ड नंबर पहले से ही पंजीकृत है।');
+                return;
+            }
+            if (!panSnapshot.empty) {
+                alert('यह पैन कार्ड नंबर पहले से ही पंजीकृत है।');
+                return;
+            }
+
+            // अगर सब कुछ ठीक है, तो Firebase Authentication के साथ उपयोगकर्ता बनाएँ
+            const password = generateNumericPassword();
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Firestore में उपयोगकर्ता डेटा सहेजें
+            await setDoc(doc(db, "users", user.uid), {
+                fullName,
+                mobileNumber,
+                email,
+                aadharCard,
+                panCard,
+                gender,
+                registrationDate,
+                registrationTime,
+                userType,
+                uid: user.uid
+            });
+
+            alert(`REGISTRATION SUCCESS!
 USER ID - ${email}
 PASSWORD - ${password}
 Login के लिए Saveकर लें।`);
 
-    } catch (error) {
-        let errorMessage = error.message;
-        if (error.code === 'auth/email-already-in-use') {
-            errorMessage = 'GMAIL ALREADY USED';
-        } else if (error.code === 'auth/weak-password') {
-            errorMessage = 'CHOSE STRPNG PASSWORD';
+        } catch (error) {
+            let errorMessage = error.message;
+            if (error.code === 'auth/email-already-in-use') {
+                errorMessage = 'GMAIL REGISTERD';
+            } else if (error.code === 'auth/weak-password') {
+                errorMessage = 'CREAT STRONG PASSWORD';
+            }
+            alert(`त्रुटि: ${errorMessage}`);
         }
-        alert(`त्रुटि: ${errorMessage}`);
-    }
+    });
 });
