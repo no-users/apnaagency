@@ -46,7 +46,8 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
-            alert('कृपया सभी आवश्यक फ़ील्ड भरें।');
+            alert('Fill All Details
+                For Next');
             return false;
         }
     }
@@ -54,11 +55,11 @@ function validateStep(stepIndex) {
 }
 
 // रैंडम पासवर्ड बनाने का फ़ंक्शन
-function generatePassword(length = 10) {
-    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+function generateNumericPassword(length = 8) {
+    const charset = "0123456789";
     let password = "";
-    for (let i = 0, n = charset.length; i < length; ++i) {
-        password += charset.charAt(Math.floor(Math.random() * n));
+    for (let i = 0; i < length; ++i) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
     }
     return password;
 }
@@ -125,11 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 userType,
                 uid: user.uid
             });
-            alert('पंजीकरण सफल! आपका ईमेल ' + email + ' है और आपका पासवर्ड ' + password + ' है। कृपया इस पासवर्ड को बाद में लॉग इन करने के लिए सेव कर लें।');
+            alert('REGISTRATION SUCCESS! <BR/> USER ID -' + email + ' <BR/> PASSWORD - ' + password + ' <br/> Login के लिए Saveकर लें।');
         } catch (error) {
             let errorMessage = error.message;
             if (error.code === 'auth/email-already-in-use') {
-                errorMessage = 'यह ईमेल पहले से ही उपयोग में है। कृपया किसी अन्य ईमेल पते का उपयोग करें।';
+                errorMessage = 'This Email Is Already Register।';
             } else if (error.code === 'auth/weak-password') {
                 errorMessage = 'पासवर्ड बहुत कमज़ोर है। कृपया एक मज़बूत पासवर्ड का उपयोग करें।';
             }
