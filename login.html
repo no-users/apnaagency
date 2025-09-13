@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-animation"></div> <div class="main-container">
+    <div class="background-animation"></div>
+    <div class="main-container">
         <div class="left-side">
             <div class="left-content">
                 <h1 class="welcome-heading">Welcome Back!</h1>
@@ -20,8 +21,8 @@
         <div class="right-side">
             <div class="login-card">
                 <div class="login-type-switcher">
-                    <button class="switcher-btn active">User Login</button>
-                    <button class="switcher-btn">Admin. Login</button>
+                    <button class="switcher-btn active">Deptt. Login</button>
+                    <button class="switcher-btn">Public Login</button>
                 </div>
                 
                 <h2 class="card-title">Login</h2>
@@ -46,8 +47,10 @@
                     <button type="submit" class="login-btn">
                         <i class="fas fa-sign-in-alt"></i> Login
                     </button>
-
-                    <p class="register-link">Don’t have an account? <a href="register.html">Register</a></p>
+                    
+                    <a href="your_form_page.html" class="goto-form-btn">
+                        GO TO FORM
+                    </a>
                 </form>
             </div>
         </div>
@@ -55,7 +58,7 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
         // Your Firebase configuration
         const firebaseConfig = {
@@ -94,24 +97,21 @@
                     alert("Login failed: " + error.message);
                 });
         });
-        // 'Forgot Password?' लिंक के लिए इवेंट लिसनर
-document.getElementById("forgot-password-link").addEventListener("click", function (e) {
-    e.preventDefault(); // लिंक को डिफ़ॉल्ट एक्शन से रोकें
-
-    const email = prompt("Please enter your registered email address:");
-    if (email) {
-        // Firebase फंक्शन को कॉल करें
-        sendPasswordResetEmail(auth, email)
-            .then(() => {
-                alert("Password reset link sent to your email!");
-            })
-            .catch((error) => {
-                alert("Error sending password reset email: " + error.message);
-            });
-    }
-});
+        
+        // Forgot Password logic
+        document.getElementById("forgot-password-link").addEventListener("click", function (e) {
+            e.preventDefault();
+            const email = prompt("Please enter your registered email address:");
+            if (email) {
+                sendPasswordResetEmail(auth, email)
+                    .then(() => {
+                        alert("Password reset link sent to your email!");
+                    })
+                    .catch((error) => {
+                        alert("Error sending password reset email: " + error.message);
+                    });
+            }
+        });
     </script>
 </body>
 </html>
-
-
