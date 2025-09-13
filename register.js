@@ -46,8 +46,7 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
-            alert('Fill All Details
-                For Next');
+            alert('Fill All Details For Next');
             return false;
         }
     }
