@@ -175,4 +175,99 @@
         }
         .message.success {
             background-color: #e6f6ed;
-            border: 1px solid
+            border: 1px solid #38A169;
+            color: #2e8b57;
+        }
+        .message.error {
+            background-color: #fcebeb;
+            border: 1px solid #d9534f;
+            color: #d9534f;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card {
+                padding: 30px 20px;
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation"></div>
+    <div class="main-container">
+        <div class="card">
+            <h2 class="card-title">Forgot Password?</h2>
+            <p class="card-subtitle">Enter your email to receive a password reset link.</p>
+            
+            <form id="forgot-password-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" id="email-input" placeholder="Enter your email" required />
+                </div>
+                
+                <button type="submit" class="reset-btn">
+                    <i class="fas fa-paper-plane"></i> Send Link
+                </button>
+            </form>
+
+            <div id="status-message" class="message"></div>
+
+            <p class="back-link">
+                <a href="login.html">Back to Login</a>
+            </p>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+        // Yahan aapko apni asli Firebase configuration dalni hai.
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+            authDomain: "my-login-page-62659.firebaseapp.com",
+            projectId: "my-login-page-62659",
+            storageBucket: "my-login-page-62659.firebasestorage.app",
+            messagingSenderId: "265063991992",
+            appId: "1:265063991992:web:f1834f4664e5494779024d",
+            measurementId: "G-EJ7P52JB4N"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const form = document.getElementById("forgot-password-form");
+        const statusMessage = document.getElementById("status-message");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email-input").value;
+            
+            statusMessage.textContent = "";
+            statusMessage.className = "message";
+
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    console.log("Success: Password reset email sent.");
+                    showMessage("Password reset link sent to your email!", "success");
+                })
+                .catch((error) => {
+                    console.error("Error sending password reset email:", error);
+                    let errorMessage = "An unknown error occurred.";
+                    if (error.code === 'auth/invalid-email') {
+                        errorMessage = "The email address is not valid.";
+                    } else if (error.code === 'auth/user-not-found') {
+                        errorMessage = "If an account with that email exists, a password reset link has been sent.";
+                    }
+                    showMessage(`Error: ${errorMessage}`, "error");
+                });
+        });
+
+        function showMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `message show ${type}`;
+        }
+    </script>
+</body>
+</html>
