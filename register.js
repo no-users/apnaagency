@@ -47,7 +47,7 @@ function validateStep(stepIndex) {
     for (const input of currentStepInputs) {
         if (!input.value) {
             // मल्टी-लाइन अलर्ट के लिए बैक-टिक्स का उपयोग करें
-            alert('FILL ALL COLLUM !`);
+            alert('FILL ALL COLUMNS!');
             return false;
         }
     }
