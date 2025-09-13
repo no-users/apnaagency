@@ -40,7 +40,7 @@
                         <label class="remember-me">
                             <input type="checkbox" /> Remember me
                         </label>
-                        <a href="#" class="forgot-password">Forgot Password?</a>
+                        <a href="#" id="forgot-password-link" class="forgot-password">Forgot Password?</a>
                     </div>
                     
                     <button type="submit" class="login-btn">
@@ -94,7 +94,24 @@
                     alert("Login failed: " + error.message);
                 });
         });
+        // 'Forgot Password?' लिंक के लिए इवेंट लिसनर
+document.getElementById("forgot-password-link").addEventListener("click", function (e) {
+    e.preventDefault(); // लिंक को डिफ़ॉल्ट एक्शन से रोकें
+
+    const email = prompt("Please enter your registered email address:");
+    if (email) {
+        // Firebase फंक्शन को कॉल करें
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                alert("Password reset link sent to your email!");
+            })
+            .catch((error) => {
+                alert("Error sending password reset email: " + error.message);
+            });
+    }
+});
     </script>
 </body>
 </html>
+
 
