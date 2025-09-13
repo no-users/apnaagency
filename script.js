@@ -2,16 +2,479 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Check if firebase is loaded
     if (typeof firebase !== 'undefined') {
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-  authDomain: "my-login-page-62659.firebaseapp.com",
-  projectId: "my-login-page-62659",
-  storageBucket: "my-login-page-62659.firebasestorage.app",
-  messagingSenderId: "265063991992",
-  appId: "1:265063991992:web:f1834f4664e5494779024d",
-  measurementId: "G-EJ7P52JB4N"
-};
+        /* Universal Styles & Base Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1a2a3a; /* Dark blue for main elements */
+    --secondary-color: #3498db; /* Vibrant blue for accents */
+    --accent-color: #e74c3c; /* Red for highlights */
+    --text-dark: #ecf0f1; /* Light text on dark background */
+    --text-light: #34495e; /* Darker text on light background */
+    --bg-dark-card: #2c3e50; /* Slightly lighter dark for cards */
+    --bg-light: #f4f7f9;
+    --shadow-light: rgba(0, 0, 0, 0.2);
+    --shadow-dark: rgba(0, 0, 0, 0.4);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* --- Header & Navigation --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 5%;
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 15px var(--shadow-dark);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 45px;
+    filter: brightness(0) invert(1);
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2.5rem;
+    font-weight: 600;
+}
+
+.nav-item {
+    color: var(--text-dark);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: var(--secondary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}
+
+.new-badge {
+    background-color: var(--accent-color);
+    color: #fff;
+    font-size: 0.7em;
+    padding: 0.1em 0.4em;
+    border-radius: 5px;
+    vertical-align: super;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 0.6rem 1rem 0.6rem 2.5rem;
+    font-size: 0.9em;
+    color: var(--text-dark);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: var(--text-dark);
+    font-size: 1.2em;
+}
+
+.user-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+.action-btn:hover {
+    color: var(--secondary-color);
+}
+
+.action-text {
+    font-size: 0.75em;
+    font-weight: 500;
+    margin-top: 0.2rem;
+}
+
+.action-icon {
+    font-size: 1.8em;
+}
+
+/* --- Hero Slider Section --- */
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    overflow: hidden;
+}
+
+.slider-container {
+    display: flex;
+    width: 300%;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.slide {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+}
+
+.slide-1 { background-image: url('banner1.jpg'); }
+.slide-2 { background-image: url('banner2.jpg'); }
+.slide-3 { background-image: url('banner3.jpg'); }
+
+.slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Overlay for readability */
+}
+
+.slide-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.slide-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.slide-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: #fff;
+    padding: 0.8rem 2rem;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.slider-nav {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dot.active {
+    background-color: #fff;
+}
+
+/* --- Info Grid Section (Bihar Bhumi Style) --- */
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 5%;
+}
+
+.info-grid-section {
+    margin: 4rem 0;
+    background-color: var(--primary-color);
+    padding: 3rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px var(--shadow-dark);
+}
+
+.grid-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.grid-card {
+    background-color: var(--bg-dark-card);
+    padding: 1.5rem;
+    border-radius: 8px;
+    color: var(--text-dark);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+}
+
+.grid-card:hover {
+    transform: translateY(-5px);
+    background-color: var(--secondary-color);
+}
+
+.grid-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.grid-card p {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    padding: 3rem 5%;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-column h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.footer-column a {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-column a:hover {
+    color: var(--secondary-color);
+    transform: translateX(5px);
+}
+
+.footer-bottom {
+    text-align: center;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+
+/* --- Responsive Design --- */
+@media (max-width: 992px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        padding: 1rem 3%;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+    
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .search-container {
+        flex-grow: 1;
+        max-width: 300px;
+    }
+
+    .user-actions {
+        gap: 1rem;
+    }
+    
+    .action-text {
+        display: block;
+    }
+    
+    .slide-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .slide-content p {
+        font-size: 1.1rem;
+    }
+
+    .info-grid-section {
+        padding: 2rem;
+    }
+
+    .grid-card-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .logo-link {
+        margin-bottom: 1rem;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    .nav-item::after {
+        left: unset;
+        right: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--secondary-color);
+        transition: width 0.3s ease;
+    }
+    
+    .nav-item:hover::after {
+        width: 100%;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .search-container {
+        width: 100%;
+        max-width: unset;
+    }
+
+    .user-actions {
+        width: 100%;
+        justify-content: space-around;
+    }
+    
+    .slide-content h1 {
+        font-size: 2rem;
+    }
+    
+    .slide-content p {
+        font-size: 1rem;
+    }
+
+    .info-grid-section {
+        padding: 1rem;
+    }
+
+    .grid-card-container {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+}
 
         // Initialize Firebase only if it hasn't been initialized
         if (!firebase.apps.length) {
@@ -35,4 +498,38 @@ const firebaseConfig = {
     } else {
         console.warn("Firebase SDK not loaded. Logout functionality will not work.");
     }
+});
+
+
+// Banner Slider Script
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.querySelector('.slider-container');
+    const dots = document.querySelectorAll('.dot');
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    const updateSlider = () => {
+        const offset = -currentSlide * 100;
+        slider.style.transform = `translateX(${offset}%)`;
+
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[currentSlide].classList.add('active');
+    };
+
+    const nextSlide = () => {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlider();
+    };
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            const slideIndex = parseInt(e.target.dataset.slide) - 1;
+            currentSlide = slideIndex;
+            updateSlider();
+        });
+    });
+
+    // Auto-advance the slider every 5 seconds
+    setInterval(nextSlide, 5000);
 });
