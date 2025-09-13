@@ -149,17 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 uid: user.uid
             });
 
-            alert(`REGISTRATION SUCCESS!
-USER ID - ${email}
-PASSWORD - ${password}
-Login के लिए Saveकर लें।`);
+            alert(`पंजीकरण सफल!
+आपका ईमेल: ${email}
+आपका पासवर्ड: ${password}
+कृपया इस पासवर्ड को बाद में लॉग इन करने के लिए सेव कर लें।`);
 
         } catch (error) {
             let errorMessage = error.message;
             if (error.code === 'auth/email-already-in-use') {
-                errorMessage = 'GMAIL REGISTERD';
+                errorMessage = 'यह ईमेल पहले से ही उपयोग में है। कृपया किसी अन्य ईमेल पते का उपयोग करें।';
             } else if (error.code === 'auth/weak-password') {
-                errorMessage = 'CREAT STRONG PASSWORD';
+                errorMessage = 'पासवर्ड बहुत कमज़ोर है। कृपया एक मज़बूत पासवर्ड का उपयोग करें।';
             }
             alert(`त्रुटि: ${errorMessage}`);
         }
