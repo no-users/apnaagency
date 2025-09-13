@@ -4,19 +4,20 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif; /* A more premium font */
 }
 
 body {
-    background: linear-gradient(135deg, #0a1128, #162640, #0a1128);
+    background: linear-gradient(135deg, #0a1128, #162640, #0a1128); /* Deep, rich blue gradient */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100vh; /* Use min-height for better responsiveness */
     overflow: hidden;
-    position: relative;
+    position: relative; /* For background animation */
 }
 
+/* Background Animation Layer */
 .background-animation {
     position: absolute;
     width: 100%;
@@ -40,15 +41,15 @@ body {
     display: flex;
     width: 800px;
     height: 500px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.08); /* Stronger glassmorphism effect for main container */
     border-radius: 20px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%); /* Increased blur */
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
     position: relative;
-    z-index: 10;
+    z-index: 10; /* Ensure it stays above background animation */
 }
 
 .left-side {
@@ -56,7 +57,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05); /* Slightly darker translucent for left panel */
     color: white;
     padding: 20px;
     text-align: center;
@@ -73,7 +74,7 @@ body {
 }
 
 .welcome-heading {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif; /* Different font for heading */
     font-size: 2.5em;
     font-weight: 700;
     margin-bottom: 10px;
@@ -93,17 +94,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.95);
+    padding: 30px; /* Increased padding */
+    background: rgba(255, 255, 255, 0.95); /* Nearly opaque white for the card background */
 }
 
 .login-card {
     width: 100%;
     max-width: 380px;
     padding: 40px;
-    background: white;
+    background: white; /* Solid white for card */
     border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* More prominent shadow for card look */
     animation: fadeInScale 0.8s ease-out;
 }
 
@@ -119,12 +120,12 @@ body {
     border-radius: 50px;
     padding: 6px;
     margin-bottom: 30px;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* Inner shadow for depth */
 }
 
 .switcher-btn {
     flex: 1;
-    padding: 12px 10px;
+    padding: 12px 10px; /* Adjusted padding */
     border: none;
     background-color: transparent;
     border-radius: 50px;
@@ -136,9 +137,9 @@ body {
 }
 
 .switcher-btn.active {
-    background-color: #38A169;
+    background-color: #38A169; /* Primary accent color */
     color: white;
-    box-shadow: 0 3px 10px rgba(56, 161, 105, 0.4);
+    box-shadow: 0 3px 10px rgba(56, 161, 105, 0.4); /* Accent shadow */
     transform: translateY(-1px);
 }
 
@@ -158,12 +159,12 @@ body {
 
 .input-group {
     position: relative;
-    margin-bottom: 22px;
+    margin-bottom: 22px; /* Slightly more space */
 }
 
 .input-group .icon {
     position: absolute;
-    left: 18px;
+    left: 18px; /* Adjusted icon position */
     top: 50%;
     transform: translateY(-50%);
     color: #999;
@@ -172,9 +173,9 @@ body {
 
 .input-group input {
     width: 100%;
-    padding: 14px 20px 14px 50px;
+    padding: 14px 20px 14px 50px; /* Adjusted padding for icon */
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 8px; /* Slightly less rounded than 50px */
     font-size: 1em;
     background-color: #fcfcfc;
     transition: all 0.3s ease;
@@ -184,21 +185,21 @@ body {
 .input-group input:focus {
     outline: none;
     border-color: #38A169;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 0 3px rgba(56, 161, 105, 0.2);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 0 3px rgba(56, 161, 105, 0.2); /* Focus glow */
 }
 
 .options {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 30px; /* More space */
     font-size: 0.9em;
     color: #555;
 }
 
 .remember-me input[type="checkbox"] {
     margin-right: 8px;
-    accent-color: #38A169;
+    accent-color: #38A169; /* Custom checkbox color */
 }
 
 .forgot-password {
@@ -217,11 +218,11 @@ body {
     width: 100%;
     padding: 15px;
     border: none;
-    background: linear-gradient(90deg, #38A169, #4CAF50);
+    background: linear-gradient(90deg, #38A169, #4CAF50); /* Gradient button */
     color: white;
     font-size: 1.1em;
     font-weight: 600;
-    border-radius: 8px;
+    border-radius: 8px; /* Match input field rounding */
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 6px 15px rgba(56, 161, 105, 0.3);
@@ -238,12 +239,12 @@ body {
 }
 
 .login-btn .fas {
-    margin-right: 0;
+    margin-right: 0; /* Icon is already spaced by gap */
 }
 
 .register-link {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 30px; /* More space */
     font-size: 0.9em;
     color: #666;
 }
@@ -258,31 +259,6 @@ body {
 .register-link a:hover {
     color: #2e8b57;
     text-decoration: underline;
-}
-
-/* Style for the new "GO TO FORM" button */
-.goto-form-btn {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    margin-top: 20px;
-    border: 1px solid #38A169;
-    background-color: transparent;
-    color: #38A169;
-    font-size: 1em;
-    font-weight: 600;
-    border-radius: 8px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.goto-form-btn:hover {
-    background-color: #38A169;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(56, 161, 105, 0.3);
 }
 
 /* Responsive adjustments */
