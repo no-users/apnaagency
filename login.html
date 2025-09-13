@@ -3,62 +3,38 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Premium Login Card</title>
-    <link rel="stylesheet" href="login.css" />
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="forgot_password.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="background-animation"></div>
     <div class="main-container">
-        <div class="left-side">
-            <div class="left-content">
-                <h1 class="welcome-heading">Welcome Back!</h1>
-                <p class="tagline">Your secure portal to manage data.</p>
-            </div>
-        </div>
-
-        <div class="right-side">
-            <div class="login-card">
-                <div class="login-type-switcher">
-                    <button class="switcher-btn active">Deptt. Login</button>
-                    <button class="switcher-btn">Public Login</button>
+        <div class="card">
+            <h2 class="card-title">Forgot Password?</h2>
+            <p class="card-subtitle">Enter your email to receive a password reset link.</p>
+            
+            <form id="forgot-password-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" id="email-input" placeholder="Enter your email" required />
                 </div>
                 
-                <h2 class="card-title">Login</h2>
+                <button type="submit" class="reset-btn">
+                    <i class="fas fa-paper-plane"></i> Send Link
+                </button>
                 
-                <form id="login-form">
-                    <div class="input-group">
-                        <i class="fas fa-user icon"></i>
-                        <input type="text" id="username" placeholder="Username" required />
-                    </div>
-                    <div class="input-group">
-                        <i class="fas fa-lock icon"></i>
-                        <input type="password" id="password" placeholder="Password" required />
-                    </div>
-
-                    <div class="options">
-                        <label class="remember-me">
-                            <input type="checkbox" /> Remember me
-                        </label>
-                        <a href="#" id="forgot-password-link" class="forgot-password">Forgot Password?</a>
-                    </div>
-                    
-                    <button type="submit" class="login-btn">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </button>
-                    
-                    <a href="your_form_page.html" class="goto-form-btn">
-                        GO TO FORM
-                    </a>
-                </form>
-            </div>
+                <p class="back-link">
+                    <a href="login.html">Back to Login</a>
+                </p>
+            </form>
         </div>
     </div>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
         // Your Firebase configuration
         const firebaseConfig = {
@@ -74,43 +50,20 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // JavaScript for button switching
-        document.querySelectorAll('.switcher-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.switcher-btn').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-            });
-        });
-
-        // Login form submission logic
-        document.getElementById("login-form").addEventListener("submit", function (e) {
+        // Forgot Password form submission logic
+        document.getElementById("forgot-password-form").addEventListener("submit", function (e) {
             e.preventDefault();
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+            const email = document.getElementById("email-input").value;
             
-            signInWithEmailAndPassword(auth, username, password)
-                .then((userCredential) => {
-                    alert("Login successful! Redirecting to home page...");
-                    window.location.href = "home.html";
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    alert("Password reset link sent to your email!");
+                    // Redirect back to login page after success
+                    window.location.href = "login.html";
                 })
                 .catch((error) => {
-                    alert("Login failed: " + error.message);
+                    alert("Error: " + error.message);
                 });
-        });
-        
-        // Forgot Password logic
-        document.getElementById("forgot-password-link").addEventListener("click", function (e) {
-            e.preventDefault();
-            const email = prompt("Please enter your registered email address:");
-            if (email) {
-                sendPasswordResetEmail(auth, email)
-                    .then(() => {
-                        alert("Password reset link sent to your email!");
-                    })
-                    .catch((error) => {
-                        alert("Error sending password reset email: " + error.message);
-                    });
-            }
         });
     </script>
 </body>
