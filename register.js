@@ -46,7 +46,7 @@ function validateStep(stepIndex) {
     const currentStepInputs = steps[stepIndex].querySelectorAll('input[required], select[required]');
     for (const input of currentStepInputs) {
         if (!input.value) {
-            alert('कृपया सभी आवश्यक फ़ील्ड भरें।');
+            alert('FILL ALL DETAILS !');
             return false;
         }
     }
@@ -118,15 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const panSnapshot = await getDocs(panQuery);
 
             if (!mobileSnapshot.empty) {
-                alert('यह मोबाइल नंबर पहले से ही पंजीकृत है।');
+                alert('MOBILE NUMBER ALREADY REGISTER');
                 return;
             }
             if (!aadharSnapshot.empty) {
-                alert('यह आधार कार्ड नंबर पहले से ही पंजीकृत है।');
+                alert('ADHAR ALREADY REGISTER');
                 return;
             }
             if (!panSnapshot.empty) {
-                alert('यह पैन कार्ड नंबर पहले से ही पंजीकृत है।');
+                alert('PAN NUMBER ALREADY REGISTER');
                 return;
             }
 
@@ -149,17 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 uid: user.uid
             });
 
-            alert(`पंजीकरण सफल!
-आपका ईमेल: ${email}
-आपका पासवर्ड: ${password}
-कृपया इस पासवर्ड को बाद में लॉग इन करने के लिए सेव कर लें।`);
+            alert(`REGISTRATION SUCCESS!
+USER ID - ${email}
+PASSWORD - ${password}
+Login के लिए Saveकर लें।`);
 
         } catch (error) {
             let errorMessage = error.message;
             if (error.code === 'auth/email-already-in-use') {
-                errorMessage = 'यह ईमेल पहले से ही उपयोग में है। कृपया किसी अन्य ईमेल पते का उपयोग करें।';
+                errorMessage = 'GMAIL ALREADY REGISTER';
             } else if (error.code === 'auth/weak-password') {
-                errorMessage = 'पासवर्ड बहुत कमज़ोर है। कृपया एक मज़बूत पासवर्ड का उपयोग करें।';
+                errorMessage = 'CREAT STRONG PASSWORD';
             }
             alert(`त्रुटि: ${errorMessage}`);
         }
