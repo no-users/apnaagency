@@ -44,48 +44,42 @@
         </div>
     </div>
     
-   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-
-    // Your Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-  authDomain: "my-login-page-62659.firebaseapp.com",
-  projectId: "my-login-page-62659",
-  storageBucket: "my-login-page-62659.firebasestorage.app",
-  messagingSenderId: "265063991992",
-  appId: "1:265063991992:web:f1834f4664e5494779024d",
-  measurementId: "G-EJ7P52JB4N"
+   const firebaseConfig = {
+    apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+    authDomain: "my-login-page-62659.firebaseapp.com",
+    projectId: "my-login-page-62659",
+    storageBucket: "my-login-page-62659.firebasestorage.app",
+    messagingSenderId: "265063991992",
+    appId: "1:265063991992:web:f1834f4664e5494779024d",
+    measurementId: "G-EJ7P52JB4N"
 };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-    // Forgot Password form submission logic
-    document.getElementById("forgot-password-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const email = document.getElementById("email-input").value;
-        
-        console.log("Attempting to send password reset email to:", email); // This will log the email address
-        
-        sendPasswordResetEmail(auth, email)
-            .then(() => {
-                console.log("Success: Password reset email sent."); // This will log if successful
-                alert("Password reset link sent to your email!");
-                // window.location.href = "login.html"; // You can comment this out for now to keep the console open
-            })
-            .catch((error) => {
-                console.error("Error sending password reset email:", error); // This will log the exact error
-                alert("Error: " + error.message);
-            });
-    });
-</script>
+// हम form के बजाय सीधे button पर event listener लगा रहे हैं
+const sendLinkBtn = document.querySelector(".reset-btn");
+
+sendLinkBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const email = document.getElementById("email-input").value;
+    
+    console.log("Attempting to send password reset email to:", email);
+    
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            console.log("Success: Password reset email sent.");
+            alert("Password reset link sent to your email!");
+        })
+        .catch((error) => {
+            console.error("Error sending password reset email:", error);
+            alert("Error: " + error.message);
+        });
+});
 </body>
 
 </html>
+
 
 
 
