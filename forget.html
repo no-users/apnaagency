@@ -60,33 +60,29 @@ const statusMessage = document.getElementById("status-message");
 form.addEventListener("submit", function (e) {
     e.preventDefault();
     const email = document.getElementById("email-input").value;
-    
-    // Request bhejte samay user ko bataye ki kaam ho raha hai
+
     showMessage("Sending request...", "info");
 
-    sendPasswordResetEmail(auth, email)
-        .then(() => {
-            // Agar email successfully bheja gaya
-            console.log("Success: Password reset email sent.");
-            showMessage("Password reset link sent to your email!", "success");
-        })
-        .catch((error) => {
-            console.error("Error sending password reset email:", error);
-            
-            // Yahan hum error code ko handle karenge
-            if (error.code === 'auth/user-not-found') {
-                // Agar email register nahi hai, to alag message dikhayein
-                showMessage("This email is not registered with us.", "error");
-            } else if (error.code === 'auth/invalid-email') {
-                showMessage("The email address is not valid.", "error");
-            } else if (error.code === 'auth/missing-email') {
-                showMessage("Please enter an email address.", "error");
-            } else {
-                // Any other unknown error
-                let errorMessage = `Error: ${error.message}`;
-                showMessage(errorMessage, "error");
-            }
-        });
+    // Check if the email exists using a Cloud Function
+    fetch('https://us-central1-my-login-page-62659.cloudfunctions.net/checkUserAndSendResetEmail', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showMessage("Successfully email sent!", "success");
+        } else {
+            showMessage("Email not registered.", "error");
+        }
+    })
+    .catch(error => {
+        console.error("Error calling Cloud Function:", error);
+        showMessage("An error occurred. Please try again.", "error");
+    });
 });
 
 function showMessage(message, type) {
@@ -96,4 +92,5 @@ function showMessage(message, type) {
     </script>
 </body>
 </html>
+
 
