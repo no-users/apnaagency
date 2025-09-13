@@ -1,86 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="forget.css" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Forgot Password</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background: linear-gradient(135deg, #0a1128, #162640, #0a1128); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; position: relative; }
+        .background-animation { position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: radial-gradient(circle at 10% 20%, rgba(30,144,255,0.08) 0%, transparent 15%), radial-gradient(circle at 90% 80%, rgba(106,90,205,0.08) 0%, transparent 15%); background-size: 300px 300px; opacity: 0.7; animation: movePattern 30s linear infinite; }
+        @keyframes movePattern { from { background-position: 0 0; } to { background-position: 300px 300px; } }
+        .main-container { display: flex; justify-content: center; align-items: center; width: 100%; height: 100vh; }
+        .card { width: 100%; max-width: 450px; padding: 40px; background: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); animation: fadeInScale 0.8s ease-out; text-align: center; }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .card-title { font-size: 1.8em; font-weight: 700; margin-bottom: 10px; color: #333; }
+        .card-subtitle { font-size: 1em; font-weight: 400; color: #666; margin-bottom: 30px; }
+        .input-group { position: relative; margin-bottom: 25px; }
+        .input-group .icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #999; font-size: 1.1em; }
+        .input-group input { width: 100%; padding: 14px 20px 14px 50px; border: 1px solid #ddd; border-radius: 8px; font-size: 1em; background-color: #fcfcfc; transition: all 0.3s ease; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); }
+        .input-group input:focus { outline: none; border-color: #38A169; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 0 3px rgba(56, 161, 105, 0.2); }
+        .reset-btn { width: 100%; padding: 15px; border: none; background: linear-gradient(90deg, #38A169, #4CAF50); color: white; font-size: 1.1em; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 15px rgba(56, 161, 105, 0.3); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .reset-btn:hover { background: linear-gradient(90deg, #4CAF50, #38A169); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(56, 161, 105, 0.5); }
+        .back-link { margin-top: 25px; font-size: 0.9em; }
+        .back-link a { color: #38A169; text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
+        .back-link a:hover { color: #2e8b57; text-decoration: underline; }
+        .message { margin-top: 20px; padding: 15px; border-radius: 8px; text-align: left; transition: opacity 0.5s ease; opacity: 0; max-height: 0; overflow: hidden; }
+        .message.show { opacity: 1; max-height: 100px; padding: 15px; }
+        .message.success { background-color: #e6f6ed; border: 1px solid #38A169; color: #2e8b57; }
+        .message.error { background-color: #fcebeb; border: 1px solid #d9534f; color: #d9534f; }
+        @media (max-width: 768px) { .card { padding: 30px 20px; width: 90%; } }
+    </style>
 </head>
 <body>
-    <div class="background-animation"></div>
-    <div class="main-container">
-        <div class="card">
-            <h2 class="card-title">Forgot Password?</h2>
-            <p class="card-subtitle">Enter your email to receive a password reset link.</p>
-            
-            <form id="forgot-password-form">
-                <div class="input-group">
-                    <i class="fas fa-envelope icon"></i>
-                    <input type="email" id="email-input" placeholder="Enter your email" required />
-                </div>
-                
-                <button type="submit" class="reset-btn">
-                    <i class="fas fa-paper-plane"></i> Send Link
-                </button>
-            </form>
-
-            <p class="back-link">
-                <a href="login.html">Back to Login</a>
-            </p>
-        </div>
-    </div>
-
-    </body>
-
-<p class="back-link">
-    <a href="login.html">Back to Login</a>
-</p>
-            </form>
-        </div>
-    </div>
-    
-   const firebaseConfig = {
-    apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
-    authDomain: "my-login-page-62659.firebaseapp.com",
-    projectId: "my-login-page-62659",
-    storageBucket: "my-login-page-62659.firebasestorage.app",
-    messagingSenderId: "265063991992",
-    appId: "1:265063991992:web:f1834f4664e5494779024d",
-    measurementId: "G-EJ7P52JB4N"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// हम form के बजाय सीधे button पर event listener लगा रहे हैं
-const sendLinkBtn = document.querySelector(".reset-btn");
-
-sendLinkBtn.addEventListener("click", function (e) {
-    e.preventDefault();
-    const email = document.getElementById("email-input").value;
-    
-    console.log("Attempting to send password reset email to:", email);
-    
-    sendPasswordResetEmail(auth, email)
-        .then(() => {
-            console.log("Success: Password reset email sent.");
-            alert("Password reset link sent to your email!");
-        })
-        .catch((error) => {
-            console.error("Error sending password reset email:", error);
-            alert("Error: " + error.message);
-        });
-});
+    <div class="background-animation"></div>
+    <div class="main-container">
+        <div class="card">
+            <h2 class="card-title">Forgot Password?</h2>
+            <p class="card-subtitle">Enter your email to receive a password reset link.</p>
+            <form id="forgot-password-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" id="email-input" placeholder="Enter your email" required />
+                </div>
+                <button type="submit" class="reset-btn">
+                    <i class="fas fa-paper-plane"></i> Send Link
+                </button>
+            </form>
+            <div id="status-message" class="message"></div>
+            <p class="back-link">
+                <a href="login.html">Back to Login</a>
+            </p>
+        </div>
+    </div>
+    <script type="module">
+        console.log("Script is running!");
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
+            authDomain: "my-login-page-62659.firebaseapp.com",
+            projectId: "my-login-page-62659",
+            storageBucket: "my-login-page-62659.firebasestorage.app",
+            messagingSenderId: "265063991992",
+            appId: "1:265063991992:web:f1834f4664e5494779024d",
+            measurementId: "G-EJ7P52JB4N"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const form = document.getElementById("forgot-password-form");
+        const statusMessage = document.getElementById("status-message");
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email-input").value;
+            statusMessage.textContent = "";
+            statusMessage.className = "message";
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    console.log("Success: Password reset email sent.");
+                    showMessage("Password reset link sent to your email!", "success");
+                })
+                .catch((error) => {
+                    console.error("Error sending password reset email:", error);
+                    let errorMessage = "An unknown error occurred.";
+                    if (error.code === 'auth/invalid-email') { errorMessage = "The email address is not valid."; }
+                    else if (error.code === 'auth/user-not-found') { errorMessage = "If an account with that email exists, a password reset link has been sent."; }
+                    showMessage(`Error: ${errorMessage}`, "error");
+                });
+        });
+        function showMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `message show ${type}`;
+        }
+    </script>
 </body>
-
 </html>
-
-
-
-
-
