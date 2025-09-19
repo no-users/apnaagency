@@ -1,97 +1,165 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>APNA AGENCY</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        
+    </style>
 </head>
 <body>
     <header>
-        <div class="logo-container">
-            <a href="#"><img class="home-logo" src="logo.png" alt="Home logo"></a>
-        </div>
-        <nav class="nav-bar">
-            
-            <a href="#" class="contact1">plans</a>
-            <a href="#"class="contact2">service</a>
-            <a href="#"class="contact3">pricing</a>
-            <a href="#"class="contact4">contact</a>
-            
-            <a href="#" class="contact1">link <sup class="new">new</sup> </a>
-
-        </nav>
-        <div class="search-bar">
-            <span class="material-symbols-outlined search-icon">search</span>
-            <input class="search-input" placeholder="Search for services, prices and more">
-        </div>
-        <div class="action-bar">
-
-            <div class="icon-bar" onclick="toggleMenu(event)" style="position: relative;">
-
-               <span class="material-symbols-outlined action_icon">person</span> 
-                <span class="icon-name">Profile</span> 
-
-               <!-- Premium Styled Popup -->
-              <div id="popupMenu" class="popup-menu-premium">
-                <ul>
-                 <li><a href="login.html"><span class="material-symbols-outlined">login</span> Login</a></li>
-                 <li><a href="register.html"><span class="material-symbols-outlined">how_to_reg</span> Register</a></li>
-                </ul>
-               </div>
-           </div>
-
-         <div class="icon-bar">
-            <span class="material-symbols-outlined icon-logo2">
-            approval_delegation
-            </span>
-            <span class="icon-name2">Approval
-            </span>
-
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="#" aria-label="Home">
+                    <img class="home-logo" src="Image/logo.png" />
+                </a>
+                <span class="brand-name">APNA AGENCY</span>
             </div>
-
-         <div class="icon-bar">
-            <span class="material-symbols-outlined  icon-logo3">
-            favorite
-           </span>
-            <span class="icon-name3">Heart
-            </span>
-
-            </div>
-        </div>  
-
-
+            
+            <nav class="nav-bar" aria-label="Primary navigation">
+                <a href="#">Home</a>
+                <a href="#">Services</a>
+                <a href="#">Pricing</a>
+                <a href="#">Stations</a>
+                <a href="#">Contact</a>
+                <a href="#">Promotions <sup class="new" aria-label="New">new</sup></a>
+            </nav>
+            
+            <div class="action-bar">
+            <a href="login.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+               <span class="material-symbols-outlined">login</span> Sign In
+            </a>
+            <a href="register.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+             <span class="material-symbols-outlined">person_add</span> Register
+            </a>
+          </div>
+        </div>
     </header>
+    
     <main>
-        <div class="banner-contaner">
-            <img class="banner-image" src="banner.jpg" alt="Banner Image">
-        </div>
-
-        </div>
-        <div class="category_heading">What Soutions We Provide ....</div> 
-        <!--
-        <img class="line" src="Image/line.png" alt="" > -->
-
-        <div class="category_items">
-            <a href="#"><img class="sale_item" src="item1.png"> <H3>instant Help Support</H3><p>24 hrs Help Support </p></a>
-            <a href="#"><img class="sale_item" src="item2.png"><H3>Trust Space Than Other </H3><p>10K Plus Active User </p></a>
-            <a href="#"><img class="sale_item" src="item33.jpg"><H3>High Commission Margin</H3><p>People Earn 1 Lakh++ </p></a>
-            <a href="#"><img class="sale_item" src="item44.png"><H3>instant Amount Refund</H3><p>Refund Amount Direct Your Wallet </p></a>
-            <a href="#"><img class="sale_item" src="item5.png"><H3>Easy Web Interface</H3><p>Simple Use And Explore</p></a>
-            
-
-
-            <a href="#"><img class="sale_item" src="5.jpeg"> <H3>Insurance Sefty Tips</H3><p>Use Features Save Life </p></a>
-            <a href="#"><img class="sale_item" src="4.jpg"><H3>Easy Resume Build  </H3><p>High Level Resume Build In Few Cick </p></a>
-            <a href="#"><img class="sale_item" src="3.jpg"><H3>Holidays Full Plain</H3><p>Holidays Services Idea </p></a>
-            <a href="#"><img class="sale_item" src="2.jpg"><H3>Recharge & Bills Viwer</H3><p>Easy Bill Pay Interface</p></a>
-            <a href="#"><img class="sale_item" src="1.jpg"><H3>Videos & Image Helps</H3><p>See Videos & Explore Yourself</p></a>
-            
-        </div>
-        <div>
-            <a href="#"><img class="sale_item2" src="buster.jpg"> </a>
-        </div>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Welcome to APNA AGENCY Cyber Cafe</h1>
+            <p>Experience high-speed internet, premium gaming, and professional computing services in a comfortable environment. Your one-stop destination for all digital needs.</p>
+            <button class="cta-button">Book a Station Now</button>
+        </section>
         
+        <!-- Services Section -->
+        <section class="services-section">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">computer</span>
+                    </div>
+                    <h3>Premium Internet Access</h3>
+                    <p>High-speed fiber internet with secure connections for browsing, streaming, and downloading.</p>
+                    <div class="service-price">₹0</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">sports_esports</span>
+                    </div>
+                    <h3>Gaming Station</h3>
+                    <p>High-end gaming PCs with popular titles pre-installed and optimized for the best gaming experience.</p>
+                    <div class="service-price">₹100/hour</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">print</span>
+                    </div>
+                    <h3>Printing & Scanning</h3>
+                    <p>High-quality color and B/W printing, scanning, and photocopying services with various paper options.</p>
+                    <div class="service-price">₹5/page</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">description</span>
+                    </div>
+                    <h3>Document Services</h3>
+                    <p>Resume printing, application forms, document typing, and professional formatting services.</p>
+                    <div class="service-price">₹30/doc</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">coffee</span>
+                    </div>
+                    <h3>Cafe Refreshments</h3>
+                    <p>Enjoy hot coffee, tea, cold drinks, and snacks while you work or game at our station.</p>
+                    <div class="service-price">₹20-100</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">groups</span>
+                    </div>
+                    <h3>Group Booking</h3>
+                    <p>Special rates for group bookings, LAN parties, and gaming tournaments. Perfect for friends and teams.</p>
+                    <div class="service-price">Custom Pricing</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Computer Stations Section -->
+        <section class="stations-section">
+            <h2 class="section-title">Our Computer Stations</h2>
+            <div class="stations-grid">
+                <div class="station-card">
+                    <img class="station-image" src="item1.png" alt="Premium Gaming Station" />
+                    <div class="station-info">
+                        <h3>Premium Gaming Station</h3>
+                        <ul class="station-specs">
+                            <li>Intel i7 Processor</li>
+                            <li>RTX 3070 Graphics</li>
+                            <li>32GB RAM</li>
+                            <li>240Hz Gaming Monitor</li>
+                            <li>Mechanical Keyboard</li>
+                        </ul>
+                        <span class="station-status status-available">Available</span>
+                    </div>
+                </div>
+                
+                <div class="station-card">
+                    <img class="station-image" src="item2.png" alt="Standard Workstation" />
+                    <div class="station-info">
+                        <h3>Standard Workstation</h3>
+                        <ul class="station-specs">
+                            <li>Intel i5 Processor</li>
+                            <li>GTX 1660 Graphics</li>
+                            <li>16GB RAM</li>
+                            <li>Dual 24" Monitors</li>
+                            <li>Ergonomic Keyboard</li>
+                        </ul>
+                        <span class="station-status status-busy">In Use</span>
+                    </div>
+                </div>
+                
+                <div class="station-card">
+                    <img class="station-image" src="3.jpg" alt="Basic Internet Station" />
+                    <div class="station-info">
+                        <h3>Basic Internet Station</h3>
+                        <ul class="station-specs">
+                            <li>Intel i3 Processor</li>
+                            <li>Integrated Graphics</li>
+                            <li>8GB RAM</li>
+                            <li>22" HD Monitor</li>
+                            <li>Standard Keyboard</li>
+                        </ul>
+                        <span class="station-status status-available">Available</span>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
     <!-- Aapke HTML ke end me, </body> se pehle -->
  <script>
@@ -113,61 +181,54 @@
     }
   });
  </script>
+    
     <footer>
-        <div class="footer_container">
-            <div class="footer_column">
+        <div class="footer-container">
+            <div class="footer-column">
                 <h3>OUR SERVICES</h3>
-
-                <a href="#">Mobile Rechare</a>
-                <a href="#">DTH Recharge</a>
-                <a href="#">Pan Services</a>
-                <a href="#">Paperless Work</a>
-                <a href="#">NSDL & UTI Pan</a>
-                <a href="#">Gift Card</a>
-                <a href="#">Others</a>
+                <a href="#">Internet Access</a>
+                <a href="#">Gaming Stations</a>
+                <a href="#">Printing & Scanning</a>
+                <a href="#">Document Services</a>
+                <a href="#">Cafe Refreshments</a>
+                <a href="#">Group Bookings</a>
             </div>
-
-            <div class="footer_column">
-                <h3>POPULAR LINKS</h3>
-                
-                <a href="https://www.instagram.com/no_user.o?igsh=YWR5d3Azcnd4YTU3">Instagram</a>
-                <a href="https://www.facebook.com/share/1C54g2ktjB/">Facebook</a>
-                <a href="https://www.threads.com/@no_user.o">Thread</a>
-                <a href="https://github.com/no-users/">Github</a>
-                <a href="https://whatsapp.com/channel/0029Vb5upli11ulSEB9wcp0x">Whatsapp Group</a>
-                <a href="https://whatsapp.com/channel/0029Vb5upli11ulSEB9wcp0x">Whatsapp Chennal</a>
-                <a href="https://no-users.github.io/ApnaAgency/#">Others</a>
-
-                
+            
+            <div class="footer-column">
+                <h3>BUSINESS HOURS</h3>
+                <a href="#">Monday-Friday: 8AM-11PM</a>
+                <a href="#">Saturday: 9AM-1AM</a>
+                <a href="#">Sunday: 10AM-10PM</a>
+                <a href="#">Holidays: 10AM-8PM</a>
             </div>
-
-            <div class="footer_column">
-                <h3>GET IN TOUCH</h3>
-
-                <a href="#">Mail</a>
-                <a href="#">Calls </a>
-                <a href="#">Video</a>
-                <a href="#">Mail</a>
-                <a href="#">Youtube</a>
-                <a href="#">Portal Help</a>
-                <a href="#">Other</a>
+            
+            <div class="footer-column">
+                <h3>CONTACT US</h3>
+                <a href="tel:+911234567890">+91 123 456 7890</a>
+                <a href="mailto:info@apnaagency.com">info@apnaagency.com</a>
+                <a href="#">123 Tech Street, Cyber City</a>
+                <a href="#">Get Directions</a>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <span class="material-symbols-outlined">facebook</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <span class="material-symbols-outlined">photo_camera</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <span class="material-symbols-outlined">chat</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="WhatsApp">
+                        <span class="material-symbols-outlined">forum</span>
+                    </a>
+                </div>
             </div>
         </div>
-        <hr>
-
+        
         <div class="copyright">
-            © 2023 www.PanAgency.com. All rights reserved.
+            © 2023 APNA AGENCY Cyber Cafe. All rights reserved.
         </div>
     </footer>
-    
 </body>
-
 </html>
-
-
-
-
-
-
-
-
