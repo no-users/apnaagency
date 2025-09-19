@@ -87,7 +87,7 @@
             
             signInWithEmailAndPassword(auth, username, password)
                 .then((userCredential) => {
-                    alert("Login successful! Redirecting to home page...");
+                    alert("Login successful!");
                     window.location.href = "home.html";
                 })
                 .catch((error) => {
@@ -97,4 +97,5 @@
     </script>
 </body>
 </html>
+
 
