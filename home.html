@@ -1,160 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APNA AGENCY - Bihar Bhumi Style</title>
-    <link rel="stylesheet" href="home.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>APNA AGENCY Cyber Cafe - Home</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    
+    <script>
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+        if (isLoggedIn !== 'true') {
+            // यदि लॉग इन नहीं है, तो तुरंत लॉग इन पेज पर भेजें
+            window.location.href = 'login.html';
+        }
+    </script>
+    
 </head>
 <body>
-    <header class="header">
-        <a href="#" class="logo-link">
-            <img class="logo" src="logo.png" alt="APNA AGENCY Logo">
-        </a>
-        <nav class="nav-menu">
-            <a href="#" class="nav-item">Solutions</a>
-            <a href="#" class="nav-item">Services</a>
-            <a href="#" class="nav-item">Pricing</a>
-            <a href="#" class="nav-item">Contact</a>
-            <a href="#" class="nav-item">Blog <sup class="new-badge">New</sup></a>
-        </nav>
-        <div class="header-actions">
-            <div class="search-container">
-                <span class="material-symbols-outlined search-icon">search</span>
-                <input class="search-input" type="text" placeholder="Search services, prices...">
+    
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="#" aria-label="Home">
+                    <img class="home-logo" src="logo.png" alt="APNA AGENCY Logo" />
+                </a>
+                <span class="brand-name">APNA AGENCY</span>
             </div>
-            <div class="user-actions">
-                <a href="#" class="action-btn">
-                    <span class="material-symbols-outlined action-icon" id="logoutBtn">logout</span>
-                    <span class="action-text">Logout</span>
+            
+            <nav class="nav-bar" aria-label="Primary navigation">
+                <a href="#">Home</a>
+                <a href="#">Services</a>
+                <a href="#">Pricing</a>
+                <a href="#">Stations</a>
+                <a href="#">Contact</a>
+                <a href="#">Promotions <sup class="new" aria-label="New">new</sup></a>
+            </nav>
+            
+            <div class="action-bar">
+                <a href="#" class="action-btn" id="logoutButton" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+                   <span class="material-symbols-outlined">logout</span> Sign Out
+                </a>
+                <a href="#" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+                 <span class="material-symbols-outlined">account_circle</span> Profile
                 </a>
             </div>
         </div>
     </header>
     
-    <main class="main-content">
-        <section class="hero-slider">
-            <div class="slider-container">
-                <div class="slide slide-1 active">
-                    <div class="slide-content">
-                        <h1>Welcome to APNA AGENCY</h1>
-                        <p>Your trusted partner for all digital solutions.</p>
-                        <a href="https://share.google/images/uV6AYDtDTa10uRkvU" class="btn-primary">Explore Services</a>
-                    </div>
-                </div>
-                <div class="slide slide-2">
-                    <div class="slide-content">
-                        <h1>Easy PAN Services</h1>
-                        <p>Apply for NSDL & UTI PAN cards online.</p>
-                        <a href="https://share.google/images/nIyoGtI1kunh6NtUi" class="btn-primary">Apply Now</a>
-                    </div>
-                </div>
-                <div class="slide slide-3">
-                    <div class="slide-content">
-                        <h1>Earn High Commission</h1>
-                        <p>Join our affiliate program and earn over ₹1 Lakh!</p>
-                        <a href="https://share.google/images/cxAuhBhDVarjGWpMj" class="btn-primary">Join Now</a>
-                    </div>
+    <section class="hero-slider-container">
+        <div class="slider">
+            
+            <div class="slide active-slide">
+                <img src="Image/banner.jpg" alt="High-Speed Internet Banner">
+                <div class="slider-content">
+                    <h1 id="welcomeHeading">वेलकम बैक! अपनी सीट तुरंत बुक करें।</h1> 
+                    <p>प्रीमियम एक्सेस और एक्सक्लूसिव डील्स आपका इंतज़ार कर रहे हैं।</p>
+                    <button class="cta-button">Book Your Premium Slot</button>
                 </div>
             </div>
-            <div class="slider-nav">
-                <span class="dot active" data-slide="1"></span>
-                <span class="dot" data-slide="2"></span>
-                <span class="dot" data-slide="3"></span>
-            </div>
-        </section>
 
-        <section id="info-grid" class="info-grid-section">
-            <div class="grid-card-container">
-                <div class="grid-card">
-                    <h3>Online Services</h3>
-                    <p>Access our services from anywhere.</p>
+            <div class="slide">
+                <img src="Image/banner2.jpg" alt="Premium Gaming Stations Banner">
+                <div class="slider-content">
+                    <h1>Dominate the Game!</h1>
+                    <p>High-end gaming PCs with RTX 3070 Graphics. Book your slot now!</p>
+                    <button class="cta-button">View Gaming Specs</button>
                 </div>
-                <div class="grid-card">
-                    <h3>Customer Support</h3>
-                    <p>24/7 assistance for all your needs.</p>
+            </div>
+        </div>
+    </section>
+    
+    <main>
+        
+        <section class="services-section">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">computer</span>
+                    </div>
+                    <h3>Premium Internet Access</h3>
+                    <p>High-speed fiber internet with secure connections for browsing, streaming, and downloading.</p>
+                    <div class="service-price">₹0</div>
+                    <a href="#" class="service-action-btn primary-btn">Start Session</a> </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">sports_esports</span>
+                    </div>
+                    <h3>Gaming Station</h3>
+                    <p>High-end gaming PCs with popular titles pre-installed and optimized for the best gaming experience.</p>
+                    <div class="service-price">₹100/hour</div>
+                    <a href="#" class="service-action-btn warning-btn">Book Now</a> </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">print</span>
+                    </div>
+                    <h3>Printing & Scanning</h3>
+                    <p>High-quality color and B/W printing, scanning, and photocopying services with various paper options.</p>
+                    <div class="service-price">₹5/page</div>
+                    <a href="#" class="service-action-btn success-btn">Print Document</a> </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">description</span>
+                    </div>
+                    <h3>Document Services</h3>
+                    <p>Resume printing, application forms, document typing, and professional formatting services.</p>
+                    <div class="service-price">₹30/doc</div>
+                    <a href="#" class="service-action-btn primary-btn">View Forms</a> </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">coffee</span>
+                    </div>
+                    <h3>Cafe Refreshments</h3>
+                    <p>Enjoy hot coffee, tea, cold drinks, and snacks while you work or game at our station.</p>
+                    <div class="service-price">₹20-100</div>
+                    <a href="#" class="service-action-btn warning-btn">Order Now</a> </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <span class="material-symbols-outlined">groups</span>
+                    </div>
+                    <h3>Group Booking</h3>
+                    <p>Special rates for group bookings, LAN parties, and gaming tournaments. Perfect for friends and teams.</p>
+                    <div class="service-price">Custom Pricing</div>
+                    <a href="#" class="service-action-btn success-btn">Inquire</a> </div>
+            </div>
+        </section>
+        
+        <section class="stations-section">
+            <h2 class="section-title">Our Computer Stations</h2>
+            <div class="stations-grid">
+                <div class="station-card">
+                    <img class="station-image" src="1.jpg" alt="Premium Gaming Station" />
+                    <div class="station-info">
+                        <h3>Premium Gaming Station</h3>
+                        <ul class="station-specs">
+                            <li>Intel i7 Processor</li>
+                            <li>RTX 3070 Graphics</li>
+                            <li>32GB RAM</li>
+                            <li>240Hz Gaming Monitor</li>
+                            <li>Mechanical Keyboard</li>
+                        </ul>
+                        <span class="station-status status-available">Available</span>
+                    </div>
                 </div>
-                <div class="grid-card">
-                    <h3>Secure Transactions</h3>
-                    <p>Your data and payments are safe with us.</p>
+                
+                <div class="station-card">
+                    <img class="station-image" src="2.jpg" alt="Standard Workstation" />
+                    <div class="station-info">
+                        <h3>Standard Workstation</h3>
+                        <ul class="station-specs">
+                            <li>Intel i5 Processor</li>
+                            <li>GTX 1660 Graphics</li>
+                            <li>16GB RAM</li>
+                            <li>Dual 24" Monitors</li>
+                            <li>Ergonomic Keyboard</li>
+                        </ul>
+                        <span class="station-status status-busy">In Use</span>
+                    </div>
                 </div>
-                <div class="grid-card">
-                    <h3>New Updates</h3>
-                    <p>Stay informed with our latest features.</p>
+                
+                <div class="station-card">
+                    <img class="station-image" src="3.jpg" alt="Basic Internet Station" />
+                    <div class="station-info">
+                        <h3>Basic Internet Station</h3>
+                        <ul class="station-specs">
+                            <li>Intel i3 Processor</li>
+                            <li>Integrated Graphics</li>
+                            <li>8GB RAM</li>
+                            <li>22" HD Monitor</li>
+                            <li>Standard Keyboard</li>
+                        </ul>
+                        <span class="station-status status-available">Available</span>
+                    </div>
                 </div>
-                <div class="grid-card">
-                    <h3>Pricing Plans</h3>
-                    <p>Find the perfect plan for your budget.</p>
-                </div>
-                <div class="grid-card">
-                    <h3>Partner Program</h3>
-                    <p>Join us and earn attractive commissions.</p>
-                </div>
-                <div class="grid-card">
-                    <h3>Easy Registration</h3>
-                    <p>Quick and simple signup process.</p>
-                </div>
-                <div class="grid-card">
-                    <h3>Feedback & Reviews</h3>
-                    <p>Share your experience with us.</p>
-                </div>
-                <div class="grid-card">
-                    <h3>Download Resources</h3>
-                    <p>Access useful documents and guides.</p>
-                </div>
-                <div class="grid-card">
-                    <h3>Service Locations</h3>
-                    <p>Check our service availability in your area.</p>
-                </div>
-                 <div class="grid-card">
-                    <h3>Mobile Recharge</h3>
-                    <p>Instant top-ups for all operators.</p>
-                </div>
-                <div class="grid-card">
-                    <h3>Bill Payments</h3>
-                    <p>Pay your bills conveniently online.</p>
+                
+                <div class="station-card">
+                    <img class="station-image" src="4.jpg" alt="Basic calculate Station" />
+                    <div class="station-info">
+                        <h3>Basic calculate Station</h3>
+                        <ul class="station-specs">
+                            <li>Intel i3 Processor</li>
+                            <li>Integrated Graphics</li>
+                            <li>8GB RAM</li>
+                            <li>22" HD Monitor</li>
+                            <li>Standard Keyboard</li>
+                        </ul>
+                        <span class="station-status status-available">Available</span>
+                    </div>
                 </div>
             </div>
         </section>
+        
     </main>
-
-    <footer class="footer">
+    
+    <footer>
         <div class="footer-container">
             <div class="footer-column">
-                <h3>Our Services</h3>
-                <a href="#">Mobile Recharge</a>
-                <a href="#">DTH Recharge</a>
-                <a href="#">PAN Services</a>
-                <a href="#">Paperless Work</a>
-                <a href="#">Gift Cards</a>
+                <h3>OUR SERVICES</h3>
+                <a href="#">Internet Access</a>
+                <a href="#">Gaming Stations</a>
+                <a href="#">Printing & Scanning</a>
+                <a href="#">Document Services</a>
+                <a href="#">Cafe Refreshments</a>
+                <a href="#">Group Bookings</a>
             </div>
+            
             <div class="footer-column">
-                <h3>Connect With Us</h3>
-                <a href="#">Instagram</a>
-                <a href="#">Facebook</a>
-                <a href="#">LinkedIn</a>
-                <a href="#">Twitter</a>
-                <a href="#">YouTube</a>
+                <h3>BUSINESS HOURS</h3>
+                <a href="#">Monday-Friday: 8AM-11PM</a>
+                <a href="#">Saturday: 9AM-1AM</a>
+                <a href="#">Sunday: 10AM-10PM</a>
+                <a href="#">Holidays: 10AM-8PM</a>
             </div>
+            
             <div class="footer-column">
-                <h3>Contact & Support</h3>
-                <a href="#">Contact Us</a>
-                <a href="#">Mail Us</a>
-                <a href="#">Support Portal</a>
-                <a href="#">FAQs</a>
-                <a href="#">Report an Issue</a>
+                <h3>CONTACT US</h3>
+                <a href="tel:+911234567890">+91 123 456 7890</a>
+                <a href="mailto:info@apnaagency.com">info@apnaagency.com</a>
+                <a href="#">123 Tech Street, Cyber City</a>
+                <a href="#">Get Directions</a>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <span class="material-symbols-outlined">facebook</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <span class="material-symbols-outlined">photo_camera</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <span class="material-symbols-outlined">chat</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="WhatsApp">
+                        <span class="material-symbols-outlined">forum</span>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2023 www.APNAAGENCY.com. All rights reserved.</p>
+        
+        <div class="copyright">
+            © 2023 APNA AGENCY Cyber Cafe. All rights reserved.
         </div>
     </footer>
-    
-    <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js"></script>
-    <script src="script.js"></script>
+
+    <script>
+        // FUNCTION 1: Personalize Greeting
+        function personalizePage() {
+            // DEMO: मान लें कि आपने login.html में 'userName' सेव किया है
+            const userName = localStorage.getItem('userName') || 'पसंदीदा गेमर'; 
+            const greetingElement = document.getElementById('welcomeHeading');
+            
+            if (greetingElement) {
+                // स्लाइडर हेडिंग को यूजर के नाम से अपडेट करें
+                greetingElement.textContent = `वेलकम बैक, ${userName}! अपनी सीट तुरंत बुक करें।`;
+            }
+        }
+        personalizePage(); 
+
+        // FUNCTION 2: SLIDER SCRIPT (Same as before)
+        const slides = document.querySelectorAll('.slide');
+        if (slides.length > 0) {
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach(slide => {
+                    slide.classList.remove('active-slide');
+                });
+                slides[index].classList.add('active-slide');
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            showSlide(currentSlide);
+            setInterval(nextSlide, 5000); 
+        }
+
+        // FUNCTION 3: LOGOUT SCRIPT
+        document.getElementById('logoutButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            // 1. Log out status और नाम हटाएँ
+            localStorage.removeItem('isLoggedIn'); 
+            localStorage.removeItem('userName');
+            // 2. यूजर को लॉग इन पेज पर भेजें
+            window.location.href = 'login.html'; 
+        });
+    </script>
 </body>
 </html>
-
