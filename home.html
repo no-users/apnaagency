@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>APNA AGENCY</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    </head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="index.html" aria-label="Home">
+                    <img class="home-logo" src="logo.png" alt="APNA AGENCY Logo" />
+                </a>
+                <span class="brand-name">APNA AGENCY</span>
+            </div>
+            
+            <nav class="nav-bar" aria-label="Primary navigation">
+                <a href="index.html">Home</a>
+                <a href="#services-section">Services</a>
+                <a href="#pricing-section">Pricing</a>
+                <a href="#stations-section">Stations</a>
+                <a href="#contact-section">Contact</a>
+                <a href="#promotions-section">Promotions <sup class="new" aria-label="New">new</sup></a>
+            </nav>
+            
+            <div class="action-bar">
+                <a href="#" onclick="handleLogout()" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem; background: #4285F4; color: white;">
+                    <span class="material-symbols-outlined">logout</span> Logout
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero-slider-container">
+        <div class="slider">
+            
+            <div class="slide active-slide">
+                <img src="banner.jpg" alt="High-Speed Internet Banner">
+                <div class="slider-content">
+                    <h1>Fast Internet for All Your Needs</h1>
+                    <p>Connect instantly with our dedicated fiber lines. Perfect for work and study.</p>
+                    <a href="register.html" class="cta-button">Register Now</a> 
+                </div>
+            </div>
+
+            <div class="slide">
+                <img src="banner2.jpg" alt="Premium Gaming Stations Banner">
+                <div class="slider-content">
+                    <h1>Pro Gaming Experience</h1>
+                    <p>RTX graphics, 144Hz monitors, and low-latency peripherals for serious gamers.</p>
+                    <a href="#stations-section" class="cta-button">View Stations</a>
+                </div>
+            </div>
+            <div class="slide">
+                <img src="background.jpg" alt="Work and Study Stations">
+                <div class="slider-content">
+                    <h1>Document Services Made Easy</h1>
+                    <p>High-quality printing, scanning, and lamination for all your official needs.</p>
+                    <a href="login.html" class="cta-button">Login to Start</a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+    <main>
+        
+        <section id="services-section" class="services-section">
+            <h2 class="section-title">Our Premier Services</h2>
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">cloud_upload</span></div>
+                    <h3>Online Form Filling</h3>
+                    <p>Aadhaar, PAN, Passport, Railway, Exam applications, and Government schemes.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">print</span></div>
+                    <h3>Printing & Photocopy</h3>
+                    <p>High-quality colour and B&W printing, scanning, and secure document photocopy.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">computer</span></div>
+                    <h3>High-Speed Internet</h3>
+                    <p>Dedicated fiber-optic lines for browsing, downloading, and video conferencing.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">videogame_asset</span></div>
+                    <h3>Dedicated Gaming Zone</h3>
+                    <p>Ergonomic chairs, powerful GPUs, and low-latency monitors for competitive gaming.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">attach_money</span></div>
+                    <h3>Money Transfer & Bill Pay</h3>
+                    <p>Instant money transfers and easy utility bill payments (Electricity, Water, DTH).</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">chrome_reader_mode</span></div>
+                    <h3>Lamination & Binding</h3>
+                    <p>Durable lamination and professional spiral/comb binding for your projects.</p>
+                </div>
+                
+            </div>
+        </section>
+        
+        <section id="stations-section" class="stations-section">
+            <h2 class="section-title">Our High-Performance Stations</h2>
+            <div class="stations-grid">
+                
+                <div class="station-card">
+                    <img class="station-image" src="3.jpg" alt="Standard PC Station" />
+                    <div class="station-info">
+                        <h3>Standard PC Station</h3>
+                        <ul class="station-specs">
+                            <li>Core i3 / Ryzen 3 Processor</li>
+                            <li>8GB RAM, SSD Storage</li>
+                            <li>Ideal for browsing and form filling.</li>
+                        </ul>
+                        <span class="station-status status-available">Available (15/20)</span>
+                    </div>
+                </div>
+                
+                <div class="station-card">
+                    <img class="station-image" src="2.jpg" alt="Gaming PC Station" />
+                    <div class="station-info">
+                        <h3>Gaming PC Station (Pro)</h3>
+                        <ul class="station-specs">
+                            <li>Core i7 / Ryzen 7 Processor</li>
+                            <li>16GB RAM, RTX Graphics Card</li>
+                            <li>Best for heavy gaming and video editing.</li>
+                        </ul>
+                        <span class="station-status status-busy">Busy (5/10)</span>
+                    </div>
+                </div>
+                
+                <div class="station-card">
+                    <img class="station-image" src="1.jpg" alt="Workstation PC" />
+                    <div class="station-info">
+                        <h3>Dedicated Workstation</h3>
+                        <ul class="station-specs">
+                            <li>Quiet zone, Ergonomic chair</li>
+                            <li>Dedicated power backup</li>
+                            <li>Perfect for long work sessions.</li>
+                        </ul>
+                        <span class="station-status status-available">Available (3/5)</span>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <section id="pricing-section" class="pricing-section">
+            <h2 class="section-title">Flexible Pricing Plans</h2>
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">timer</span></div>
+                    <h3>Pay Per Hour</h3>
+                    <p>Standard rate for internet and basic use.</p>
+                    <div class="service-price">₹ 40 / Hour</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">all_inclusive</span></div>
+                    <h3>Daily Pass</h3>
+                    <p>Unlimited access for a full day (8 hours).</p>
+                    <div class="service-price">₹ 250 / Day</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">star</span></div>
+                    <h3>Premium Gaming Pass</h3>
+                    <p>Access to Pro Gaming Stations at a discounted hourly rate.</p>
+                    <div class="service-price">₹ 70 / Hour</div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <section id="promotions-section" class="promotions-section">
+            <h2 class="section-title">Latest Promotions & Guides</h2>
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">local_fire_department</span></div>
+                    <h3>Weekend Night Pass</h3>
+                    <p>Game or work from 10 PM to 6 AM at a flat rate.</p>
+                    <div class="service-price" style="color: #EA4335;">Flat ₹ 300</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">school</span></div>
+                    <h3>Student Discount</h3>
+                    <p>Show your student ID and get 15% off all services (Printing excluded).</p>
+                    <div class="service-price" style="color: #4285F4;">15% OFF</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon"><span class="material-symbols-outlined">play_circle</span></div>
+                    <h3>How-To Video Guides</h3>
+                    <p>Watch video tutorials on filling government forms and online banking.</p>
+                    <div class="service-price" style="color: #34A853;">Watch Now</div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <section id="contact-section" class="contact-section">
+            <h2 class="section-title">Get in Touch</h2>
+            </section>
+        
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>OUR SERVICES</h3>
+                <a href="#">Internet Access</a>
+                <a href="#">Gaming Stations</a>
+                <a href="#">Printing & Scanning</a>
+                <a href="#">Document Services</a>
+                <a href="#">Cafe Refreshments</a>
+                <a href="#">Group Bookings</a>
+            </div>
+            
+            <div class="footer-column">
+                <h3>BUSINESS HOURS</h3>
+                <a href="#">Monday-Friday: 8AM-11PM</a>
+                <a href="#">Saturday: 9AM-1AM</a>
+                <a href="#">Sunday: 10AM-10PM</a>
+                <a href="#">Holidays: 10AM-8PM</a>
+            </div>
+            
+            <div class="footer-column">
+                <h3>CONTACT US</h3>
+                <a href="tel:+911234567890">+91 123 456 7890</a>
+                <a href="mailto:info@apnaagency.com">info@apnaagency.com</a>
+                <a href="#">123 Tech Street, Cyber City</a>
+                <a href="#">Get Directions</a>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <span class="material-symbols-outlined">facebook</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <span class="material-symbols-outlined">photo_camera</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <span class="material-symbols-outlined">chat</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="WhatsApp">
+                        <span class="material-symbols-outlined">forum</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            © 2023 APNA AGENCY Cyber Cafe. All rights reserved.
+        </div>
+    </footer>
+    
+    <script>
+        // ------------------ Slider Logic ------------------
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        let slideInterval; 
+
+        function showSlide(index) {
+            if (slides.length === 0) return;
+            slides.forEach(slide => {
+                slide.classList.remove('active-slide');
+            });
+            slides[index].classList.add('active-slide');
+        }
+
+        function nextSlide() {
+            if (slides.length === 0) return;
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // ------------------ 🔥 Login Status Check and Header Update Logic 🔥 ------------------
+        
+        // 1. Get the action bar element
+        const actionButtons = document.getElementById('headerActionBar');
+
+        // 2. Check if user is logged in (using the localStorage flag set on successful login)
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+        if (isLoggedIn) {
+            // If logged in, display the Dashboard button with user name
+            const userName = localStorage.getItem('userName') || 'Dashboard';
+            actionButtons.innerHTML = `
+                <a href="dashboard.html" class="action-btn" style="background: #f97316;">
+                    <span class="material-symbols-outlined">dashboard</span> ${userName}
+                </a>
+            `;
+            // Stop the slider interval (optional, as logged-in users may not need the rotating banner)
+            if (slideInterval) {
+                 clearInterval(slideInterval);
+            }
+        } else {
+            // If not logged in, display the default Sign In/Register buttons
+            actionButtons.innerHTML = `
+                <a href="login.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+                    <span class="material-symbols-outlined">login</span> Sign In
+                </a>
+                <a href="register.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+                    <span class="material-symbols-outlined">person_add</span> Register
+                </a>
+            `;
+            // Start the slider for public view
+             if (slides.length > 0) {
+                 showSlide(currentSlide);
+                 slideInterval = setInterval(nextSlide, 5000); 
+             }
+        }
+        
+        // Menu toggle logic (retained for completeness)
+        function toggleMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('popupMenu');
+            if (menu && menu.style) { 
+                if (menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                } else {
+                    menu.style.display = 'block';
+                }
+            }
+        }
+        
+        window.addEventListener('click', function() {
+            const menu = document.getElementById('popupMenu');
+            if (menu && menu.style && menu.style.display === 'block') {
+                menu.style.display = 'none';
+            }
+        });
+
+    </script>
+</body>
+</html>
