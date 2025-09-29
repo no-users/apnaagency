@@ -12,29 +12,23 @@
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <a href="#" aria-label="Home">
-                    <img class="home-logo" src="logo.png" alt="" />
+                <a href="index.html" aria-label="Home">
+                    <img class="home-logo" src="logo.png" alt="APNA AGENCY Logo" />
                 </a>
                 <span class="brand-name">APNA AGENCY</span>
             </div>
             
             <nav class="nav-bar" aria-label="Primary navigation">
-                <a href="#">Home</a>
-                <a href="#">Services</a>
-                <a href="#">Pricing</a>
-                <a href="#">Stations</a>
-                <a href="#">Contact</a>
-                <a href="#">Promotions <sup class="new" aria-label="New">new</sup></a>
+                <a href="index.html">Home</a>
+                <a href="#services-section">Services</a>
+                <a href="#pricing-section">Pricing</a>
+                <a href="#stations-section">Stations</a>
+                <a href="#contact-section">Contact</a>
+                <a href="#promotions-section">Promotions <sup class="new" aria-label="New">new</sup></a>
             </nav>
             
-            <div class="action-bar">
-            <a href="login.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
-               <span class="material-symbols-outlined">login</span> Sign In
-            </a>
-            <a href="register.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
-             <span class="material-symbols-outlined">person_add</span> Register
-            </a>
-          </div>
+            <div class="action-bar" id="headerActionBar">
+                </div>
         </div>
     </header>
     
@@ -44,26 +38,26 @@
             <div class="slide active-slide">
                 <img src="banner.jpg" alt="High-Speed Internet Banner">
                 <div class="slider-content">
-                    <h1></h1>
-                    <p></p>
-                    <button class="cta-button">Register Now</button>
+                    <h1>Fast Internet for All Your Needs</h1>
+                    <p>Connect instantly with our dedicated fiber lines. Perfect for work and study.</p>
+                    <a href="register.html" class="cta-button">Register Now</a>
                 </div>
             </div>
 
             <div class="slide">
                 <img src="banner2.jpg" alt="Premium Gaming Stations Banner">
                 <div class="slider-content">
-                    <h1></h1>
-                    <p></p>
-                    <button class="cta-button">View Specs</button>
+                    <h1>Pro Gaming Experience</h1>
+                    <p>RTX graphics, 144Hz monitors, and low-latency peripherals for serious gamers.</p>
+                    <a href="#stations-section" class="cta-button">View Stations</a>
                 </div>
             </div>
             <div class="slide">
-                <img src="background.jpg" alt="Premium Gaming Stations Banner">
+                <img src="background.jpg" alt="Work and Study Stations">
                 <div class="slider-content">
-                    <h1></h1>
-                    <p></p>
-                    <button class="cta-button">Login</button>
+                    <h1>Document Services Made Easy</h1>
+                    <p>High-quality printing, scanning, and lamination for all your official needs.</p>
+                    <a href="login.html" class="cta-button">Login to Start</a>
                 </div>
             </div>
             
@@ -273,19 +267,17 @@
     </footer>
     
     <script>
+        // ------------------ Slider Logic ------------------
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
+        let slideInterval; 
 
         function showSlide(index) {
-            // Hide all slides
+            if (slides.length === 0) return;
             slides.forEach(slide => {
                 slide.classList.remove('active-slide');
             });
-
-            // Show the specific slide
-            if (slides.length > 0) {
-                 slides[index].classList.add('active-slide');
-            }
+            slides[index].classList.add('active-slide');
         }
 
         function nextSlide() {
@@ -294,37 +286,63 @@
             showSlide(currentSlide);
         }
 
-        // Initialize the slider (show first slide)
-        if (slides.length > 0) {
-            showSlide(currentSlide);
-            // Auto-slide every 5 seconds (5000 milliseconds)
-            setInterval(nextSlide, 5000);
+        // ------------------ 🔥 Login Status Check and Header Update Logic 🔥 ------------------
+        
+        // 1. Get the action bar element
+        const actionButtons = document.getElementById('headerActionBar');
+
+        // 2. Check if user is logged in (using the localStorage flag set on successful login)
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+        if (isLoggedIn) {
+            // If logged in, display the Dashboard button with user name
+            const userName = localStorage.getItem('userName') || 'Dashboard';
+            actionButtons.innerHTML = `
+                <a href="dashboard.html" class="action-btn" style="background: #f97316;">
+                    <span class="material-symbols-outlined">dashboard</span> ${userName}
+                </a>
+            `;
+            // Stop the slider interval
+            if (slideInterval) {
+                 clearInterval(slideInterval);
+            }
+        } else {
+            // If not logged in, display the default Sign In/Register buttons
+            actionButtons.innerHTML = `
+                <a href="login.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+                    <span class="material-symbols-outlined">login</span> Sign In
+                </a>
+                <a href="register.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+                    <span class="material-symbols-outlined">person_add</span> Register
+                </a>
+            `;
+            // Start the slider for public view
+             if (slides.length > 0) {
+                 showSlide(currentSlide);
+                 slideInterval = setInterval(nextSlide, 5000); 
+             }
         }
         
-        // Menu toggle function (as per your previous code)
+        // Menu toggle logic (retained from your original code)
         function toggleMenu(event) {
-             event.stopPropagation();
-             const menu = document.getElementById('popupMenu');
-             if (menu && menu.style) { // Check if element exists
-                 if (menu.style.display === 'block') {
-                   menu.style.display = 'none';
-                 } else {
-                   menu.style.display = 'block';
-                 }
-             }
+            event.stopPropagation();
+            const menu = document.getElementById('popupMenu');
+            if (menu && menu.style) { 
+                if (menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                } else {
+                    menu.style.display = 'block';
+                }
+            }
         }
         
         window.addEventListener('click', function() {
-             const menu = document.getElementById('popupMenu');
-             if (menu && menu.style && menu.style.display === 'block') {
-               menu.style.display = 'none';
-             }
+            const menu = document.getElementById('popupMenu');
+            if (menu && menu.style && menu.style.display === 'block') {
+                menu.style.display = 'none';
+            }
         });
+
     </script>
 </body>
 </html>
-
-
-
-
-
