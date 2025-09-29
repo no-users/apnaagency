@@ -271,6 +271,16 @@
         </div>
     </footer>
     <script>
+        <script>
+    // ------------------ 1. Security Check and User Info Load ------------------
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    // 🔥 यह लाइन अनधिकृत एक्सेस को रोकती है
+    if (!isLoggedIn) {
+        window.location.href = 'login.html'; // तुरंत लॉगिन पेज पर भेज दें
+    }
+    // ... बाकी कोड ...
+
     // ------------------ 1. Security Check and User Info Load ------------------
     // Local Storage से isLoggedIn की जाँच करें
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -336,5 +346,6 @@
 </body>
 
 </html>
+
 
 
