@@ -1,15 +1,14 @@
 /*
 ====================================
-APNA AGENCY CYBER CAFE - COLOURFUL THEME CSS (Version 3.0 - Final)
+APNA AGENCY CYBER CAFE - COLOURFUL THEME CSS (FINAL UNIFIED VERSION)
 ====================================
 Primary Accent Color: #f97316 (Orange/Amber)
-Google Colors for CTAs/Branding:
-Blue (Primary): #4285F4, Green (Success): #34A853, Yellow/Orange (Warning): #FBBC05
+Google Colors: Blue: #4285F4, Green: #34A853, Yellow: #FBBC05, Red: #EA4335
 Text Color: #1e293b (Dark Blue/Text)
+Background Color: #f8fafc (Light Gray/Off-White)
 */
 
 /* ------------------- BASE AND GLOBAL STYLES ------------------- */
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,13 +16,17 @@ Text Color: #1e293b (Dark Blue/Text)
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     line-height: 1.6;
-    background: #f8fafc; /* Light background */
+    background: #f8fafc;
     color: #1e293b;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+a {
+    text-decoration: none;
 }
 
 /* ------------------- HEADER AND NAVIGATION ------------------- */
@@ -50,56 +53,60 @@ header {
     align-items: center;
 }
 
-.home-logo {
+.logo-container img.home-logo {
     height: 40px;
-    width: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .brand-name {
     font-size: 1.5rem;
     font-weight: bold;
     margin-left: 12px;
-    color: #f97316;
+    color: #f97316; /* Primary Orange */
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+nav.nav-bar {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .nav-bar a {
-    text-decoration: none;
-    color: #1e293b;
+    color: #334155;
     padding: 0.5rem 1rem;
-    margin: 0 0.5rem;
     border-radius: 6px;
     transition: background 0.3s ease, color 0.3s ease;
     font-weight: 500;
     position: relative;
 }
 
-.nav-bar a:hover,
-.nav-bar a:focus {
+nav.nav-bar a:hover,
+nav.nav-bar a:focus {
     background: rgba(249, 115, 22, 0.1);
-    color: #f97316; 
+    color: #f97316;
     outline: none;
 }
 
-.nav-bar .new {
+nav.nav-bar a sup.new {
     background: #EA4335;
     color: white;
+    font-size: 0.6rem;
     padding: 2px 5px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    vertical-align: super;
-    margin-left: 4px;
+    border-radius: 10px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
 }
 
 .action-bar {
     display: flex;
     gap: 1rem;
+    align-items: center;
 }
 
-/* Logged In State Action Buttons */
 .action-btn {
-    background: #f97316; 
+    background: #4285F4; /* Google Blue */
     color: white;
     border: none;
     border-radius: 6px;
@@ -107,24 +114,18 @@ header {
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
-    text-decoration: none;
-}
-
-#logoutButton {
-    background: #EA4335; /* Red for Sign Out to differentiate */
-}
-#logoutButton:hover {
-    background: #c0392b;
+    display: flex; /* For icons */
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .action-btn:hover {
-    background: #ea580c;
+    background: #3c77e0;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
+    box-shadow: 0 4px 8px rgba(66, 133, 244, 0.4);
 }
 
 /* ------------------- MAIN CONTENT CONTAINER ------------------- */
-
 main {
     flex: 1;
     max-width: 1200px;
@@ -133,15 +134,15 @@ main {
     width: 100%;
 }
 
-/* ------------------- FULL WIDTH SLIDER/HERO SECTION ------------------- */
+/* ------------------- SLIDER/HERO SECTION ------------------- */
 
 .hero-slider-container {
-    width: 100%; 
+    width: 100%;
     margin: 0 0 3rem 0;
     position: relative;
-    overflow: hidden; 
+    overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    height: 450px;
+    height: 509px;
 }
 
 .slider {
@@ -156,12 +157,12 @@ main {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0; 
+    opacity: 0;
     transition: opacity 1s ease-in-out;
 }
 
 .slide.active-slide {
-    opacity: 1; 
+    opacity: 1;
 }
 
 .slide img {
@@ -199,6 +200,7 @@ main {
     background: #f97316;
     color: white;
     border: none;
+    margin-top: 1rem;
     padding: 0.75rem 2rem;
     border-radius: 8px;
     font-size: 1.1rem;
@@ -212,7 +214,7 @@ main {
     transform: scale(1.05);
 }
 
-/* ------------------- SECTION STYLES ------------------- */
+/* ------------------- GENERIC SECTION STYLES ------------------- */
 
 .section-title {
     font-size: 2rem;
@@ -245,14 +247,14 @@ main {
 }
 
 .service-card {
-    background: #ffffff; 
+    background: #ffffff;
     border-radius: 12px;
     padding: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(66, 133, 244, 0.1);
     display: flex;
     flex-direction: column;
-    height: 100%; /* Important for button alignment */
+    height: 100%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -290,48 +292,9 @@ main {
 .service-price {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #1e293b;
-    margin-bottom: 1rem;
+    color: #34A853;
+    margin-top: auto;
 }
-
-/* === Service Action Button Styles (UI Enhancement) === */
-
-.service-action-btn {
-    text-decoration: none;
-    padding: 0.6rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    text-align: center;
-    margin-top: auto; /* Pushes button to the bottom */
-    transition: background 0.3s ease, transform 0.2s ease;
-    display: block;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.service-action-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Button Colors (Themed) */
-.primary-btn { 
-    background: #4285F4; /* Blue */
-    color: white;
-}
-.primary-btn:hover { background: #3c77e0; }
-
-.warning-btn { 
-    background: #FBBC05; /* Yellow/Orange */
-    color: #1e293b;
-}
-.warning-btn:hover { background: #eab43b; }
-
-.success-btn { 
-    background: #34A853; /* Green */
-    color: white;
-}
-.success-btn:hover { background: #2b8c45; }
 
 /* ------------------- STATIONS SECTION ------------------- */
 
@@ -410,6 +373,83 @@ main {
     color: #EA4335;
 }
 
+/* ------------------- DASHBOARD SPECIFIC STYLES ------------------- */
+
+/* DASHBOARD HEADER */
+.dashboard-header {
+    background: linear-gradient(135deg, #4285F4, #6699ff); /* Blue Gradient */
+    color: white;
+    padding: 3rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+/* STAT CARDS */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    border-left: 5px solid #f97316; /* Default Orange Accent */
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card:nth-child(2) { border-left-color: #34A853; } /* Green */
+.stat-card:nth-child(3) { border-left-color: #FBBC05; } /* Yellow */
+
+.stat-card .value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e293b;
+    margin-top: 0.5rem;
+}
+
+.stat-card .label {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* LOGOUT BUTTON - Dashboard Header */
+.logout-btn {
+    background: #EA4335; /* Red */
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logout-btn:hover {
+    background: #c33d32;
+}
+
+
 /* ------------------- FOOTER ------------------- */
 
 footer {
@@ -439,7 +479,6 @@ footer {
 .footer-column a {
     display: block;
     color: #94a3b8;
-    text-decoration: none;
     margin-bottom: 0.5rem;
     font-size: 0.95rem;
     transition: color 0.3s ease;
@@ -470,7 +509,7 @@ footer {
 
 .social-link:hover {
     background: #4285F4;
-    color: #FFFFFF; 
+    color: #FFFFFF;
     transform: translateY(-3px);
 }
 
@@ -494,7 +533,7 @@ footer {
         justify-content: center;
         flex-wrap: wrap;
     }
-    
+
     .action-bar {
         margin-top: 1rem;
         width: 100%;
@@ -506,31 +545,27 @@ footer {
     header {
         padding: 1rem 1rem;
     }
-    
+
     .brand-name {
         font-size: 1.3rem;
     }
-    
+
     .hero-slider-container {
         height: 350px;
     }
-    
+
     .slider-content h1 {
         font-size: 2.5rem;
     }
-    
+
     .slider-content p {
         font-size: 1.1rem;
     }
-    
-    .services-grid {
+
+    .services-grid, .stations-grid, .dashboard-stats {
         grid-template-columns: 1fr;
     }
-    
-    .stations-grid {
-        grid-template-columns: 1fr;
-    }
-    
+
     .footer-container {
         grid-template-columns: 1fr;
     }
@@ -544,7 +579,7 @@ footer {
     .slider-content h1 {
         font-size: 1.8rem;
     }
-    
+
     .slider-content p {
         font-size: 1rem;
     }
@@ -553,13 +588,13 @@ footer {
         padding: 0.6rem 1.5rem;
         font-size: 1rem;
     }
-    
+
     .action-bar {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
-    .action-btn {
+
+    .action-btn, .logout-btn {
         width: 100%;
         justify-content: center;
     }
