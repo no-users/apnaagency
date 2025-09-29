@@ -286,66 +286,70 @@
             showSlide(currentSlide);
         }
 
+        // ------------------ LOGOUT FUNCTION (MUST be available) ------------------
+        function handleLogout() {
+            // Clear all login related flags from local storage
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUserPhone');
+            localStorage.removeItem('userName');
+            
+            // Redirect to the home page (index.html)
+            window.location.href = 'index.html'; 
+        }
+
         // ------------------ 🔥 Login Status Check and Header Update Logic 🔥 ------------------
         
-        // 1. Get the action bar element
         const actionButtons = document.getElementById('headerActionBar');
-
-        // 2. Check if user is logged in (using the localStorage flag set on successful login)
+        const navBar = document.getElementById('primaryNav');
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const userName = localStorage.getItem('userName') || 'User';
 
         if (isLoggedIn) {
-            // If logged in, display the Dashboard button with user name
-            const userName = localStorage.getItem('userName') || 'Dashboard';
+            // A. LOGGED IN VIEW: Only show Logout and Dashboard links
+            
+            // Action Bar: Show Logout
             actionButtons.innerHTML = `
-                <a href="dashboard.html" class="action-btn" style="background: #f97316;">
-                    <span class="material-symbols-outlined">dashboard</span> ${userName}
+                <a href="home.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem; background: #f97316;">
+                    <span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+                <a href="#" onclick="handleLogout()" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem; background: #4285F4; color: white;">
+                    <span class="material-symbols-outlined">logout</span> Logout
                 </a>
             `;
-            // Stop the slider interval (optional, as logged-in users may not need the rotating banner)
+            
+            // Navigation Bar: If you want to replace links in the main NAV bar too, you would do it here.
+            // For now, let's keep the main NAV bar static for general public links.
+
+            // Stop the slider interval
             if (slideInterval) {
                  clearInterval(slideInterval);
             }
         } else {
-            // If not logged in, display the default Sign In/Register buttons
+            // B. LOGGED OUT VIEW: Show Sign In/Register and start the slider
+            
+            // Action Bar: Show Sign In/Register
             actionButtons.innerHTML = `
-                <a href="login.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+                <a href="login.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem; background: #f97316;">
                     <span class="material-symbols-outlined">login</span> Sign In
                 </a>
-                <a href="register.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+                <a href="register.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem; background: #4285F4;">
                     <span class="material-symbols-outlined">person_add</span> Register
                 </a>
             `;
+            
             // Start the slider for public view
              if (slides.length > 0) {
                  showSlide(currentSlide);
                  slideInterval = setInterval(nextSlide, 5000); 
              }
         }
-        
-        // Menu toggle logic (retained for completeness)
-        function toggleMenu(event) {
-            event.stopPropagation();
-            const menu = document.getElementById('popupMenu');
-            if (menu && menu.style) { 
-                if (menu.style.display === 'block') {
-                    menu.style.display = 'none';
-                } else {
-                    menu.style.display = 'block';
-                }
-            }
-        }
-        
-        window.addEventListener('click', function() {
-            const menu = document.getElementById('popupMenu');
-            if (menu && menu.style && menu.style.display === 'block') {
-                menu.style.display = 'none';
-            }
-        });
+
+        // ... Menu toggle logic ...
 
     </script>
 </body>
 </html>
+
 
 
 
