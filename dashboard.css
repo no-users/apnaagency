@@ -1,6 +1,6 @@
 /*
 ====================================
-APNA AGENCY CYBER CAFE - COLOURFUL THEME CSS (Version 2.0)
+APNA AGENCY CYBER CAFE - FINAL UNIFIED STYLE.CSS
 ====================================
 Primary Accent Color: #f97316 (Orange/Amber)
 Secondary Accent Colors (Google-inspired):
@@ -19,21 +19,23 @@ Text Color: #1e293b (Dark Blue/Text)
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background: #f8fafc; /* Lighter background */
-    color: #1e293b; /* Darker text */
+    background: #f8fafc;
+    color: #1e293b;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+a {
+    text-decoration: none;
+}
 
 /* ------------------- HEADER AND NAVIGATION ------------------- */
 
 header {
-    background: #ffffff; /* White background */
-    color: #1e293b;
+    background: #ffffff;
     padding: 1rem 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Lighter shadow */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -62,8 +64,9 @@ header {
     font-size: 1.5rem;
     font-weight: bold;
     margin-left: 12px;
-    color: #1e293b; /* Dark text for logo name */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    /* हमने इसे #140952 से #f97316/Dark Blue (theme-friendly) में बदला है */
+    color: #1e293b; 
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 nav.nav-bar {
@@ -72,7 +75,6 @@ nav.nav-bar {
 }
 
 .nav-bar a {
-    text-decoration: none;
     color: #334155;
     padding: 0.5rem 1rem;
     border-radius: 6px;
@@ -83,14 +85,12 @@ nav.nav-bar {
 
 nav.nav-bar a:hover,
 nav.nav-bar a:focus {
-    /* Primary accent color for hover */
-    background: rgba(249, 115, 22, 0.1); /* Light Orange hover BG */
-    color: #f97316; /* Orange text on hover */
+    background: rgba(249, 115, 22, 0.1);
+    color: #f97316;
     outline: none;
 }
 
 nav.nav-bar a sup.new {
-    /* Secondary Accent Color: Red for NEW tag */
     background: #EA4335;
     color: white;
     font-size: 0.6rem;
@@ -103,63 +103,48 @@ nav.nav-bar a sup.new {
 
 .action-bar {
     display: flex;
-    gap: 0.5rem; /* Reduced gap for two buttons */
+    gap: 1rem;
     align-items: center;
 }
 
 .action-btn {
-    /* Primary Accent Color for action button (Sign In/Dashboard) */
-    background: #f97316; /* Orange */
-    color: white; 
-    border: none; /* No border for the main button */
+    background: #4285F4; /* Default Blue for Sign In */
+    color: white;
+    border: none;
     border-radius: 6px;
     padding: 0.5rem 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
-    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.action-btn:last-child {
-    /* Secondary button style (Register or Logout) */
-    background: #4285F4; /* Blue */
-}
-
 .action-btn:hover {
-    background: #ea580c; /* Darker Orange on hover */
+    background: #3c77e0;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
-}
-
-.action-btn:last-child:hover {
-     background: #3c77d3; /* Darker Blue on hover */
-     box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
+    box-shadow: 0 4px 8px rgba(66, 133, 244, 0.4);
 }
 
 /* ------------------- MAIN CONTENT CONTAINER ------------------- */
-
 main {
     flex: 1;
-    max-width: 1200px; 
+    max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
-    width: 100%; 
+    width: 100%;
 }
 
-/* ------------------- FULL WIDTH SLIDER/HERO SECTION ------------------- */
+/* ------------------- SLIDER/HERO SECTION (index.html) ------------------- */
 
 .hero-slider-container {
-    width: 99%; 
+    width: 99%; /* Max Width 1200px के बाहर जाने के लिए */
     margin: 0 0 3rem 0; 
     position: relative;
-    overflow: hidden; 
-    border-radius: 8px; /* Added slight rounding to banners */
+    overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    height: 509px; 
-    margin-left: 0.5%; /* Adjusting for 99% width */
+    height: 509px;
 }
 
 .slider {
@@ -174,19 +159,19 @@ main {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0; 
-    transition: opacity 1s ease-in-out; 
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
 .slide.active-slide {
-    opacity: 1; 
+    opacity: 1;
 }
 
 .slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(60%); 
+    filter: brightness(60%);
 }
 
 .slider-content {
@@ -204,7 +189,7 @@ main {
 .slider-content h1 {
     font-size: 3.5rem;
     margin-bottom: 0.75rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .slider-content p {
@@ -214,33 +199,30 @@ main {
 }
 
 .cta-button {
-    /* Primary Accent Color for CTA */
-    background: #f97316; 
+    background: #f97316; /* Orange CTA button */
     color: white;
     border: none;
-    margin-top: 0; /* Removed excessive top margin */
+    margin-top: 1rem;
     padding: 0.75rem 2rem;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
 }
 
 .cta-button:hover {
-    background: #ea580c; /* Darker orange on hover */
+    background: #ea580c;
     transform: scale(1.05);
 }
 
-/* ------------------- SECTION STYLES ------------------- */
+/* ------------------- SECTION STYLES (Common) ------------------- */
 
 .section-title {
     font-size: 2rem;
     text-align: center;
     margin-bottom: 2rem;
-    color: #1e293b; /* Dark text for better readability */
+    color: #f97316;
     position: relative;
     padding-bottom: 0.5rem;
 }
@@ -253,13 +235,11 @@ main {
     transform: translateX(-50%);
     width: 80px;
     height: 3px;
-    /* Primary Accent Color gradient */
     background: linear-gradient(90deg, #f97316, #ea580c);
     border-radius: 3px;
 }
 
-/* ------------------- SERVICES SECTION ------------------- */
-
+/* Services Grid and Cards (Public & Dashboard) */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -268,11 +248,11 @@ main {
 }
 
 .service-card {
-    background: #ffffff; 
+    background: #ffffff;
     border-radius: 12px;
     padding: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(249, 115, 22, 0.1); /* Light Orange border */
+    border: 1px solid rgba(66, 133, 244, 0.1);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -282,7 +262,7 @@ main {
 .service-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    border-color: #f97316; /* Orange border on hover */
+    border-color: #4285F4;
 }
 
 .service-icon {
@@ -290,35 +270,20 @@ main {
     margin-bottom: 1rem;
     align-self: flex-start;
 }
+/* Google-inspired Icon Coloring */
+.services-grid .service-card:nth-child(1) .service-icon { color: #4285F4; } 
+.services-grid .service-card:nth-child(2) .service-icon { color: #EA4335; } 
+.services-grid .service-card:nth-child(3) .service-icon { color: #FBBC05; } 
+.services-grid .service-card:nth-child(4) .service-icon { color: #34A853; } 
+.services-grid .service-card:nth-child(5) .service-icon { color: #f97316; } 
+.services-grid .service-card:nth-child(6) .service-icon { color: #4285F4; } 
 
-/* Google-inspired Icon Coloring (Kept Consistent) */
-.services-grid .service-card:nth-child(1) .service-icon { color: #4285F4; } /* Blue */
-.services-grid .service-card:nth-child(2) .service-icon { color: #EA4335; } /* Red */
-.services-grid .service-card:nth-child(3) .service-icon { color: #FBBC05; } /* Yellow */
-.services-grid .service-card:nth-child(4) .service-icon { color: #34A853; } /* Green */
-.services-grid .service-card:nth-child(5) .service-icon { color: #f97316; } /* Orange */
-.services-grid .service-card:nth-child(6) .service-icon { color: #4285F4; } /* Blue */
+.service-card h3 { color: #1e293b; margin-bottom: 0.5rem; }
+.service-card p { font-size: 0.95rem; color: #475569; margin-bottom: 1rem; }
+.service-price { font-size: 1.2rem; font-weight: bold; color: #34A853; margin-top: auto; }
 
-.service-card h3 {
-    color: #1e293b;
-    margin-bottom: 0.5rem;
-}
 
-.service-card p {
-    font-size: 0.95rem;
-    color: #475569;
-    margin-bottom: 1rem;
-}
-
-.service-price {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #34A853; /* Green for pricing */
-    margin-top: auto; 
-}
-
-/* ------------------- STATIONS SECTION ------------------- */
-
+/* ------------------- STATIONS SECTION (index.html) ------------------- */
 .stations-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -333,71 +298,86 @@ main {
     transition: transform 0.3s ease;
 }
 
-.station-card:hover {
-    transform: translateY(-5px);
+.station-card:hover { transform: translateY(-5px); }
+.station-image { width: 100%; height: 200px; object-fit: cover; }
+.station-info { padding: 1rem; }
+.station-info h3 { color: #f97316; margin-bottom: 0.5rem; }
+.station-specs { list-style: none; padding: 0; margin-bottom: 1rem; }
+.station-specs li { font-size: 0.9rem; color: #475569; margin-bottom: 4px; display: flex; align-items: flex-start; }
+.station-specs li::before { content: "•"; color: #4285F4; font-weight: bold; display: inline-block; width: 1em; margin-right: 0.5rem; }
+.station-status { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
+.status-available { background: rgba(52, 168, 83, 0.2); color: #34A853; }
+.status-busy { background: rgba(234, 67, 53, 0.2); color: #EA4335; }
+
+/* ------------------- DASHBOARD SPECIFIC STYLES (dashboard.html) ------------------- */
+
+/* DASHBOARD HERO SECTION */
+.dashboard-hero {
+    padding: 0; 
+    margin: 0 0 3rem 0;
+    box-shadow: none; 
+    height: auto; 
 }
 
-.station-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+.dashboard-header {
+    background: linear-gradient(135deg, #01031e, #18356d); /* आकर्षक ब्लू ग्रेडिएंट */
+    color: white;
+    padding: 3rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    width: 98%;
+    max-width: 1200px;
+    margin: 1rem auto;
+    position: relative; /* Image Overlay के लिए */
 }
 
-.station-info {
-    padding: 1rem;
-}
-
-.station-info h3 {
-    color: #f97316; /* Orange heading */
+.dashboard-header h1 {
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
-.station-specs {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 1rem;
+/* STAT CARDS - मुख्य आँकड़ों के लिए */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem; 
 }
 
-.station-specs li {
-    font-size: 0.9rem;
-    color: #475569;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: flex-start;
+.stat-card {
+    background: rgba(255, 255, 255, 0.2); /* Transparent White Background */
+    backdrop-filter: blur(5px);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s;
 }
 
-.station-specs li::before {
-    content: "•";
-    color: #4285F4; /* Blue bullet point */
+.stat-card:hover {
+    transform: scale(1.03);
+}
+
+.stat-card .value {
+    font-size: 2rem;
     font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-right: 0.5rem;
+    color: #FBBC05; /* Yellow/Gold text */
+    margin-top: 0.5rem;
 }
 
-.station-status {
-    display: inline-block;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
+.stat-card .label {
+    color: #e0f2fe; /* Light blue text */
+    font-size: 0.95rem;
 }
 
-.status-available {
-    background: rgba(52, 168, 83, 0.2); /* Light Green BG */
-    color: #34A853; /* Green for Available */
-}
-
-.status-busy {
-    background: rgba(234, 67, 53, 0.2); /* Light Red BG */
-    color: #EA4335; /* Red for Busy */
-}
 
 /* ------------------- FOOTER ------------------- */
-
 footer {
-    background: #1e293b; /* Dark background */
+    background: #1e293b;
     color: #cbd5e1;
     padding: 3rem 1rem 1rem 1rem;
     margin-top: 3rem;
@@ -414,7 +394,7 @@ footer {
 
 .footer-column h3 {
     font-size: 1.3rem;
-    color: #FBBC05; /* Yellow accent in dark footer */
+    color: #FBBC05;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid rgba(251, 188, 5, 0.3);
@@ -430,7 +410,7 @@ footer {
 }
 
 .footer-column a:hover {
-    color: #f97316; /* Orange hover in dark footer */
+    color: #4285F4;
 }
 
 .social-links {
@@ -445,17 +425,16 @@ footer {
     justify-content: center;
     width: 40px;
     height: 40px;
-    /* Primary Accent Color for social icons */
-    background: rgba(249, 115, 22, 0.1); 
+    background: rgba(66, 133, 244, 0.1);
     border-radius: 50%;
     transition: all 0.3s ease;
-    color: #f97316; 
+    color: #4285F4;
     text-decoration: none;
 }
 
 .social-link:hover {
-    background: #f97316; 
-    color: #FFFFFF; 
+    background: #4285F4;
+    color: #FFFFFF;
     transform: translateY(-3px);
 }
 
@@ -463,7 +442,7 @@ footer {
     text-align: center;
     padding-top: 2rem;
     margin-top: 2rem;
-    border-top: 1px solid rgba(249, 115, 22, 0.2); /* Light Orange divider */
+    border-top: 1px solid rgba(66, 133, 244, 0.2);
     color: #94a3b8;
     font-size: 0.9rem;
 }
@@ -472,14 +451,12 @@ footer {
 
 @media (max-width: 1024px) {
     .nav-bar {
-        display: none; 
+        display: none;
     }
-
     .header-container {
         justify-content: center;
         flex-wrap: wrap;
     }
-    
     .action-bar {
         margin-top: 1rem;
         width: 100%;
@@ -491,31 +468,21 @@ footer {
     header {
         padding: 1rem 1rem;
     }
-    
     .brand-name {
         font-size: 1.3rem;
     }
-    
     .hero-slider-container {
-        height: 350px; 
+        height: 350px;
     }
-    
     .slider-content h1 {
         font-size: 2.5rem;
     }
-    
     .slider-content p {
         font-size: 1.1rem;
     }
-    
-    .services-grid {
+    .services-grid, .stations-grid, .dashboard-stats {
         grid-template-columns: 1fr;
     }
-    
-    .stations-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .footer-container {
         grid-template-columns: 1fr;
     }
@@ -523,27 +490,22 @@ footer {
 
 @media (max-width: 480px) {
     .hero-slider-container {
-        height: 280px; 
+        height: 280px;
     }
-
     .slider-content h1 {
         font-size: 1.8rem;
     }
-    
     .slider-content p {
         font-size: 1rem;
     }
-
     .cta-button {
         padding: 0.6rem 1.5rem;
         font-size: 1rem;
     }
-    
     .action-bar {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
     .action-btn {
         width: 100%;
         justify-content: center;
