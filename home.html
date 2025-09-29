@@ -1,300 +1,566 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>APNA AGENCY Cyber Cafe - Home</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    
-    <script>
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
+/*
+====================================
+APNA AGENCY CYBER CAFE - COLOURFUL THEME CSS (Version 3.0 - Final)
+====================================
+Primary Accent Color: #f97316 (Orange/Amber)
+Google Colors for CTAs/Branding:
+Blue (Primary): #4285F4, Green (Success): #34A853, Yellow/Orange (Warning): #FBBC05
+Text Color: #1e293b (Dark Blue/Text)
+*/
 
-        if (isLoggedIn !== 'true') {
-            // यदि लॉग इन नहीं है, तो तुरंत लॉग इन पेज पर भेजें
-            window.location.href = 'login.html';
-        }
-    </script>
+/* ------------------- BASE AND GLOBAL STYLES ------------------- */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background: #f8fafc; /* Light background */
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ------------------- HEADER AND NAVIGATION ------------------- */
+
+header {
+    background: #ffffff;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.home-logo {
+    height: 40px;
+    width: auto;
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 12px;
+    color: #f97316;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.nav-bar a {
+    text-decoration: none;
+    color: #1e293b;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    border-radius: 6px;
+    transition: background 0.3s ease, color 0.3s ease;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-bar a:hover,
+.nav-bar a:focus {
+    background: rgba(249, 115, 22, 0.1);
+    color: #f97316; 
+    outline: none;
+}
+
+.nav-bar .new {
+    background: #EA4335;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    vertical-align: super;
+    margin-left: 4px;
+}
+
+.action-bar {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Logged In State Action Buttons */
+.action-btn {
+    background: #f97316; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+#logoutButton {
+    background: #EA4335; /* Red for Sign Out to differentiate */
+}
+#logoutButton:hover {
+    background: #c0392b;
+}
+
+.action-btn:hover {
+    background: #ea580c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
+}
+
+/* ------------------- MAIN CONTENT CONTAINER ------------------- */
+
+main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    width: 100%;
+}
+
+/* ------------------- FULL WIDTH SLIDER/HERO SECTION ------------------- */
+
+.hero-slider-container {
+    width: 100%; 
+    margin: 0 0 3rem 0;
+    position: relative;
+    overflow: hidden; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    height: 450px;
+}
+
+.slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; 
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active-slide {
+    opacity: 1; 
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(60%);
+}
+
+.slider-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 10;
+    width: 90%;
+    max-width: 900px;
+}
+
+.slider-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 0.75rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.slider-content p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.cta-button {
+    background: #f97316;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #ea580c;
+    transform: scale(1.05);
+}
+
+/* ------------------- SECTION STYLES ------------------- */
+
+.section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #f97316;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #f97316, #ea580c);
+    border-radius: 3px;
+}
+
+/* ------------------- SERVICES SECTION ------------------- */
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.service-card {
+    background: #ffffff; 
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(66, 133, 244, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Important for button alignment */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: #4285F4;
+}
+
+.service-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+}
+
+/* Google-inspired Icon Coloring */
+.services-grid .service-card:nth-child(1) .service-icon { color: #4285F4; }
+.services-grid .service-card:nth-child(2) .service-icon { color: #EA4335; }
+.services-grid .service-card:nth-child(3) .service-icon { color: #FBBC05; }
+.services-grid .service-card:nth-child(4) .service-icon { color: #34A853; }
+.services-grid .service-card:nth-child(5) .service-icon { color: #f97316; }
+.services-grid .service-card:nth-child(6) .service-icon { color: #4285F4; }
+
+.service-card h3 {
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.service-card p {
+    font-size: 0.95rem;
+    color: #475569;
+    margin-bottom: 1rem;
+}
+
+.service-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+/* === Service Action Button Styles (Improved UI for Logged-In Users) === */
+
+.service-action-btn {
+    text-decoration: none;
+    padding: 0.6rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: auto; /* Pushes button to the bottom */
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.service-action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Button Colors (Themed) */
+.primary-btn { 
+    background: #4285F4; /* Blue */
+    color: white;
+}
+.primary-btn:hover { background: #3c77e0; }
+
+.warning-btn { 
+    background: #FBBC05; /* Yellow/Orange */
+    color: #1e293b;
+}
+.warning-btn:hover { background: #eab43b; }
+
+.success-btn { 
+    background: #34A853; /* Green */
+    color: white;
+}
+.success-btn:hover { background: #2b8c45; }
+
+/* ------------------- STATIONS SECTION ------------------- */
+
+.stations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.station-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.station-card:hover {
+    transform: translateY(-5px);
+}
+
+.station-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.station-info {
+    padding: 1rem;
+}
+
+.station-info h3 {
+    color: #f97316;
+    margin-bottom: 0.5rem;
+}
+
+.station-specs {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.station-specs li {
+    font-size: 0.9rem;
+    color: #475569;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.station-specs li::before {
+    content: "•";
+    color: #4285F4;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-right: 0.5rem;
+}
+
+.station-status {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-available {
+    background: rgba(52, 168, 83, 0.2);
+    color: #34A853;
+}
+
+.status-busy {
+    background: rgba(234, 67, 53, 0.2);
+    color: #EA4335;
+}
+
+/* ------------------- FOOTER ------------------- */
+
+footer {
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 3rem 1rem 1rem 1rem;
+    margin-top: 3rem;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding-bottom: 2rem;
+}
+
+.footer-column h3 {
+    font-size: 1.3rem;
+    color: #FBBC05;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(251, 188, 5, 0.3);
+}
+
+.footer-column a {
+    display: block;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+    color: #4285F4;
+}
+
+.social-links {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(66, 133, 244, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    color: #4285F4;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    background: #4285F4;
+    color: #FFFFFF; 
+    transform: translateY(-3px);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(66, 133, 244, 0.2);
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* ------------------- RESPONSIVE DESIGN (Media Queries) ------------------- */
+
+@media (max-width: 1024px) {
+    .nav-bar {
+        display: none;
+    }
+
+    .header-container {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
     
-</head>
-<body>
+    .action-bar {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: space-around;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 1rem 1rem;
+    }
     
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="#" aria-label="Home">
-                    <img class="home-logo" src="logo.png" alt="APNA AGENCY Logo" />
-                </a>
-                <span class="brand-name">APNA AGENCY</span>
-            </div>
-            
-            <nav class="nav-bar" aria-label="Primary navigation">
-                <a href="#">Home</a>
-                <a href="#">Services</a>
-                <a href="#">Pricing</a>
-                <a href="#">Stations</a>
-                <a href="#">Contact</a>
-                <a href="#">Promotions <sup class="new" aria-label="New">new</sup></a>
-            </nav>
-            
-            <div class="action-bar">
-                <a href="#" class="action-btn" id="logoutButton" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
-                   <span class="material-symbols-outlined">logout</span> Sign Out
-                </a>
-                <a href="#" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
-                 <span class="material-symbols-outlined">account_circle</span> Profile
-                </a>
-            </div>
-        </div>
-    </header>
+    .brand-name {
+        font-size: 1.3rem;
+    }
     
-    <section class="hero-slider-container">
-        <div class="slider">
-            
-            <div class="slide active-slide">
-                <img src="Image/banner.jpg" alt="High-Speed Internet Banner">
-                <div class="slider-content">
-                    <h1 id="welcomeHeading">वेलकम बैक! अपनी सीट तुरंत बुक करें।</h1> 
-                    <p>प्रीमियम एक्सेस और एक्सक्लूसिव डील्स आपका इंतज़ार कर रहे हैं।</p>
-                    <button class="cta-button">Book Your Premium Slot</button>
-                </div>
-            </div>
-
-            <div class="slide">
-                <img src="Image/banner2.jpg" alt="Premium Gaming Stations Banner">
-                <div class="slider-content">
-                    <h1>Dominate the Game!</h1>
-                    <p>High-end gaming PCs with RTX 3070 Graphics. Book your slot now!</p>
-                    <button class="cta-button">View Gaming Specs</button>
-                </div>
-            </div>
-        </div>
-    </section>
+    .hero-slider-container {
+        height: 350px;
+    }
     
-    <main>
-        
-        <section class="services-section">
-            <h2 class="section-title">Our Services</h2>
-            <div class="services-grid">
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-symbols-outlined">computer</span>
-                    </div>
-                    <h3>Premium Internet Access</h3>
-                    <p>High-speed fiber internet with secure connections for browsing, streaming, and downloading.</p>
-                    <div class="service-price">₹0</div>
-                    <a href="#" class="service-action-btn primary-btn">Start Session</a> </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-symbols-outlined">sports_esports</span>
-                    </div>
-                    <h3>Gaming Station</h3>
-                    <p>High-end gaming PCs with popular titles pre-installed and optimized for the best gaming experience.</p>
-                    <div class="service-price">₹100/hour</div>
-                    <a href="#" class="service-action-btn warning-btn">Book Now</a> </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-symbols-outlined">print</span>
-                    </div>
-                    <h3>Printing & Scanning</h3>
-                    <p>High-quality color and B/W printing, scanning, and photocopying services with various paper options.</p>
-                    <div class="service-price">₹5/page</div>
-                    <a href="#" class="service-action-btn success-btn">Print Document</a> </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-symbols-outlined">description</span>
-                    </div>
-                    <h3>Document Services</h3>
-                    <p>Resume printing, application forms, document typing, and professional formatting services.</p>
-                    <div class="service-price">₹30/doc</div>
-                    <a href="#" class="service-action-btn primary-btn">View Forms</a> </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-symbols-outlined">coffee</span>
-                    </div>
-                    <h3>Cafe Refreshments</h3>
-                    <p>Enjoy hot coffee, tea, cold drinks, and snacks while you work or game at our station.</p>
-                    <div class="service-price">₹20-100</div>
-                    <a href="#" class="service-action-btn warning-btn">Order Now</a> </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-symbols-outlined">groups</span>
-                    </div>
-                    <h3>Group Booking</h3>
-                    <p>Special rates for group bookings, LAN parties, and gaming tournaments. Perfect for friends and teams.</p>
-                    <div class="service-price">Custom Pricing</div>
-                    <a href="#" class="service-action-btn success-btn">Inquire</a> </div>
-            </div>
-        </section>
-        
-        <section class="stations-section">
-            <h2 class="section-title">Our Computer Stations</h2>
-            <div class="stations-grid">
-                <div class="station-card">
-                    <img class="station-image" src="1.jpg" alt="Premium Gaming Station" />
-                    <div class="station-info">
-                        <h3>Premium Gaming Station</h3>
-                        <ul class="station-specs">
-                            <li>Intel i7 Processor</li>
-                            <li>RTX 3070 Graphics</li>
-                            <li>32GB RAM</li>
-                            <li>240Hz Gaming Monitor</li>
-                            <li>Mechanical Keyboard</li>
-                        </ul>
-                        <span class="station-status status-available">Available</span>
-                    </div>
-                </div>
-                
-                <div class="station-card">
-                    <img class="station-image" src="2.jpg" alt="Standard Workstation" />
-                    <div class="station-info">
-                        <h3>Standard Workstation</h3>
-                        <ul class="station-specs">
-                            <li>Intel i5 Processor</li>
-                            <li>GTX 1660 Graphics</li>
-                            <li>16GB RAM</li>
-                            <li>Dual 24" Monitors</li>
-                            <li>Ergonomic Keyboard</li>
-                        </ul>
-                        <span class="station-status status-busy">In Use</span>
-                    </div>
-                </div>
-                
-                <div class="station-card">
-                    <img class="station-image" src="3.jpg" alt="Basic Internet Station" />
-                    <div class="station-info">
-                        <h3>Basic Internet Station</h3>
-                        <ul class="station-specs">
-                            <li>Intel i3 Processor</li>
-                            <li>Integrated Graphics</li>
-                            <li>8GB RAM</li>
-                            <li>22" HD Monitor</li>
-                            <li>Standard Keyboard</li>
-                        </ul>
-                        <span class="station-status status-available">Available</span>
-                    </div>
-                </div>
-                
-                <div class="station-card">
-                    <img class="station-image" src="4.jpg" alt="Basic calculate Station" />
-                    <div class="station-info">
-                        <h3>Basic calculate Station</h3>
-                        <ul class="station-specs">
-                            <li>Intel i3 Processor</li>
-                            <li>Integrated Graphics</li>
-                            <li>8GB RAM</li>
-                            <li>22" HD Monitor</li>
-                            <li>Standard Keyboard</li>
-                        </ul>
-                        <span class="station-status status-available">Available</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-    </main>
+    .slider-content h1 {
+        font-size: 2.5rem;
+    }
     
-    <footer>
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3>OUR SERVICES</h3>
-                <a href="#">Internet Access</a>
-                <a href="#">Gaming Stations</a>
-                <a href="#">Printing & Scanning</a>
-                <a href="#">Document Services</a>
-                <a href="#">Cafe Refreshments</a>
-                <a href="#">Group Bookings</a>
-            </div>
-            
-            <div class="footer-column">
-                <h3>BUSINESS HOURS</h3>
-                <a href="#">Monday-Friday: 8AM-11PM</a>
-                <a href="#">Saturday: 9AM-1AM</a>
-                <a href="#">Sunday: 10AM-10PM</a>
-                <a href="#">Holidays: 10AM-8PM</a>
-            </div>
-            
-            <div class="footer-column">
-                <h3>CONTACT US</h3>
-                <a href="tel:+911234567890">+91 123 456 7890</a>
-                <a href="mailto:info@apnaagency.com">info@apnaagency.com</a>
-                <a href="#">123 Tech Street, Cyber City</a>
-                <a href="#">Get Directions</a>
-                
-                <div class="social-links">
-                    <a href="#" class="social-link" aria-label="Facebook">
-                        <span class="material-symbols-outlined">facebook</span>
-                    </a>
-                    <a href="#" class="social-link" aria-label="Instagram">
-                        <span class="material-symbols-outlined">photo_camera</span>
-                    </a>
-                    <a href="#" class="social-link" aria-label="Twitter">
-                        <span class="material-symbols-outlined">chat</span>
-                    </a>
-                    <a href="#" class="social-link" aria-label="WhatsApp">
-                        <span class="material-symbols-outlined">forum</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="copyright">
-            © 2023 APNA AGENCY Cyber Cafe. All rights reserved.
-        </div>
-    </footer>
+    .slider-content p {
+        font-size: 1.1rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+}
 
-    <script>
-        // FUNCTION 1: Personalize Greeting
-        function personalizePage() {
-            // DEMO: मान लें कि आपने login.html में 'userName' सेव किया है
-            const userName = localStorage.getItem('userName') || 'पसंदीदा गेमर'; 
-            const greetingElement = document.getElementById('welcomeHeading');
-            
-            if (greetingElement) {
-                // स्लाइडर हेडिंग को यूजर के नाम से अपडेट करें
-                greetingElement.textContent = `वेलकम बैक, ${userName}! अपनी सीट तुरंत बुक करें।`;
-            }
-        }
-        personalizePage(); 
+@media (max-width: 480px) {
+    .hero-slider-container {
+        height: 280px;
+    }
 
-        // FUNCTION 2: SLIDER SCRIPT (Same as before)
-        const slides = document.querySelectorAll('.slide');
-        if (slides.length > 0) {
-            let currentSlide = 0;
+    .slider-content h1 {
+        font-size: 1.8rem;
+    }
+    
+    .slider-content p {
+        font-size: 1rem;
+    }
 
-            function showSlide(index) {
-                slides.forEach(slide => {
-                    slide.classList.remove('active-slide');
-                });
-                slides[index].classList.add('active-slide');
-            }
-
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % slides.length;
-                showSlide(currentSlide);
-            }
-
-            showSlide(currentSlide);
-            setInterval(nextSlide, 5000); 
-        }
-
-        // FUNCTION 3: LOGOUT SCRIPT
-        document.getElementById('logoutButton').addEventListener('click', function(event) {
-            event.preventDefault();
-            // 1. Log out status और नाम हटाएँ
-            localStorage.removeItem('isLoggedIn'); 
-            localStorage.removeItem('userName');
-            // 2. यूजर को लॉग इन पेज पर भेजें
-            window.location.href = 'login.html'; 
-        });
-    </script>
-</body>
-</html>
+    .cta-button {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .action-bar {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
