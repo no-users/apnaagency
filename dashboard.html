@@ -1,159 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard - APNA AGENCY</title>
-    <link rel="stylesheet" href="home.css"> 
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>APNA AGENCY - User Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <style>
-        /* DASHBOARD SPECIFIC STYLES */
-        main {
-            padding: 2rem 1rem;
-        }
-
-        .dashboard-header {
-            background: linear-gradient(135deg, #4285F4, #6699ff); /* Blue Gradient */
-            color: white;
-            padding: 3rem;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            text-align: center;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .dashboard-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .dashboard-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            border-left: 5px solid #f97316; /* Orange Accent */
-        }
-        
-        .stat-card:nth-child(2) { border-left-color: #34A853; } /* Green */
-        .stat-card:nth-child(3) { border-left-color: #FBBC05; } /* Yellow */
-
-        .stat-card .value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #1e293b;
-            margin-top: 0.5rem;
-        }
-
-        .stat-card .label {
-            color: #64748b;
-        }
-        
-        /* LOGOUT BUTTON STYLES */
-        .logout-btn-container {
-            text-align: right;
-            margin-top: -2rem; /* header से ऊपर लाने के लिए */
-        }
-
-        .logout-btn {
-            background: #EA4335; /* Red */
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .logout-btn:hover {
-            background: #c33d32;
-        }
-    </style>
 </head>
 <body>
+    
     <header>
         <div class="header-container">
-             <div class="logo-container">
+            <div class="logo-container">
                 <a href="dashboard.html" aria-label="Dashboard Home">
                     <img class="home-logo" src="Image/logo.png" alt="APNA AGENCY Logo" />
                 </a>
-                <span class="brand-name">DASHBOARD</span>
+                <span class="brand-name">APNA AGENCY</span>
             </div>
-
+            
+            <nav class="nav-bar" aria-label="Dashboard and Public Navigation">
+                <a href="dashboard.html" style="color: #f97316; font-weight: 700;">Dashboard</a> 
+                <a href="index.html">Main Site</a> 
+            </nav>
+            
             <div class="action-bar">
-                <div class="logout-btn-container">
-                    <button id="logoutButton" class="logout-btn">
-                        <span class="material-symbols-outlined" style="vertical-align: middle;">logout</span> Log Out
-                    </button>
-                </div>
+                <span id="userNameDisplay" style="font-weight: 600; color: #1e293b; padding: 0.5rem; white-space: nowrap;"></span>
+                
+                <button id="logoutButton" class="action-btn" style="background: #0a0220; color: white; border: none;">
+                    <span class="material-symbols-outlined">logout</span> Log Out
+                </button>
             </div>
         </div>
     </header>
     
-    <main>
-        <section class="dashboard-header">
+    <section class="hero-slider-container dashboard-hero">
+        <div class="dashboard-header">
             <h1 id="welcomeMessage">Welcome Back, User!</h1>
-            <p>Your personalized APNA AGENCY control panel.</p>
+            <p>Your personalized control panel. Manage your services and balance here.</p>
+            
+            <div class="dashboard-stats" style="margin-top: 2.5rem;">
+                <div class="stat-card">
+                    <div class="label">Current Balance / Credit</div>
+                    <div class="value">₹ <span id="userBalance">150.00</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Your Active PC Station</div>
+                    <div class="value"><span id="activeStation">PC #05</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Time Remaining</div>
+                    <div class="value"><span id="timeRemaining">01:30:00</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <main>
+        
+        <section class="services-section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="services-grid">
+                
+                <a href="#" class="service-card" style="text-decoration: none;">
+                    <div class="service-icon"><span class="material-symbols-outlined">account_balance_wallet</span></div>
+                    <h3>Add Credit/Balance</h3>
+                    <p>Top up your account instantly to use services without interruption.</p>
+                    <div class="service-price" style="color: #4285F4;">Go to Payment</div>
+                </a>
+                
+                <a href="#" class="service-card" style="text-decoration: none;">
+                    <div class="service-icon"><span class="material-symbols-outlined">schedule</span></div>
+                    <h3>Book a PC Station</h3>
+                    <p>Reserve your preferred PC station for a specific time slot in advance.</p>
+                    <div class="service-price" style="color: #f97316;">Book Now</div>
+                </a>
+                
+                <a href="#" class="service-card" style="text-decoration: none;">
+                    <div class="service-icon"><span class="material-symbols-outlined">history</span></div>
+                    <h3>View Service History</h3>
+                    <p>Check your past usage, transactions, and printing records.</p>
+                    <div class="service-price" style="color: #34A853;">View Records</div>
+                </a>
+                
+                <a href="#" class="service-card" style="text-decoration: none;">
+                    <div class="service-icon"><span class="material-symbols-outlined">support_agent</span></div>
+                    <h3>Get Support</h3>
+                    <p>Need help? Contact our customer service team immediately.</p>
+                    <div class="service-price" style="color: #EA4335;">Contact Us</div>
+                </a>
+                
+            </div>
         </section>
-
-        <section class="dashboard-stats">
-            <div class="stat-card">
-                <div class="label">Current Balance</div>
-                <div class="value">₹ <span id="userBalance">150.00</span></div>
+        
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>OUR SERVICES</h3>
+                <a href="#">Internet Access</a>
+                <a href="#">Gaming Stations</a>
+                <a href="#">Printing & Scanning</a>
+                <a href="#">Document Services</a>
+                <a href="#">Cafe Refreshments</a>
+                <a href="#">Group Bookings</a>
             </div>
-            <div class="stat-card">
-                <div class="label">Time Remaining (PC #5)</div>
-                <div class="value"><span id="timeRemaining">01:30:00</span></div>
+            <div class="footer-column">
+                <h3>BUSINESS HOURS</h3>
+                <a href="#">Monday-Friday: 8AM-11PM</a>
+                <a href="#">Saturday: 9AM-1AM</a>
+                <a href="#">Sunday: 10AM-10PM</a>
+                <a href="#">Holidays: 10AM-8PM</a>
             </div>
-            <div class="stat-card">
-                <div class="label">Next Booking</div>
-                <div class="value"><span id="nextBooking">Not Booked</span></div>
+            <div class="footer-column">
+                <h3>CONTACT US</h3>
+                <a href="tel:+911234567890">+91 123 456 7890</a>
+                <a href="mailto:info@apnaagency.com">info@apnaagency.com</a>
+                <a href="#">123 Tech Street, Cyber City</a>
+                <a href="#">Get Directions</a>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <span class="material-symbols-outlined">facebook</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <span class="material-symbols-outlined">photo_camera</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <span class="material-symbols-outlined">chat</span>
+                    </a>
+                    <a href="#" class="social-link" aria-label="WhatsApp">
+                        <span class="material-symbols-outlined">forum</span>
+                    </a>
+                </div>
             </div>
-        </section>
-
-        </main>
+        </div>
+        
+        <div class="copyright">
+            © 2023 APNA AGENCY Cyber Cafe. All rights reserved.
+        </div>
+    </footer>
     
     <script>
         // ------------------ 1. Security Check and User Info Load ------------------
         const userName = localStorage.getItem('userName') || 'User';
         const isLoggedIn = localStorage.getItem('isLoggedIn');
 
-        // अगर लॉग इन नहीं है, तो वापस login.html पर भेज दें
-        if (isLoggedIn !== 'true') {
-            window.location.href = 'login.html';
-        }
+        // FIX: यदि लॉग इन नहीं है, तो वापस login.html पर भेज दें
         
-        // वेलकम मैसेज को यूजर के नाम से अपडेट करें
+        
+        // वेलकम मैसेज और डिस्प्ले नाम को अपडेट करें
         document.getElementById('welcomeMessage').innerText = `Welcome Back, ${userName}!`;
+        document.getElementById('userNameDisplay').innerText = `Hello, ${userName}`;
 
 
         // ------------------ 2. Log Out Functionality ------------------
         document.getElementById('logoutButton').addEventListener('click', function() {
-            // LocalStorage से लॉग इन फ्लैग हटाएँ
+            // LocalStorage से लॉग इन फ्लैग और नाम हटाएँ
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userName'); 
 
-            // पब्लिक होम पेज या लॉग इन पेज पर रीडायरेक्ट करें
+            // पब्लिक होम पेज (index.html) पर रीडायरेक्ट करें
             window.location.href = 'index.html'; 
         });
         
-        // ------------------ 3. Live Dashboard Updates (Demo) ------------------
-        // आप इन वैल्यूज को सर्वर से ला सकते हैं
-        // यहां सिर्फ डेमो के लिए 5 सेकंड बाद बैलेंस अपडेट किया गया है
-        setTimeout(() => {
-             document.getElementById('userBalance').innerText = '120.00';
-             console.log("Balance updated after 5 seconds (Demo)");
-        }, 5000);
     </script>
 </body>
 </html>
-
