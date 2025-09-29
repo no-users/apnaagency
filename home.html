@@ -270,48 +270,68 @@
             © 2023 APNA AGENCY Cyber Cafe. All rights reserved.
         </div>
     </footer>
-    
     <script>
-        // ------------------ Slider Logic ------------------
-        const slides = document.querySelectorAll('.slide');
-        let currentSlide = 0;
-        let slideInterval; 
+    // ------------------ 1. Security Check and User Info Load ------------------
+    // Local Storage से isLoggedIn की जाँच करें
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-        function showSlide(index) {
-            if (slides.length === 0) return;
-            slides.forEach(slide => {
-                slide.classList.remove('active-slide');
-            });
-            slides[index].classList.add('active-slide');
-        }
+    // 🔥 FIX 1: Security Enforcement - यदि लॉग इन नहीं है, तो तुरंत login.html पर भेज दें।
+    
 
-        function nextSlide() {
-            if (slides.length === 0) return;
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
-        // ------------------ 1. Security Check and User Info Load ------------------
-        const userName = localStorage.getItem('userName') || 'User';
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
+    // लॉग इन होने पर ही आगे का कोड चलाएँ
+    const userName = localStorage.getItem('userName') || 'User';
 
-        // FIX: यदि लॉग इन नहीं है, तो वापस login.html पर भेज दें
-        
-        
-        // वेलकम मैसेज और डिस्प्ले नाम को अपडेट करें
-        document.getElementById('welcomeMessage').innerText = `Welcome Back, ${userName}!`;
-        document.getElementById('userNameDisplay').innerText = `Hello, ${userName}`;
+    // 🔥 FIX 2: Null Error को ठीक करना
+    // केवल 'userNameDisplay' को अपडेट करें, क्योंकि 'welcomeMessage' ID HTML में मौजूद नहीं है।
+    const userNameDisplayElement = document.getElementById('userNameDisplay');
+
+    if (userNameDisplayElement) {
+        userNameDisplayElement.innerText = `Hello, ${userName}`;
+    }
 
 
-        // ------------------ 2. Log Out Functionality ------------------
-        document.getElementById('logoutButton').addEventListener('click', function() {
-            // LocalStorage से लॉग इन फ्लैग और नाम हटाएँ
+    // ------------------ 2. Log Out Functionality ------------------
+    const logoutButton = document.getElementById('logoutButton');
+
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function() {
+            // LocalStorage से सभी लॉगिन संबंधित डेटा हटाएँ
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userName'); 
+            localStorage.removeItem('currentUserPhone'); // (यदि आप इसका उपयोग करते हैं)
 
             // पब्लिक होम पेज (index.html) पर रीडायरेक्ट करें
             window.location.href = 'index.html'; 
         });
+    }
+
+    // ------------------ 3. Slider Logic (Optional, but included for completeness) ------------------
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    let slideInterval; 
+
+    function showSlide(index) {
+        if (slides.length === 0) return;
+        slides.forEach(slide => {
+            slide.classList.remove('active-slide');
+        });
+        slides[index].classList.add('active-slide');
+    }
+
+    function nextSlide() {
+        if (slides.length === 0) return;
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+    
+    if (slides.length > 0) {
+         showSlide(currentSlide);
+         // 5 सेकंड का अंतराल
+         slideInterval = setInterval(nextSlide, 5000); 
+    }
 </script>
+    
+    
        
 </body>
 
