@@ -28,9 +28,11 @@
             </nav>
             
             <div class="action-bar">
-                <a href="#" onclick="handleLogout()" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem; background: #4285F4; color: white;">
-                    <span class="material-symbols-outlined">logout</span> Logout
-                </a>
+                <span id="userNameDisplay" style="font-weight: 600; color: #1e293b; padding: 0.5rem; white-space: nowrap;"></span>
+                
+                <button id="logoutButton" class="action-btn" style="background: #0a0220; color: white; border: none;">
+                    <span class="material-symbols-outlined">logout</span> Log Out
+                </button>
             </div>
         </div>
     </header>
@@ -289,63 +291,29 @@
             showSlide(currentSlide);
         }
 
-        // ------------------ 🔥 Login Status Check and Header Update Logic 🔥 ------------------
-        
-        // 1. Get the action bar element
-        const actionButtons = document.getElementById('headerActionBar');
+       
+        // ------------------ 1. Security Check and User Info Load ------------------
+        const userName = localStorage.getItem('userName') || 'User';
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
 
-        // 2. Check if user is logged in (using the localStorage flag set on successful login)
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        // FIX: यदि लॉग इन नहीं है, तो वापस login.html पर भेज दें
+        
+        
+        // वेलकम मैसेज और डिस्प्ले नाम को अपडेट करें
+        document.getElementById('welcomeMessage').innerText = `Welcome Back, ${userName}!`;
+        document.getElementById('userNameDisplay').innerText = `Hello, ${userName}`;
 
-        if (isLoggedIn) {
-            // If logged in, display the Dashboard button with user name
-            const userName = localStorage.getItem('userName') || 'Dashboard';
-            actionButtons.innerHTML = `
-                <a href="dashboard.html" class="action-btn" style="background: #f97316;">
-                    <span class="material-symbols-outlined">dashboard</span> ${userName}
-                </a>
-            `;
-            // Stop the slider interval (optional, as logged-in users may not need the rotating banner)
-            if (slideInterval) {
-                 clearInterval(slideInterval);
-            }
-        } else {
-            // If not logged in, display the default Sign In/Register buttons
-            actionButtons.innerHTML = `
-                <a href="login.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
-                    <span class="material-symbols-outlined">login</span> Sign In
-                </a>
-                <a href="register.html" class="action-btn" style="text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
-                    <span class="material-symbols-outlined">person_add</span> Register
-                </a>
-            `;
-            // Start the slider for public view
-             if (slides.length > 0) {
-                 showSlide(currentSlide);
-                 slideInterval = setInterval(nextSlide, 5000); 
-             }
-        }
-        
-        // Menu toggle logic (retained for completeness)
-        function toggleMenu(event) {
-            event.stopPropagation();
-            const menu = document.getElementById('popupMenu');
-            if (menu && menu.style) { 
-                if (menu.style.display === 'block') {
-                    menu.style.display = 'none';
-                } else {
-                    menu.style.display = 'block';
-                }
-            }
-        }
-        
-        window.addEventListener('click', function() {
-            const menu = document.getElementById('popupMenu');
-            if (menu && menu.style && menu.style.display === 'block') {
-                menu.style.display = 'none';
-            }
+
+        // ------------------ 2. Log Out Functionality ------------------
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // LocalStorage से लॉग इन फ्लैग और नाम हटाएँ
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userName'); 
+
+            // पब्लिक होम पेज (index.html) पर रीडायरेक्ट करें
+            window.location.href = 'index.html'; 
         });
-
+        
     </script>
 </body>
 
