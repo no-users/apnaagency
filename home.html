@@ -272,68 +272,49 @@
     </footer>
     
     <script>
-    // ------------------ 1. Security Check and User Info Load ------------------
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        // ------------------ Slider Logic ------------------
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        let slideInterval; 
 
-    // 🔥 FIX: यदि लॉग इन नहीं है, तो तुरंत login.html पर रीडायरेक्ट करें (Security Enforcement)
-    if (!isLoggedIn) {
-        window.location.href = 'login.html'; 
-    }
+        function showSlide(index) {
+            if (slides.length === 0) return;
+            slides.forEach(slide => {
+                slide.classList.remove('active-slide');
+            });
+            slides[index].classList.add('active-slide');
+        }
 
-    const userName = localStorage.getItem('userName') || 'User';
+        function nextSlide() {
+            if (slides.length === 0) return;
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+        // ------------------ 1. Security Check and User Info Load ------------------
+        const userName = localStorage.getItem('userName') || 'User';
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
 
-    // वेलकम मैसेज और डिस्प्ले नाम को अपडेट करें
-    const userNameDisplayElement = document.getElementById('userNameDisplay');
-    if (userNameDisplayElement) {
-        userNameDisplayElement.innerText = `Hello, ${userName}`;
-    }
-    
-    // ------------------ 2. Log Out Functionality ------------------
-    const logoutButton = document.getElementById('logoutButton');
+        // FIX: यदि लॉग इन नहीं है, तो वापस login.html पर भेज दें
+        
+        
+        // वेलकम मैसेज और डिस्प्ले नाम को अपडेट करें
+        document.getElementById('welcomeMessage').innerText = `Welcome Back, ${userName}!`;
+        document.getElementById('userNameDisplay').innerText = `Hello, ${userName}`;
 
-    if (logoutButton) {
-        logoutButton.addEventListener('click', function() {
-            console.log("Logout Initiated."); // Console में जाँच के लिए
 
-            // LocalStorage से सभी लॉगिन संबंधित डेटा हटाएँ
+        // ------------------ 2. Log Out Functionality ------------------
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // LocalStorage से लॉग इन फ्लैग और नाम हटाएँ
             localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('currentUserPhone'); // यदि आप फ़ोन नंबर भी सेव करते हैं
+            localStorage.removeItem('userName'); 
 
             // पब्लिक होम पेज (index.html) पर रीडायरेक्ट करें
             window.location.href = 'index.html'; 
         });
-    }
-
-    // ------------------ 3. Slider Logic ------------------
-    const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
-    let slideInterval; 
-
-    function showSlide(index) {
-        if (slides.length === 0) return;
-        slides.forEach(slide => {
-            slide.classList.remove('active-slide');
-        });
-        slides[index].classList.add('active-slide');
-    }
-
-    function nextSlide() {
-        if (slides.length === 0) return;
-        currentSlide = (currentSlide + 1) % slides.length;
-        showSlide(currentSlide);
-    }
-    
-    // लॉग-इन होने पर भी स्लाइडर शुरू करें
-    if (slides.length > 0) {
-         showSlide(currentSlide);
-         slideInterval = setInterval(nextSlide, 5000); 
-    }
-    
 </script>
+       
 </body>
 
 </html>
-
 
 
