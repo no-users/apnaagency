@@ -1,11 +1,12 @@
 /*
 ====================================
-APNA AGENCY CYBER CAFE - COLOURFUL THEME CSS (FINAL UNIFIED VERSION)
+APNA AGENCY CYBER CAFE - FINAL UNIFIED STYLE.CSS
 ====================================
 Primary Accent Color: #f97316 (Orange/Amber)
-Google Colors: Blue: #4285F4, Green: #34A853, Yellow: #FBBC05, Red: #EA4335
-Text Color: #1e293b (Dark Blue/Text)
+Secondary Accent Colors (Google-inspired):
+Blue: #4285F4, Green: #34A853, Yellow: #FBBC05, Red: #EA4335
 Background Color: #f8fafc (Light Gray/Off-White)
+Text Color: #1e293b (Dark Blue/Text)
 */
 
 /* ------------------- BASE AND GLOBAL STYLES ------------------- */
@@ -54,8 +55,8 @@ header {
 }
 
 .logo-container img.home-logo {
-    height: 40px;
-    border-radius: 6px;
+    height: 45px;
+    border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -63,7 +64,8 @@ header {
     font-size: 1.5rem;
     font-weight: bold;
     margin-left: 12px;
-    color: #f97316; /* Primary Orange */
+    /* हमने इसे #140952 से #f97316/Dark Blue (theme-friendly) में बदला है */
+    color: #1e293b; 
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -106,7 +108,7 @@ nav.nav-bar a sup.new {
 }
 
 .action-btn {
-    background: #4285F4; /* Google Blue */
+    background: #4285F4; /* Default Blue for Sign In */
     color: white;
     border: none;
     border-radius: 6px;
@@ -114,7 +116,7 @@ nav.nav-bar a sup.new {
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
-    display: flex; /* For icons */
+    display: flex;
     align-items: center;
     gap: 0.5rem;
 }
@@ -134,11 +136,11 @@ main {
     width: 100%;
 }
 
-/* ------------------- SLIDER/HERO SECTION ------------------- */
+/* ------------------- SLIDER/HERO SECTION (index.html) ------------------- */
 
 .hero-slider-container {
-    width: 100%;
-    margin: 0 0 3rem 0;
+    width: 99%; /* Max Width 1200px के बाहर जाने के लिए */
+    margin: 0 0 3rem 0; 
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -197,7 +199,7 @@ main {
 }
 
 .cta-button {
-    background: #f97316;
+    background: #f97316; /* Orange CTA button */
     color: white;
     border: none;
     margin-top: 1rem;
@@ -214,7 +216,7 @@ main {
     transform: scale(1.05);
 }
 
-/* ------------------- GENERIC SECTION STYLES ------------------- */
+/* ------------------- SECTION STYLES (Common) ------------------- */
 
 .section-title {
     font-size: 2rem;
@@ -237,8 +239,7 @@ main {
     border-radius: 3px;
 }
 
-/* ------------------- SERVICES SECTION ------------------- */
-
+/* Services Grid and Cards (Public & Dashboard) */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -269,35 +270,20 @@ main {
     margin-bottom: 1rem;
     align-self: flex-start;
 }
-
 /* Google-inspired Icon Coloring */
-.services-grid .service-card:nth-child(1) .service-icon { color: #4285F4; }
-.services-grid .service-card:nth-child(2) .service-icon { color: #EA4335; }
-.services-grid .service-card:nth-child(3) .service-icon { color: #FBBC05; }
-.services-grid .service-card:nth-child(4) .service-icon { color: #34A853; }
-.services-grid .service-card:nth-child(5) .service-icon { color: #f97316; }
-.services-grid .service-card:nth-child(6) .service-icon { color: #4285F4; }
+.services-grid .service-card:nth-child(1) .service-icon { color: #4285F4; } 
+.services-grid .service-card:nth-child(2) .service-icon { color: #EA4335; } 
+.services-grid .service-card:nth-child(3) .service-icon { color: #FBBC05; } 
+.services-grid .service-card:nth-child(4) .service-icon { color: #34A853; } 
+.services-grid .service-card:nth-child(5) .service-icon { color: #f97316; } 
+.services-grid .service-card:nth-child(6) .service-icon { color: #4285F4; } 
 
-.service-card h3 {
-    color: #1e293b;
-    margin-bottom: 0.5rem;
-}
+.service-card h3 { color: #1e293b; margin-bottom: 0.5rem; }
+.service-card p { font-size: 0.95rem; color: #475569; margin-bottom: 1rem; }
+.service-price { font-size: 1.2rem; font-weight: bold; color: #34A853; margin-top: auto; }
 
-.service-card p {
-    font-size: 0.95rem;
-    color: #475569;
-    margin-bottom: 1rem;
-}
 
-.service-price {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #34A853;
-    margin-top: auto;
-}
-
-/* ------------------- STATIONS SECTION ------------------- */
-
+/* ------------------- STATIONS SECTION (index.html) ------------------- */
 .stations-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -312,78 +298,38 @@ main {
     transition: transform 0.3s ease;
 }
 
-.station-card:hover {
-    transform: translateY(-5px);
+.station-card:hover { transform: translateY(-5px); }
+.station-image { width: 100%; height: 200px; object-fit: cover; }
+.station-info { padding: 1rem; }
+.station-info h3 { color: #f97316; margin-bottom: 0.5rem; }
+.station-specs { list-style: none; padding: 0; margin-bottom: 1rem; }
+.station-specs li { font-size: 0.9rem; color: #475569; margin-bottom: 4px; display: flex; align-items: flex-start; }
+.station-specs li::before { content: "•"; color: #4285F4; font-weight: bold; display: inline-block; width: 1em; margin-right: 0.5rem; }
+.station-status { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
+.status-available { background: rgba(52, 168, 83, 0.2); color: #34A853; }
+.status-busy { background: rgba(234, 67, 53, 0.2); color: #EA4335; }
+
+/* ------------------- DASHBOARD SPECIFIC STYLES (dashboard.html) ------------------- */
+
+/* DASHBOARD HERO SECTION */
+.dashboard-hero {
+    padding: 0; 
+    margin: 0 0 3rem 0;
+    box-shadow: none; 
+    height: auto; 
 }
 
-.station-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.station-info {
-    padding: 1rem;
-}
-
-.station-info h3 {
-    color: #f97316;
-    margin-bottom: 0.5rem;
-}
-
-.station-specs {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 1rem;
-}
-
-.station-specs li {
-    font-size: 0.9rem;
-    color: #475569;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: flex-start;
-}
-
-.station-specs li::before {
-    content: "•";
-    color: #4285F4;
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-right: 0.5rem;
-}
-
-.station-status {
-    display: inline-block;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.status-available {
-    background: rgba(52, 168, 83, 0.2);
-    color: #34A853;
-}
-
-.status-busy {
-    background: rgba(234, 67, 53, 0.2);
-    color: #EA4335;
-}
-
-/* ------------------- DASHBOARD SPECIFIC STYLES ------------------- */
-
-/* DASHBOARD HEADER */
 .dashboard-header {
-    background: linear-gradient(135deg, #4285F4, #6699ff); /* Blue Gradient */
+    background: linear-gradient(135deg, #01031e, #18356d); /* आकर्षक ब्लू ग्रेडिएंट */
     color: white;
     padding: 3rem;
     border-radius: 12px;
-    margin-bottom: 2rem;
     text-align: center;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    width: 98%;
+    max-width: 1200px;
+    margin: 1rem auto;
+    position: relative; /* Image Overlay के लिए */
 }
 
 .dashboard-header h1 {
@@ -392,66 +338,44 @@ main {
     font-weight: 700;
 }
 
-/* STAT CARDS */
+/* STAT CARDS - मुख्य आँकड़ों के लिए */
 .dashboard-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 3rem;
+    margin-top: 2.5rem; 
 }
 
 .stat-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.2); /* Transparent White Background */
+    backdrop-filter: blur(5px);
     padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     text-align: center;
-    border-left: 5px solid #f97316; /* Default Orange Accent */
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transform: scale(1.03);
 }
-
-.stat-card:nth-child(2) { border-left-color: #34A853; } /* Green */
-.stat-card:nth-child(3) { border-left-color: #FBBC05; } /* Yellow */
 
 .stat-card .value {
     font-size: 2rem;
     font-weight: bold;
-    color: #1e293b;
+    color: #FBBC05; /* Yellow/Gold text */
     margin-top: 0.5rem;
 }
 
 .stat-card .label {
-    color: #64748b;
+    color: #e0f2fe; /* Light blue text */
     font-size: 0.95rem;
-}
-
-/* LOGOUT BUTTON - Dashboard Header */
-.logout-btn {
-    background: #EA4335; /* Red */
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.logout-btn:hover {
-    background: #c33d32;
 }
 
 
 /* ------------------- FOOTER ------------------- */
-
 footer {
     background: #1e293b;
     color: #cbd5e1;
@@ -479,6 +403,7 @@ footer {
 .footer-column a {
     display: block;
     color: #94a3b8;
+    text-decoration: none;
     margin-bottom: 0.5rem;
     font-size: 0.95rem;
     transition: color 0.3s ease;
@@ -528,12 +453,10 @@ footer {
     .nav-bar {
         display: none;
     }
-
     .header-container {
         justify-content: center;
         flex-wrap: wrap;
     }
-
     .action-bar {
         margin-top: 1rem;
         width: 100%;
@@ -545,27 +468,21 @@ footer {
     header {
         padding: 1rem 1rem;
     }
-
     .brand-name {
         font-size: 1.3rem;
     }
-
     .hero-slider-container {
         height: 350px;
     }
-
     .slider-content h1 {
         font-size: 2.5rem;
     }
-
     .slider-content p {
         font-size: 1.1rem;
     }
-
     .services-grid, .stations-grid, .dashboard-stats {
         grid-template-columns: 1fr;
     }
-
     .footer-container {
         grid-template-columns: 1fr;
     }
@@ -575,26 +492,21 @@ footer {
     .hero-slider-container {
         height: 280px;
     }
-
     .slider-content h1 {
         font-size: 1.8rem;
     }
-
     .slider-content p {
         font-size: 1rem;
     }
-
     .cta-button {
         padding: 0.6rem 1.5rem;
         font-size: 1rem;
     }
-
     .action-bar {
         flex-direction: column;
         gap: 0.5rem;
     }
-
-    .action-btn, .logout-btn {
+    .action-btn {
         width: 100%;
         justify-content: center;
     }
