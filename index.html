@@ -302,7 +302,7 @@
                     <span class="material-symbols-outlined">dashboard</span> ${userName}
                 </a>
             `;
-            // Stop the slider interval
+            // Stop the slider interval (optional, as logged-in users may not need the rotating banner)
             if (slideInterval) {
                  clearInterval(slideInterval);
             }
@@ -323,7 +323,7 @@
              }
         }
         
-        // Menu toggle logic (retained from your original code)
+        // Menu toggle logic (retained for completeness)
         function toggleMenu(event) {
             event.stopPropagation();
             const menu = document.getElementById('popupMenu');
