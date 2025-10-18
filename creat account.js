@@ -193,7 +193,6 @@ window.handleRegistration = async function() {
         } else if (error.code === 'auth/weak-password') {
             errorMsg = 'पासवर्ड बहुत कमजोर है।';
         }
-        // Agar 'auth/permission-denied' ya koi aur permission error aaye toh console dekhein.
         
         showMessage(`त्रुटि: ${errorMsg} (${error.message})`, true);
     }
