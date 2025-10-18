@@ -1,6 +1,7 @@
 // ----------------------------------------------------------------------
 // 1. GLOBAL FIREBASE CONFIGURATION
 // ----------------------------------------------------------------------
+// NOTE: Apni asli Firebase Config yahan jodein. Yeh sirf ek placeholder hai.
 const firebaseConfig = {
     apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
     authDomain: "my-login-page-62659.firebaseapp.com",
@@ -11,7 +12,7 @@ const firebaseConfig = {
     measurementId: "G-EJ7P52JB4N"
 };
 
-// Debugging के लिए Firestore लॉगिंग चालू करें
+// Debugging ke liye Firestore logging chalu karein
 if (typeof firebase !== 'undefined' && typeof firebase.firestore !== 'undefined') {
     firebase.firestore.setLogLevel('Debug');
 }
@@ -29,11 +30,10 @@ let messageTimeout;
 // ----------------------------------------------------------------------
 
 /**
- * कस्टम टोस्ट/मैसेज बॉक्स प्रदर्शित करता है।
+ * Custom toast/message box display karta hai.
  */
 function showMessage(msg, isError = false) {
     if (!messageBox) {
-        // Safety check, par DOMContentLoaded mein initialize hota hai
         messageBox = document.getElementById('message-box');
         if (!messageBox) {
             console.error("CRITICAL ERROR: Message Box element not found. Ensure you have <div id='message-box'></div> in your HTML.");
@@ -46,24 +46,24 @@ function showMessage(msg, isError = false) {
     messageBox.className = 'show';
     messageBox.classList.add(isError ? 'error' : 'success');
 
-    // 4 सेकंड के बाद संदेश बॉक्स को छुपाएं
+    // 4 second ke baad sandesh box ko chhupaayein
     messageTimeout = setTimeout(() => {
         messageBox.className = '';
     }, 4000);
 }
 
 // ----------------------------------------------------------------------
-// 3. FIREBASE INITIALIZATION (CRITICAL FIX: Added Anonymous Sign-in)
+// 3. FIREBASE INITIALIZATION (FIX: Anonymous Sign-in for Firestore Rules)
 // ----------------------------------------------------------------------
 
 async function initFirebase() {
     if (typeof firebase === 'undefined' || typeof firebase.initializeApp === 'undefined') {
-        showMessage("Firebase पुस्तकालय लोड नहीं हो पाया। कृपया इंटरनेट कनेक्शन जांचें।", true);
+        showMessage("Firebase library load nahi ho paya. Kripya internet connection jaanchen.", true);
         return;
     }
 
     if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
-        showMessage("Firebase कॉन्फ़िगरेशन नहीं मिला।", true);
+        showMessage("Firebase configuration nahi mila.", true);
         return;
     }
 
@@ -77,12 +77,13 @@ async function initFirebase() {
         }
 
         // 🚨 CRITICAL FIX: Anonymous Sign-in
-        // Yeh ensure karta hai ki 'request.auth != null' condition pass ho aur Security Rules kaam karein.
+        // Yeh ensure karta hai ki 'request.auth != null' condition pass ho aur Firestore Rules kaam karein.
         if (!auth.currentUser) {
+            // NOTE: Firebase Console mein Anonymous Auth ENABLED hona chahiye.
             await auth.signInAnonymously(); 
         }
 
-        // Ab humein nischit roop se auth.currentUser से UID मिलेगा
+        // Ab humein nischit roop se auth.currentUser se UID milega
         userId = auth.currentUser.uid; 
         isAuthReady = true;
         console.log("Firebase initialized. Current User ID:", userId);
@@ -94,17 +95,18 @@ async function initFirebase() {
 
     } catch (error) {
         console.error("Authentication failed during init:", error);
+        // Error agar Anonymous sign-in fail ho (jiske liye auth/admin-restricted-operation error aayi thi).
         showMessage(`प्रमाणीकरण विफल: ${error.message}`, true);
     }
 }
 
 // ----------------------------------------------------------------------
-// 4. REGISTRATION HANDLER (MAIN LOGIC)
+// 4. REGISTRATION HANDLER (FIX: Direct createUserWithEmailAndPassword)
 // ----------------------------------------------------------------------
 
 window.handleRegistration = async function() {
     if (!isAuthReady) {
-        showMessage("Firebase अभी शुरू नहीं हुआ है। कृपया प्रतीक्षा करें।", true);
+        showMessage("Firebase abhi shuru nahi hua hai. Kripya pratiksha karein.", true);
         return;
     }
 
@@ -118,23 +120,23 @@ window.handleRegistration = async function() {
 
     // --- Validation Logic ---
     if (!firstName || !lastName || !email || !mobile || !password || !confirmPassword) {
-        showMessage('कृपया सभी आवश्यक फ़ील्ड भरें।', true);
+        showMessage('Kripya sabhi avashyak fields bharein.', true);
         return;
     }
     if (password !== confirmPassword) {
-        showMessage('पासवर्ड मेल नहीं खा रहे हैं।', true);
+        showMessage('Password mel nahi kha rahe hain.', true);
         return;
     }
     if (password.length < 6) {
-        showMessage('पासवर्ड कम से कम 6 अक्षर का होना चाहिए।', true);
+        showMessage('Password kam se kam 6 akshar ka hona chahiye.', true);
         return;
     }
     if (!/^\d{10}$/.test(mobile)) {
-        showMessage('कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें।', true);
+        showMessage('Kripya 10 ankon ka vaidh mobile number darj karein.', true);
         return;
     }
     if (!termsAccepted) {
-        showMessage('रजिस्टर करने के लिए आपको नियमों और शर्तों से सहमत होना होगा।', true);
+        showMessage('Register karne ke liye aapko niyam aur sharton se sahmat hona hoga.', true);
         return;
     }
     // --- End Validation Logic ---
@@ -149,27 +151,20 @@ window.handleRegistration = async function() {
             .get();
 
         if (!querySnapshot.empty) {
-            showMessage('यह मोबाइल नंबर पहले से ही पंजीकृत है।', true);
+            showMessage('Yeh mobile number pahle se hi panjikrit hai.', true);
             return;
         }
 
     } catch (error) {
         console.error("Firestore Mobile Check Error (Check Security Rules):", error);
-        // Error message update kiya gaya hai
-        showMessage(`त्रुटि: मोबाइल नंबर की जांच विफल। कृपया सुरक्षा नियमों की जाँच करें। (${error.message})`, true);
+        showMessage(`त्रुटि: Mobile number ki janch vifal. Kripya suraksha niyamo ki jaanch karein. (${error.message})`, true);
         return;
     }
 
-    // --- End Mobile Number Check ---
-
+    // --- Registration Logic: Direct Create User ---
     try {
-        // 1. Firebase Authentication: Create User
-        // Anonymous user se actual user mein convert hoga
-        await auth.currentUser.updateEmail(email);
-        await auth.currentUser.updatePassword(password);
-        
-        // Agar Anonymous auth enabled nahi hai to yeh method fail ho sakta hai
-        // Isliye hum Firebase auth/email-password method se create kar rahe hain
+        // FIX: 'auth/operation-not-allowed' error ko theek karne ke liye direct create user ka upyog.
+        // Yeh Anonymous user session ko nazarandaaz karta hai aur naya permanent user banata hai.
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
         
@@ -192,21 +187,20 @@ window.handleRegistration = async function() {
             uid: user.uid
         });
 
-        showMessage('पंजीकरण सफल! आपका खाता बन गया है।', false);
+        showMessage('Panjikaran safal! Aapka khata ban gaya hai.', false);
         console.log("Registration successful for user:", user.uid);
         
-        // Success ke baad form ko reset kar sakte hain
         document.getElementById('registrationForm').reset();
 
     } catch (error) {
         console.error("Registration Error:", error);
 
-        let errorMsg = 'पंजीकरण विफल। कृपया बाद में पुनः प्रयास करें।';
+        let errorMsg = 'Panjikaran vifal. Kripya baad mein punah prayas karein.';
 
         if (error.code === 'auth/email-already-in-use') {
-            errorMsg = 'यह ईमेल पहले से ही उपयोग में है।';
+            errorMsg = 'Yeh email pahle se hi upyog mein hai.';
         } else if (error.code === 'auth/weak-password') {
-            errorMsg = 'पासवर्ड बहुत कमजोर है।';
+            errorMsg = 'Password bahut kamzor hai.';
         }
 
         showMessage(`त्रुटि: ${errorMsg} (${error.message})`, true);
@@ -248,7 +242,8 @@ function setupSlider() {
         };
 
         showSlide(currentSlide);
-        setInterval(nextSlide, 3000);
+        // Slider ko automatic chalane ke liye
+        setInterval(nextSlide, 3000); 
     }
 }
 
@@ -267,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Slider Setup
     setupSlider();
     
-    // 5. 🚨 CRITICAL FIX: FORM SUBMISSION HANDLER (Prevents page reload) 🚨
+    // 5. FORM SUBMISSION HANDLER (Prevents page reload)
     const registrationForm = document.getElementById('registrationForm');
     if (registrationForm) {
         registrationForm.addEventListener('submit', function(event) {
