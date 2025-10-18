@@ -187,12 +187,20 @@ window.handleRegistration = async function() {
             uid: user.uid
         });
 
-        showMessage('Panjikaran safal! Aapka khata ban gaya hai.', false);
+       // ... (andar ka success code) ...
+
+        showMessage('Account Created ! Aapka account creat ho gaya hai.', false);
         console.log("Registration successful for user:", user.uid);
+        
+        // 🚨 FINAL CLEANUP: Registration successful hone ke baad sign out karein
+        // Yeh ensure karta hai ki next load par sirf Anonymous user hi bane
+        await auth.signOut();
+        console.log("Cleanup: Signed out of current session.");
         
         document.getElementById('registrationForm').reset();
 
     } catch (error) {
+    
         console.error("Registration Error:", error);
 
         let errorMsg = 'Panjikaran vifal. Kripya baad mein punah prayas karein.';
@@ -273,3 +281,4 @@ document.addEventListener('DOMContentLoaded', () => {
          console.error("Error: 'registrationForm' ID not found in HTML.");
     }
 });
+
