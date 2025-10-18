@@ -1,5 +1,5 @@
-// Global Firebase Configuration (CRITICAL FIX 1: Ab yeh config JS file mein hai)
-// NOTE: Isse aapki HTML file se config hata deni chahiye.
+// Global Firebase Configuration (CRITICAL FIX: Ab yeh config JS file mein hai)
+// NOTE: Apni HTML file se '<script>...</script>' ke andar wali config hata dein.
 const firebaseConfig = {
     apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
     authDomain: "my-login-page-62659.firebaseapp.com",
@@ -15,7 +15,7 @@ if (typeof firebase !== 'undefined' && typeof firebase.firestore !== 'undefined'
     firebase.firestore.setLogLevel('Debug');
 }
 
-// Canvas Global Variables (FIX: Ab yeh seedhe firebaseConfig se value le rahe hain)
+// Canvas Global Variables (Sahi config se value le rahe hain)
 const appId = firebaseConfig.appId; 
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
@@ -29,9 +29,10 @@ let messageTimeout;
  */
 function showMessage(msg, isError = false) {
     if (!messageBox) {
+        // Safety check, par DOMContentLoaded mein initialize hota hai
         messageBox = document.getElementById('message-box');
         if (!messageBox) {
-            console.error("Message Box element not found in DOM.");
+            console.error("Message Box element not found in DOM. Ensure you have <div id='message-box'></div> in your HTML.");
             return;
         }
     }
@@ -41,7 +42,8 @@ function showMessage(msg, isError = false) {
     messageBox.className = 'show'; 
     messageBox.classList.add(isError ? 'error' : 'success');
 
-    setTimeout(() => {
+    // 4 सेकंड के बाद संदेश बॉक्स को छुपाएं
+    messageTimeout = setTimeout(() => {
         messageBox.className = '';
     }, 4000);
 }
@@ -63,11 +65,11 @@ async function initFirebase() {
         auth = firebase.auth();
         db = firebase.firestore();
 
-        // FIX: Anonymous Sign-in ko hata diya gaya hai.
         if (initialAuthToken) {
             await auth.signInWithCustomToken(initialAuthToken);
         }
         
+        // Agar user register nahi hai toh ek guest ID mil jayegi
         userId = auth.currentUser ? auth.currentUser.uid : crypto.randomUUID();
         isAuthReady = true;
         console.log("Firebase initialized. Current User ID (or Guest ID):", userId);
@@ -97,7 +99,7 @@ window.handleRegistration = async function() {
     const email = document.getElementById('email').value.trim();
     const mobile = document.getElementById('mobile').value.trim();
     
-    // CRITICAL FIX 2: Password input ID theek kiya
+    // CRITICAL FIX: Sahi Password input ID 'passwordInput'
     const password = document.getElementById('passwordInput').value.trim(); 
     const confirmPassword = document.getElementById('confirmPassword').value.trim();
     
@@ -119,13 +121,19 @@ window.handleRegistration = async function() {
         return;
     }
     
+    // Mobile number validation (Optional, for better UX)
+    if (!/^\d{10}$/.test(mobile)) {
+        showMessage('कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें।', true);
+        return;
+    }
+    
     if (!termsAccepted) {
         showMessage('रजिस्टर करने के लिए आपको नियमों और शर्तों से सहमत होना होगा।', true);
         return;
     }
     // --- End Validation Logic ---
 
-    // --- Mobile Number Global Check ---
+    // --- Mobile Number Global Check (Uniqueness) ---
     try {
         const uniqueIdentifiersCollection = `artifacts/${appId}/public/data/unique_identifiers`;
         
@@ -141,12 +149,14 @@ window.handleRegistration = async function() {
 
     } catch (error) {
         console.error("Firestore Mobile Check Error:", error);
+        // Note: Security rules check karein agar yahan error aaye
     }
     
     // --- End Mobile Number Check ---
 
     try {
         // 1. Firebase Authentication: Create User
+        // Agar yeh step fail hota hai toh data save nahi hoga. (Check: Email/Password Auth enabled)
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
 
@@ -162,6 +172,7 @@ window.handleRegistration = async function() {
         await db.collection(`artifacts/${appId}/users/${user.uid}/profiles`).doc('user-profile').set(userProfile);
 
         // 3. Firestore: Save Mobile Number to Public Collection for Uniqueness Check
+        // Agar yeh step fail hota hai toh Firestore Rules check karein.
         const uniqueIdentifiersCollection = `artifacts/${appId}/public/data/unique_identifiers`;
         await db.collection(uniqueIdentifiersCollection).doc(user.uid).set({ 
             mobile: mobile, 
@@ -182,6 +193,7 @@ window.handleRegistration = async function() {
         } else if (error.code === 'auth/weak-password') {
             errorMsg = 'पासवर्ड बहुत कमजोर है।';
         }
+        // Agar 'auth/permission-denied' ya koi aur permission error aaye toh console dekhein.
         
         showMessage(`त्रुटि: ${errorMsg} (${error.message})`, true);
     }
@@ -220,7 +232,7 @@ function nextSlide() {
 }
 
 // --- Initialization Block (DOMContentLoaded) ---
-// CRITICAL FIX 3: Sabhi initializations DOM load hote hi honge.
+// FIX: Ab sabhi initializations DOM load hote hi honge.
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Form-related setup
     setupPasswordToggle();
