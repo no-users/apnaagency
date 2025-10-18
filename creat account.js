@@ -11,6 +11,11 @@ const firebaseConfig = {
     measurementId: "G-EJ7P52JB4N"
 };
 
+// Debugging के लिए Firestore लॉगिंग चालू करें
+if (typeof firebase !== 'undefined' && typeof firebase.firestore !== 'undefined') {
+    firebase.firestore.setLogLevel('Debug');
+}
+
 const appId = firebaseConfig.appId;
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
@@ -27,12 +32,13 @@ let messageTimeout;
  * कस्टम टोस्ट/मैसेज बॉक्स प्रदर्शित करता है।
  */
 function showMessage(msg, isError = false) {
-    // Agar messageBox DOM mein nahi hai, toh ek error log karein aur return ho jaayenge.
     if (!messageBox) {
-        console.error("CRITICAL ERROR: Message Box element not found. Add <div id='message-box'></div> to your HTML.");
-        // Agar messageBox nahi mila toh console mein message dikha dete hain.
-        console.log(`MESSAGE: ${msg} (Error: ${isError})`);
-        return;
+        // Safety check, par DOMContentLoaded mein initialize hota hai
+        messageBox = document.getElementById('message-box');
+        if (!messageBox) {
+            console.error("CRITICAL ERROR: Message Box element not found. Ensure you have <div id='message-box'></div> in your HTML.");
+            return;
+        }
     }
 
     clearTimeout(messageTimeout);
@@ -47,12 +53,17 @@ function showMessage(msg, isError = false) {
 }
 
 // ----------------------------------------------------------------------
-// 3. FIREBASE INITIALIZATION
+// 3. FIREBASE INITIALIZATION (CRITICAL FIX: Added Anonymous Sign-in)
 // ----------------------------------------------------------------------
 
 async function initFirebase() {
     if (typeof firebase === 'undefined' || typeof firebase.initializeApp === 'undefined') {
         showMessage("Firebase पुस्तकालय लोड नहीं हो पाया। कृपया इंटरनेट कनेक्शन जांचें।", true);
+        return;
+    }
+
+    if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
+        showMessage("Firebase कॉन्फ़िगरेशन नहीं मिला।", true);
         return;
     }
 
@@ -65,9 +76,21 @@ async function initFirebase() {
             await auth.signInWithCustomToken(initialAuthToken);
         }
 
-        userId = auth.currentUser ? auth.currentUser.uid : crypto.randomUUID();
+        // 🚨 CRITICAL FIX: Anonymous Sign-in
+        // Yeh ensure karta hai ki 'request.auth != null' condition pass ho aur Security Rules kaam karein.
+        if (!auth.currentUser) {
+            await auth.signInAnonymously(); 
+        }
+
+        // Ab humein nischit roop se auth.currentUser से UID मिलेगा
+        userId = auth.currentUser.uid; 
         isAuthReady = true;
-        console.log("Firebase initialized. Current User ID (or Guest ID):", userId);
+        console.log("Firebase initialized. Current User ID:", userId);
+
+        const userIdDisplay = document.getElementById('user-id-display');
+        if (userIdDisplay) {
+            userIdDisplay.textContent = `User ID (for team access): ${userId}`;
+        }
 
     } catch (error) {
         console.error("Authentication failed during init:", error);
@@ -85,12 +108,11 @@ window.handleRegistration = async function() {
         return;
     }
 
-    // Input values lein
     const firstName = document.getElementById('firstName').value.trim();
     const lastName = document.getElementById('lastName').value.trim();
     const email = document.getElementById('email').value.trim();
     const mobile = document.getElementById('mobile').value.trim();
-    const password = document.getElementById('passwordInput').value.trim(); // CRITICAL: Sahi ID
+    const password = document.getElementById('passwordInput').value.trim();
     const confirmPassword = document.getElementById('confirmPassword').value.trim();
     const termsAccepted = document.getElementById('terms').checked;
 
@@ -117,7 +139,7 @@ window.handleRegistration = async function() {
     }
     // --- End Validation Logic ---
 
-    // Mobile Number Global Check (Uniqueness)
+    // --- Mobile Number Global Check (Uniqueness) ---
     try {
         const uniqueIdentifiersCollection = `artifacts/${appId}/public/data/unique_identifiers`;
 
@@ -133,17 +155,25 @@ window.handleRegistration = async function() {
 
     } catch (error) {
         console.error("Firestore Mobile Check Error (Check Security Rules):", error);
-        // Agar yahan error aata hai, toh Security Rules ko check karein.
-        showMessage('मोबाइल नंबर की जांच विफल: कृपया सुरक्षा नियमों की जाँच करें।', true);
+        // Error message update kiya gaya hai
+        showMessage(`त्रुटि: मोबाइल नंबर की जांच विफल। कृपया सुरक्षा नियमों की जाँच करें। (${error.message})`, true);
         return;
     }
 
+    // --- End Mobile Number Check ---
+
     try {
         // 1. Firebase Authentication: Create User
+        // Anonymous user se actual user mein convert hoga
+        await auth.currentUser.updateEmail(email);
+        await auth.currentUser.updatePassword(password);
+        
+        // Agar Anonymous auth enabled nahi hai to yeh method fail ho sakta hai
+        // Isliye hum Firebase auth/email-password method se create kar rahe hain
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
-
-        // 2. Firestore: Save User Profile Data (Private Collection)
+        
+        // 2. Firestore: Save User Profile Data (Private)
         const userProfile = {
             firstName: firstName,
             lastName: lastName,
@@ -151,9 +181,10 @@ window.handleRegistration = async function() {
             email: email,
             createdAt: new Date().toISOString()
         };
+
         await db.collection(`artifacts/${appId}/users/${user.uid}/profiles`).doc('user-profile').set(userProfile);
 
-        // 3. Firestore: Save Mobile Number to Public Collection
+        // 3. Firestore: Save Mobile Number to Public Collection for Uniqueness Check
         const uniqueIdentifiersCollection = `artifacts/${appId}/public/data/unique_identifiers`;
         await db.collection(uniqueIdentifiersCollection).doc(user.uid).set({
             mobile: mobile,
@@ -167,9 +198,8 @@ window.handleRegistration = async function() {
         // Success ke baad form ko reset kar sakte hain
         document.getElementById('registrationForm').reset();
 
-
     } catch (error) {
-        console.error("Registration FAILED (Authentication/Firestore Write):", error);
+        console.error("Registration Error:", error);
 
         let errorMsg = 'पंजीकरण विफल। कृपया बाद में पुनः प्रयास करें।';
 
@@ -177,11 +207,9 @@ window.handleRegistration = async function() {
             errorMsg = 'यह ईमेल पहले से ही उपयोग में है।';
         } else if (error.code === 'auth/weak-password') {
             errorMsg = 'पासवर्ड बहुत कमजोर है।';
-        } else if (error.code === 'auth/invalid-api-key' || error.code === 'auth/network-request-failed') {
-            errorMsg = 'नेटवर्क या कॉन्फ़िगरेशन त्रुटि। API Key या कनेक्शन जांचें।';
         }
 
-        showMessage(`त्रुटि: ${errorMsg} (Code: ${error.code || 'N/A'})`, true);
+        showMessage(`त्रुटि: ${errorMsg} (${error.message})`, true);
     }
 };
 
@@ -190,7 +218,6 @@ window.handleRegistration = async function() {
 // ----------------------------------------------------------------------
 
 function setupPasswordToggle() {
-    // Password toggle logic
     const passwordToggles = document.querySelectorAll('.password-toggle');
     passwordToggles.forEach(toggle => {
         toggle.addEventListener('click', () => {
@@ -225,7 +252,8 @@ function setupSlider() {
     }
 }
 
-// Initialization Block (DOMContentLoaded)
+
+// --- Initialization Block (DOMContentLoaded) ---
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Message Box Initialization
     messageBox = document.getElementById('message-box');
@@ -239,12 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Slider Setup
     setupSlider();
     
-    // 5. 🚨 CRITICAL FIX: FORM SUBMISSION HANDLER 🚨
+    // 5. 🚨 CRITICAL FIX: FORM SUBMISSION HANDLER (Prevents page reload) 🚨
     const registrationForm = document.getElementById('registrationForm');
     if (registrationForm) {
         registrationForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // <-- Yeh Page Reload hone se rokta hai
-            window.handleRegistration(); // Yeh data saving function ko call karta hai
+            event.preventDefault(); 
+            window.handleRegistration();
         });
     } else {
          console.error("Error: 'registrationForm' ID not found in HTML.");
