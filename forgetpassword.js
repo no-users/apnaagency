@@ -60,42 +60,44 @@ function nextSlide() {
 
 
 // --- MAIN INITIALIZATION ---
+// --- MAIN INITIALIZATION ---
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. FORM & STATUS MESSAGE SETUP 
-    const submitButton = document.querySelector(".reset-btn"); // HTML में class="reset-btn" है
+    // 1. FORM SUBMISSION LOGIC (पासवर्ड रीसेट)
+    // फॉर्म को ID से एक्सेस करें, यह सबमिट बटन से ज़्यादा विश्वसनीय है।
+    const form = document.getElementById("forgot-password-form");
 
-    if (submitButton) {
-        submitButton.addEventListener("click", function (e) {
-            e.preventDefault();
+    if (form) {
+        // हम फॉर्म के 'submit' इवेंट को सुनते हैं, न कि केवल बटन के 'click' को
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // फॉर्म को सबमिट होने से रोकता है
             
             // इनपुट फ़ील्ड से ईमेल प्राप्त करें
             const emailInput = document.getElementById("email-input");
-            if (!emailInput || !emailInput.value.trim()) {
+            const email = emailInput ? emailInput.value.trim() : '';
+
+            if (!email) {
                 showMessage("Please enter your email address.", "error");
                 return;
             }
-            const email = emailInput.value.trim();
 
             showMessage("Sending recovery link...", "info");
 
-            // 🚀 Cloud Function Call को Firebase SDK के आधिकारिक तरीके से बदलें
+            // 🚀 Firebase SDK का उपयोग करके पासवर्ड रीसेट ईमेल भेजें
             sendPasswordResetEmail(auth, email)
             .then(() => {
-                // सफलता और त्रुटि दोनों पर सुरक्षा के लिए समान संदेश दिखाएँ
                 showMessage("If this email is registered, a recovery link has been sent. Check your inbox!", "success");
             })
             .catch((error) => {
                 console.error("Firebase Auth Error:", error.code, error.message);
-                // यह संदेश CORS त्रुटि या किसी अन्य Auth त्रुटि को छिपा देगा।
                 showMessage("If this email is registered, a recovery link has been sent. Check your inbox!", "success");
             });
         });
     }
 
 
-    // 2. SLIDER INITIALIZATION
+    // 2. SLIDER INITIALIZATION (इसे उसी तरह रहने दें)
     slidesContainer = document.getElementById('slides-container'); 
     slides = document.querySelectorAll('.slide');
     totalSlides = slides.length;
@@ -103,9 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slidesContainer && totalSlides > 1) {
         showSlide(currentSlide); 
         setInterval(nextSlide, 3000); 
-    } else if (totalSlides <= 1) {
-        // यह वार्निंग तब आएगी जब HTML में स्लाइडर के लिए पर्याप्त तत्व न हों।
-        // console.warn("Slider not started: Need at least 2 slides.");
     }
 });
 
