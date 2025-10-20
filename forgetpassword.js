@@ -56,18 +56,17 @@ function nextSlide() {
 }
 
 
-// --- MAIN INITIALIZATION ---
+// --- MAIN INITIALIZATION (Form and Slider Logic) ---
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. FORM SUBMISSION LOGIC (Fix: 'click' को 'submit' से बदला गया)
-    const form = document.getElementById("forgot-password-form"); // Form ID का उपयोग करें
+    // 1. FORM SUBMISSION LOGIC 
+    const form = document.getElementById("forgot-password-form");
 
     if (form) {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
             
-            // इनपुट फ़ील्ड से ईमेल प्राप्त करें
             const emailInput = document.getElementById("email-input");
             const email = emailInput ? emailInput.value.trim() : '';
 
@@ -101,6 +100,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slidesContainer && totalSlides > 1) {
         showSlide(currentSlide); 
         setInterval(nextSlide, 3000); 
+    }
+});
+
+
+// ===============================================
+// 🚀 क्लोज बटन लॉजिक (अलग DOMContentLoaded ब्लॉक)
+// ===============================================
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // ये ID HTML में होनी चाहिए, जैसा कि पिछले उत्तर में बताया गया था।
+    const closeButton = document.getElementById("close-status-btn");
+    const statusMessage = document.getElementById("status-message");
+
+    if (closeButton && statusMessage) {
+        closeButton.addEventListener('click', () => {
+            statusMessage.classList.remove('show');
+            // मैसेज को रीसेट करने के लिए
+            statusMessage.textContent = ''; 
+            statusMessage.className = 'message'; // केवल 'message' क्लास रखें
+        });
     }
 });
 
