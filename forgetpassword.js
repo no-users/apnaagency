@@ -1,7 +1,6 @@
 // forgetpassword.js
 
 // Firebase SDKs Imports
-// 🚀 FIX: sendPasswordResetEmail फ़ंक्शन को यहाँ Import करें
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
@@ -18,11 +17,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-// ❌ REMOVED: अब resetEndpoint की कोई आवश्यकता नहीं है
-// const resetEndpoint = 'https://us-central1-my-login-page-62659.cloudfunctions.net/checkUserAndSendResetEmail'; 
 
 
-// --- GLOBAL SLIDER VARIABLES ---
+// --- GLOBAL SLIDER VARIABLES (इन्हें UI लॉजिक के लिए रहने दें) ---
 let currentSlide = 0;
 let slidesContainer = null;
 let slides = [];
@@ -60,18 +57,15 @@ function nextSlide() {
 
 
 // --- MAIN INITIALIZATION ---
-// --- MAIN INITIALIZATION ---
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. FORM SUBMISSION LOGIC (पासवर्ड रीसेट)
-    // फॉर्म को ID से एक्सेस करें, यह सबमिट बटन से ज़्यादा विश्वसनीय है।
-    const form = document.getElementById("forgot-password-form");
+    // 1. FORM SUBMISSION LOGIC (Fix: 'click' को 'submit' से बदला गया)
+    const form = document.getElementById("forgot-password-form"); // Form ID का उपयोग करें
 
     if (form) {
-        // हम फॉर्म के 'submit' इवेंट को सुनते हैं, न कि केवल बटन के 'click' को
         form.addEventListener("submit", function (e) {
-            e.preventDefault(); // फॉर्म को सबमिट होने से रोकता है
+            e.preventDefault();
             
             // इनपुट फ़ील्ड से ईमेल प्राप्त करें
             const emailInput = document.getElementById("email-input");
@@ -84,20 +78,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             showMessage("Sending recovery link...", "info");
 
-            // 🚀 Firebase SDK का उपयोग करके पासवर्ड रीसेट ईमेल भेजें
+            // 🚀 Firebase SDK का आधिकारिक तरीका
             sendPasswordResetEmail(auth, email)
             .then(() => {
+                // सफलता और त्रुटि दोनों पर सुरक्षा के लिए समान संदेश दिखाएँ
                 showMessage("If this email is registered, a recovery link has been sent. Check your inbox!", "success");
             })
             .catch((error) => {
                 console.error("Firebase Auth Error:", error.code, error.message);
+                // यह संदेश किसी भी Auth त्रुटि को छिपा देगा।
                 showMessage("If this email is registered, a recovery link has been sent. Check your inbox!", "success");
             });
         });
     }
 
 
-    // 2. SLIDER INITIALIZATION (इसे उसी तरह रहने दें)
+    // 2. SLIDER INITIALIZATION
     slidesContainer = document.getElementById('slides-container'); 
     slides = document.querySelectorAll('.slide');
     totalSlides = slides.length;
