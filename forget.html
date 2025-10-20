@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="forget.css">
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Forgot Password</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="forget.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Forgot Password</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
 </head>
 <body>
-    <div class="background-animation"></div>
-    <div class="main-container">
-        <div class="card">
-            <h2 class="card-title">Forgot Password?</h2>
-            <p class="card-subtitle">Enter your email to receive a password reset link.</p>
-            
-            <form id="forgot-password-form">
-                <div class="input-group">
-                    <i class="fas fa-envelope icon"></i>
-                    <input type="email" id="email-input" placeholder="Enter your email" required />
-                </div>
-                
-                <button type="submit" class="reset-btn">
-                    <i class="fas fa-paper-plane"></i> Send Link
-                </button>
-            </form>
+    <div class="background-animation"></div>
+    <div class="main-container">
+        <div class="card">
+            <h2 class="card-title">Forgot Password?</h2>
+            <p class="card-subtitle">Enter your email to receive a password reset link.</p>
+            
+            <form id="forgot-password-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" id="email-input" placeholder="Enter your email" required />
+                </div>
+                
+                <button type="submit" class="reset-btn">
+                    <i class="fas fa-paper-plane"></i> Send Link
+                </button>
+            </form>
 
-            <div id="status-message" class="message"></div>
+            <div id="status-message" class="message"></div>
 
-            <p class="back-link">
-                <a href="login.html">Back to Login</a>
-                </p>
-        </div>
-    </div>
+            <p class="back-link">
+                <a href="login.html">Back to Login</a>
+                </p>
+        </div>
+    </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        // 1. Firebase SDK Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
+        // 2. Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAXHD3qrc_sRPzUwpd6kLqGVrOqb2XqMpk",
             authDomain: "my-login-page-62659.firebaseapp.com",
@@ -51,46 +53,43 @@
         };
 
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-const form = document.getElementById("forgot-password-form");
-const statusMessage = document.getElementById("status-message");
+        const form = document.getElementById("forgot-password-form");
+        const statusMessage = document.getElementById("status-message");
 
-form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = document.getElementById("email-input").value;
-
-    showMessage("Sending request...", "info");
-
-    // Check if the email exists using a Cloud Function
-    fetch('https://us-central1-my-login-page-62659.cloudfunctions.net/checkUserAndSendResetEmail', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showMessage("Successfully email sent!", "success");
-        } else {
-            showMessage("Email not registered.", "error");
+        // Utility Function
+        function showMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `message show ${type}`;
         }
-    })
-    .catch(error => {
-        console.error("Error calling Cloud Function:", error);
-        showMessage("An error occurred. Please try again.", "error");
-    });
-});
 
-function showMessage(message, type) {
-    statusMessage.textContent = message;
-    statusMessage.className = `message show ${type}`;
-}
+        // 3. Form Submission Logic: Cloud Function (fetch) को हटा दिया गया है
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email-input").value.trim(); // trim() जोड़ा गया
+
+            if (!email) {
+                showMessage("Please enter your email address.", "error");
+                return;
+            }
+            
+            showMessage("Sending recovery link...", "info");
+
+            // 🚀 FIX: Firebase SDK का उपयोग करें (यह CORS त्रुटि को पूरी तरह से बायपास करता है)
+            sendPasswordResetEmail(auth, email)
+            .then(() => {
+                // यह संदेश तब भी दिया जाता है जब ईमेल पंजीकृत न हो, सुरक्षा कारणों से।
+                showMessage("If an account exists for this email, a reset link has been sent to your inbox!", "success");
+            })
+            .catch((error) => {
+                console.error("Firebase Auth Error:", error);
+                // किसी भी त्रुटि पर भी सुरक्षित संदेश दिखाएँ
+                showMessage("If an account exists for this email, a reset link has been sent to your inbox!", "success");
+            });
+        });
+        
     </script>
 </body>
 </html>
-
-
