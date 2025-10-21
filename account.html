@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apna-agency</title>
-    <link rel="stylesheet" href="forgetpassword.css">
+    <title>Creat account</title>
+    <link rel="stylesheet" href="creat account.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- आवश्यक Firebase CDN स्क्रिप्ट्स को script.js से पहले जोड़ना -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+    
 </head>
 <body>
 
-    <div class="modal-overlay"> 
+<div class="modal-overlay"> 
     
     <div class="registration-page">
         
@@ -17,14 +24,15 @@
             <i class="fas fa-times"></i>
         </button>
 
-
         <div class="left-section">
-            <div class="logo">
-                <img src="logo.png" alt="Buddy4Study Logo"> <span>ApnaAgency</span>
-                <p>Gateway to new world</p>
-            </div>
 
-            <div class="slider-wrapper">
+        <!-- Logo (Static) -->
+        <div class="logo">
+            <!-- Logo के लिए Placeholder Image -->
+            <img src="logo.png" alt="Company Logo">
+        </div>
+
+        <div class="slider-wrapper">
             <div class="slides-container" id="slides-container">
                 
                 <!-- Slide 1 -->
@@ -67,60 +75,73 @@
             
         </div>
     </div>
-
-        <div class="right-section">
-    <form class="forgot-password-form" id="forgot-password-form">
-        <h2>Hi, Missed Your Password! <span role="img" aria-label="waving hand">👋</span></h2>
-        <p>Let's get you a new one!</p>
-
-        <div class="form-group">
-            <label for="email-input">Enter Recovery Email</label>
-            <div class="input-with-icon">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email-input" placeholder="Email Id" required> 
-            </div>
-        </div>
-
+    <!-- B. Right Section (Form) -->
+    <div class="right-section">
         
-            <div id="status-message" class="message">
-    <button class="status-close-btn" id="close-status-btn">
-        <i class="fas fa-times"></i>
-    </button>
-</div>
-       
-
-        <div class="recovery-options">
-            <a href="forget.html" class="recovery-link">Recovery through gmail instead?</a>
-            <a href="signin.html" class="recovery-link">Login through Gmail</a>
-        </div>
-
-        <button type="submit" class="submit-btn">Submit</button>
-        <div>
-            <p class="happylife">
-                Happy Life
-            </p>
-        </div>
-    </form>
-    </div>
-        <div class="success-popup-overlay" id="success-popup-overlay">
-    <div class="success-popup-content">
-        <button class="success-popup-close-btn" id="success-popup-close-btn">
-            <i class="fas fa-times"></i>
+        <!-- Google Button with Colorful Icon -->
+        <button class="google-signup-btn">
+            <!-- Colorful Google Icon SVG -->
+            <svg class="google-icon-svg" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
+                <path d="M533.5 272.2C533.5 259.4 532.5 246.7 530.5 234H270.8v49.8h144.9c-5.9 33.7-25.5 83.1-66.8 115.6l-.1.1 39.5 30.6.1.1c23.7-22.1 48.1-60.6 63.8-111.4 17.5-56.8 26.2-114.7 26.2-177.8Z" fill="#4285F4"/>
+                <path d="M270.8 544.3c77.9 0 142.1-25.8 189.6-70.1l-39.5-30.6c-27.4 17.8-62.8 28.3-100.1 28.3-77.5 0-143.2-52.1-167.5-121.7H50.9l-.1.1L11.4 411.3c48.8 95.8 152.9 133 259.4 133Z" fill="#34A853"/>
+                <path d="M103.3 331.4c-6.8-20.5-10.4-42.3-10.4-64.7s3.6-44.2 10.4-64.7L1.2 148.9l-.1.1c-13.6 27.6-21.2 59.9-21.2 93.4s7.6 65.8 21.2 93.4l.1.1 102.1-78.5Z" fill="#FBBC05"/>
+                <path d="M270.8 141.2c41.6 0 78.3 14.1 107.4 41.5l52.1-50.5c-32.9-32.4-76.4-50.5-110.5-50.5-106.6 0-210.7 37.2-259.4 133l102.1 78.5c24.3-69.6 89.9-121.7 167.5-121.7Z" fill="#EA4335"/>
+            </svg>
+             Sign up with Google
         </button>
-        <i class="fas fa-check-circle success-icon"></i>
-        <h3>Success!</h3>
-        <p id="success-popup-message">An account exists for this email, a recovery link has been sent. Check your inbox!</p>
-        <button class="ok-btn" id="success-popup-ok-btn">OK</button>
+        
+        <div class="or-separator">Or</div>
+        
+        <h2 class="form-title">Create Account</h2>
+
+        <!-- FORM WITH ALL REQUIRED FIELDS -->
+        <form id="registrationForm">
+            <!-- First Name and Last Name in one row -->
+            <div class="input-row">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="First Name" id="firstName" required> 
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Last Name" id="lastName" required> 
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" placeholder="Email Id" id="email" required> 
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-mobile-alt"></i>
+                <input type="tel" placeholder="Mobile" id="mobile" required> 
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Password" id="passwordInput" required> 
+                <i class="fas fa-eye password-toggle"></i> 
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Confirm Password" id="confirmPassword" required> 
+                <i class="fas fa-eye password-toggle"></i> 
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required> 
+                <label for="terms">I agree to Buddy4Study's <a href="#">Privacy Policy</a> and <a href="#">Terms & Conditions</a> and provide consent to be contacted for promotion via mail, sms, whatsapp, etc.</label>
+            </div>
+
+            <button type="submit" class="register-btn">Sign up</button>
+        </form>
+        <!-- END FORM -->
+
+        <p class="footer-links">Have an account? <a href="#">Forgot password</a></p>
     </div>
 </div>
-    <script src="forgetpassword.js" type="module"></script> 
-
+<script src="creat account.js"></script> 
 </body>
-
 </html>
-
-
-
-
-
-
