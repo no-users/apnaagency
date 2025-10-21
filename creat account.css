@@ -92,29 +92,19 @@
 }
 /* Logo Styling */
  .logo {
-    text-align: center;
-    margin-bottom: 20px;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between logo img and text */
+    align-self: flex-start;
+    margin-top: px;
+    margin-left: 20px;
+    position: relative; 
+    z-index: 10;
+    margin-bottom: 10px; 
 }
-.logo img {
-    width: 40px; /* Logo size */
-    height: 40px;
-}
-.logo span {
-    font-weight: bold;
-    font-size: 1.2em;
-    color: var(--dark-grey-text);
-}
-.logo p {
-    font-size: 0.8em;
-    color: #666;
-    margin: 0;
-}
+.logo img { 
+    max-width: 90px; 
+    
+    height: auto; 
+    display: block; 
+} 
         /* --- SLIDER STRUCTURE START (UPDATED FOR HORIZONTAL SLIDE) --- */
         .slider-wrapper {
             flex-grow: 1;
@@ -477,5 +467,4 @@
             .form-title {
                 align-self: center;
             }
-
         }
