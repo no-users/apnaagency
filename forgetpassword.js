@@ -28,7 +28,7 @@ let totalSlides = 0;
 // --- UTILITY FUNCTIONS ---
 
 /**
- * संदेश प्रदर्शित करें: या तो पुराना #status-message, या नया success-popup।
+ * संदेश प्रदर्शित करें: या तो पुराना #status-message (लोडिंग), या नया success-popup (सफलता)।
  */
 function showMessage(message, type) {
     const successPopupOverlay = document.getElementById("success-popup-overlay");
@@ -47,12 +47,16 @@ function showMessage(message, type) {
         }
         successPopupOverlay.classList.add('show-popup');
         
-        // पुराने संदेश को छिपा दें
+        // फॉर्म के नीचे से लोडिंग संदेश छिपा दें
         if (oldStatusMessage) oldStatusMessage.style.display = 'none';
 
     } else if (oldStatusMessage) {
         // अन्य संदेशों ("Sending recovery link...") के लिए पुराना संदेश दिखाएं
         oldStatusMessage.textContent = message;
+        // status-close-btn को छिपा दें जब यह लोडिंग मैसेज हो
+        const statusCloseBtn = document.getElementById("close-status-btn");
+        if (statusCloseBtn) statusCloseBtn.style.display = 'none';
+
         oldStatusMessage.className = `message show ${type}`;
         oldStatusMessage.style.display = 'block';
     }
@@ -91,6 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
             
+            // सुनिश्चित करें कि फॉर्म सबमिट होने पर कोई पिछला संदेश छिपा हो
+            if (successPopupOverlay) successPopupOverlay.classList.remove('show-popup');
+            
             const emailInput = document.getElementById("email-input");
             const email = emailInput ? emailInput.value.trim() : '';
 
@@ -99,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // लोडिंग मैसेज दिखाएं
             showMessage("Sending recovery link...", "info");
 
             // Firebase SDK का आधिकारिक तरीका
@@ -108,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch((error) => {
                 console.error("Firebase Auth Error:", error.code, error.message);
+                // सुरक्षा के लिए सफलता संदेश दिखाएं, भले ही कोई Auth त्रुटि हो
                 showMessage("If this email is registered, a recovery link has been sent. Check your inbox!", "success");
             });
         });
@@ -128,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (successPopupOverlay) {
             successPopupOverlay.classList.remove('show-popup');
             
-            // पुराने #status-message को रीसेट करें (Loading message को हटाने के लिए)
+            // पुराने #status-message को रीसेट करें (लोडिंग मैसेज को हटाने के लिए)
             const oldStatusMessage = document.getElementById("status-message");
             if (oldStatusMessage) {
                 oldStatusMessage.textContent = '';
@@ -143,5 +152,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (successPopupOkBtn) {
         successPopupOkBtn.addEventListener('click', hideSuccessPopup);
+    }
+    
+    // पुराना status-message close button:
+    const oldStatusMessage = document.getElementById("status-message");
+    const statusCloseBtn = document.getElementById("close-status-btn");
+    if (statusCloseBtn && oldStatusMessage) {
+        statusCloseBtn.addEventListener('click', () => {
+            oldStatusMessage.style.display = 'none';
+        });
     }
 });
