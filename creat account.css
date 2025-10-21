@@ -90,22 +90,33 @@
     position: relative;
     overflow: hidden; 
 }
-/* Logo Styling */
- .logo {
-    align-self: flex-start;
-    margin-top: px;
-    margin-left: 20px;
-    position: relative; 
-    z-index: 10;
-    margin-bottom: 10px; 
+
+.logo {
+    text-align: center;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between logo img and text */
 }
-.logo img { 
-    max-width: 90px; 
-    
-    height: auto; 
-    display: block; 
-} 
-        /* --- SLIDER STRUCTURE START (UPDATED FOR HORIZONTAL SLIDE) --- */
+.logo img {
+    width: 40px; /* Logo size */
+    height: 40px;
+}
+.logo span {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: var(--dark-grey-text);
+}
+.logo p {
+    font-size: 0.8em;
+    color: #666;
+    margin: 0;
+}
+
+ /* --- SLIDER STRUCTURE START (UPDATED FOR HORIZONTAL SLIDE) --- */
         .slider-wrapper {
             flex-grow: 1;
             width: 100%;
@@ -194,12 +205,71 @@
     justify-content: unset; /* हटाया गया */
     
     /* FIX 4: इसे इमेज के ऊपर लाने के लिए टॉप मार्जिन सेट करें */
-    margin-top: -90px; /* या जितना आप चाहते हैं */
+    margin-top: 15px; /* या जितना आप चाहते हैं */
     margin-bottom: 20px; 
     
     max-width: 100%; /* इसे थोड़ा संकरा बनाया ताकि सेंटर में दिखे */
     line-height: 1.5;
 }
+
+/* --- SLIDER STRUCTURE START (UPDATED FOR HORIZONTAL SLIDE) --- */
+ /* ======================================= */
+/* SLIDER STRUCTURE: a.css में केवल इसे रखें */
+/* ======================================= */
+
+/* A. Left Section (स्लाइडर का मुख्य कंटेनर) */
+.left-section {
+    flex: 0 0 57%; 
+    background-color: hsl(0, 0%, 100%); 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 0px; 
+    position: relative;
+    /* यह नियम यहाँ भी सही है, लेकिन नीचे .slider-wrapper में भी होना चाहिए */
+    overflow: hidden; 
+}
+
+/* B. Slider Wrapper (व्यूइंग विंडो) */
+.slider-wrapper {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 20px; 
+    position: relative;
+    /* 🚀 निर्णायक FIX: यह सुनिश्चित करता है कि ऑफ-स्क्रीन स्लाइड दिखाई न दें */
+    overflow: hidden; 
+}
+
+/* C. Slides Container (स्लाइड्स को लाइन में रखने वाला तत्व) */
+.slides-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    /* निर्णायक FIX: सभी स्लाइडों को हॉरिजॉन्टल (एक लाइन में) रखता है */
+    display: flex; 
+    transition: transform 0.5s ease-in-out; 
+}
+
+/* D. Individual Slide */
+.slide {
+    /* 🚀 निर्णायक FIX: यह प्रत्येक स्लाइड को कंटेनर की 100% चौड़ाई देता है */
+    flex: 0 0 100%; 
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 20px; 
+}
+        /* .slide.active is no longer needed for opacity */
+
 .image-container {
     position: relative;
     width: 100%; 
@@ -214,7 +284,7 @@
 .image-container img {
     position: absolute;
     /* FIX: इमेज को ऊपर की ओर केंद्रित किया */
-    top: 45%; /* 40% पर रखा गया */
+    top: 62%; /* 40% पर रखा गया */
     left: 50%;
     transform: translate(-50%, -50%);
     
