@@ -58,27 +58,32 @@ document.addEventListener('DOMContentLoaded', () => {
             // a. Display Name Update (Firebase से डेटा प्राप्त करें)
             // home.js में onAuthStateChanged के अंदर, जब (user) मौजूद हो:
 
+// home.js में onAuthStateChanged के अंदर:
+
 // a. Display Name Update (Firebase से डेटा प्राप्त करें)
 const userNameDisplayElement = document.getElementById('userNameDisplay');
 
 if (userNameDisplayElement) {
-    let displayFirstName = 'User'; // Default value
+    let displayFirstName = 'User'; // डिफ़ॉल्ट मान
 
     if (user.displayName) {
-        // यदि displayName उपलब्ध है (Google Sign-in के लिए), 
-        // इसे स्पेस से विभाजित करें और केवल पहला शब्द (First Name) लें।
-        const fullNameParts = user.displayName.split(' ');
-        displayFirstName = fullNameParts[0];
+        // 1. displayName से अनावश्यक स्पेस हटाएँ (trim)
+        const trimmedName = user.displayName.trim();
+        
+        if (trimmedName) {
+            // 2. स्पेस से विभाजित करें और केवल पहला शब्द (First Name) लें
+            const fullNameParts = trimmedName.split(/\s+/); // सभी प्रकार के स्पेस को हैंडल करता है
+            displayFirstName = fullNameParts[0];
+        }
         
     } else if (user.email) {
-        // यदि displayName उपलब्ध नहीं है, तो ईमेल का पहला भाग ('@' से पहले) लें।
+        // यदि displayName उपलब्ध नहीं है, तो ईमेल का पहला भाग लें
         displayFirstName = user.email.split('@')[0];
     } 
     
-    // आउटपुट में उपयोग करें
+    // 3. आउटपुट में उपयोग करें
     userNameDisplayElement.innerText = `Hello, ${displayFirstName}`;
 }
-
             // b. Log Out Button Setup
             const logoutButton = document.getElementById('logoutButton');
             if (logoutButton) {
@@ -122,3 +127,4 @@ if (userNameDisplayElement) {
 
 
 });
+
