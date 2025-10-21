@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>APNA AGENCY - User Dashboard</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <title>Apna-agency</title>
+    <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
@@ -142,32 +142,10 @@
         </div>
     </footer>
     
-    <script>
-        // ------------------ 1. Security Check and User Info Load ------------------
-        const userName = localStorage.getItem('userName') || 'User';
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-        // FIX: यदि लॉग इन नहीं है, तो वापस login.html पर भेज दें
-        
-        
-        // वेलकम मैसेज और डिस्प्ले नाम को अपडेट करें
-        document.getElementById('welcomeMessage').innerText = `Welcome Back, ${userName}!`;
-        document.getElementById('userNameDisplay').innerText = `Hello, ${userName}`;
-
-
-        // ------------------ 2. Log Out Functionality ------------------
-        document.getElementById('logoutButton').addEventListener('click', function() {
-            // LocalStorage से लॉग इन फ्लैग और नाम हटाएँ
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userName'); 
-
-            // पब्लिक होम पेज (index.html) पर रीडायरेक्ट करें
-            window.location.href = 'index.html'; 
-        });
-        
-    </script>
+   <script src="home.js" type="module"></script>
 </body>
 </html>
+
 
 
 
