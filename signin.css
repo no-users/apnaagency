@@ -1,0 +1,531 @@
+/* style.css (Updated for Horizontal Slider) */
+
+        /* यूनिवर्सल बॉक्स-साइज़िंग (अत्यंत महत्वपूर्ण) */
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #0A6DDA; 
+            --light-grey: #f0f2f5;
+            --dark-section: #1A3E61; 
+            --accent-pink: #FF69B4; 
+            --text-color: #333;
+            --input-bg: #2F5377; 
+            --gemini-green: #10B981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Changed to Inter for consistency */
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-grey);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent body scroll */
+        }
+
+        /* 2. Registration Card */
+ .registration-page {
+    display: flex;
+    background-color: #fff;
+    /* FIX: corner radii एक साथ सेट करें */
+    border-radius: 0px 0px 0px 8px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    
+    width: 960px; 
+    height: 620px; 
+    max-width: 100%; 
+    max-height: 90vh;
+    overflow: hidden; 
+    position: relative;
+}
+        /* Close Button Styling (X) */
+        .close-btn {
+            position: absolute;
+            /* Move button to the very top right corner of the registration card */
+            top: 0px; 
+            right: 0px; 
+            
+            /* Give it a white circular background as seen in the original image */
+            background: #fff;
+            border: none;
+            border-radius: 0 8px 0 12px; /* Adjusted border-radius for the corner piece */
+            
+            width: 41px; /* Wider hit area */
+            height: 45px; /* Taller hit area */
+            cursor: pointer;
+            font-size: 1.2em;
+            color: #333;
+            /* Ensure it is above the form section and scrollbar */
+            z-index: 1001; 
+            
+            /* Center the 'X' */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* Remove the box shadow for a cleaner look like the picture */
+            box-shadow: none; 
+            
+            transition: background-color 0.2s;
+        }
+        .close-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* A. Left Section (Static Content - Image & Quote) */
+        .left-section {
+    flex: 0 0 57%; 
+    background-color: hsl(0, 0%, 100%); 
+    display: flex;
+    flex-direction: column;
+    /* FIX 1: तत्वों को ऊपर से नीचे पैक करने के लिए flex-start का उपयोग करें */
+    justify-content: flex-start; /* space-between से बदला गया */
+    align-items: center;
+    padding: 20px 0px; 
+    position: relative;
+    overflow: hidden; 
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between logo img and text */
+}
+.logo img {
+    width: 40px; /* Logo size */
+    height: 40px;
+}
+.logo span {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: var(--dark-grey-text);
+}
+.logo p {
+    font-size: 0.8em;
+    color: #666;
+    margin: 0;
+}
+
+ /* --- SLIDER STRUCTURE START (UPDATED FOR HORIZONTAL SLIDE) --- */
+        .slider-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px; 
+            position: relative;
+            ; /* Essential to hide slides that are off-screen */
+        }
+        
+        .slides-container {
+            /* Key change for horizontal sliding */
+            position: relative;
+            width: 100%;
+            height: 100%;
+            flex-grow: 1;
+            display: flex; /* Line up slides horizontally */
+            transition: transform 0.5s ease-in-out; /* Smooth transition for sliding */
+        }
+
+        .slide {
+            /* Key change: Each slide takes up exactly 100% of the container width */
+            flex: 0 0 100%; 
+            height: 100%;
+            
+            /* Remove absolute positioning and opacity transitions */
+            /* position: absolute; opacity: 0; transition: opacity 1s ease-in-out; pointer-events: none; */ 
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-bottom: 20px; 
+        }
+         /* --- SLIDER STRUCTURE START (UPDATED FOR HORIZONTAL SLIDE) --- */
+        .slider-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px; 
+            position: relative;
+            ; /* Essential to hide slides that are off-screen */
+        }
+        
+        .slides-container {
+            /* Key change for horizontal sliding */
+            position: relative;
+            width: 100%;
+            height: 100%;
+            flex-grow: 1;
+            display: flex; /* Line up slides horizontally */
+            transition: transform 0.5s ease-in-out; /* Smooth transition for sliding */
+        }
+
+        .slide {
+            /* Key change: Each slide takes up exactly 100% of the container width */
+            flex: 0 0 100%; 
+            height: 100%;
+            
+            /* Remove absolute positioning and opacity transitions */
+            /* position: absolute; opacity: 0; transition: opacity 1s ease-in-out; pointer-events: none; */ 
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-bottom: 20px; 
+        }
+        
+        /* .slide.active is no longer needed for opacity */
+        
+        /* .slide.active is no longer needed for opacity */
+  .quote {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    color: #000;
+    
+    /* FIX 3: position: absolute और justify-content हटाया */
+    position: static; /* absolute को static से बदला */
+    justify-content: unset; /* हटाया गया */
+    
+    /* FIX 4: इसे इमेज के ऊपर लाने के लिए टॉप मार्जिन सेट करें */
+    margin-top: 15px; /* या जितना आप चाहते हैं */
+    margin-bottom: 20px; 
+    
+    max-width: 100%; /* इसे थोड़ा संकरा बनाया ताकि सेंटर में दिखे */
+    line-height: 1.5;
+}
+
+/* --- SLIDER STRUCTURE START (UPDATED FOR HORIZONTAL SLIDE) --- */
+ /* ======================================= */
+/* SLIDER STRUCTURE: a.css में केवल इसे रखें */
+/* ======================================= */
+
+/* A. Left Section (स्लाइडर का मुख्य कंटेनर) */
+.left-section {
+    flex: 0 0 57%; 
+    background-color: hsl(0, 0%, 100%); 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 0px; 
+    position: relative;
+    /* यह नियम यहाँ भी सही है, लेकिन नीचे .slider-wrapper में भी होना चाहिए */
+    overflow: hidden; 
+}
+
+/* B. Slider Wrapper (व्यूइंग विंडो) */
+.slider-wrapper {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 20px; 
+    position: relative;
+    /* 🚀 निर्णायक FIX: यह सुनिश्चित करता है कि ऑफ-स्क्रीन स्लाइड दिखाई न दें */
+    overflow: hidden; 
+}
+
+/* C. Slides Container (स्लाइड्स को लाइन में रखने वाला तत्व) */
+.slides-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    /* निर्णायक FIX: सभी स्लाइडों को हॉरिजॉन्टल (एक लाइन में) रखता है */
+    display: flex; 
+    transition: transform 0.5s ease-in-out; 
+}
+
+/* D. Individual Slide */
+.slide {
+    /* 🚀 निर्णायक FIX: यह प्रत्येक स्लाइड को कंटेनर की 100% चौड़ाई देता है */
+    flex: 0 0 100%; 
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 20px; 
+}
+        /* .slide.active is no longer needed for opacity */
+
+.image-container {
+    position: relative;
+    width: 100%; 
+    padding-top: 100%; 
+    /* FIX 2: इमेज कंटेनर को और ऊपर खींचा, ताकि कोट के लिए पर्याप्त जगह बने */
+    margin-top: -100px; /* -100px पर रखा गया */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+.image-container img {
+    position: absolute;
+    /* FIX: इमेज को ऊपर की ओर केंद्रित किया */
+    top: 62%; /* 40% पर रखा गया */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    width: 428px; 
+    height: 400px; 
+    
+    max-width: 100%;
+    max-height: 100%;
+    
+    border-radius: 0px 0px 0px 10px;
+    
+    object-fit: contain;
+    
+    z-index: 2;
+}
+        /* --- STATIC CONTENT END --- */
+
+/* =======================================
+   RIGHT SECTION (FORM)
+   ======================================= */
+.right-section {
+       flex: 0 0 43%; 
+            background-color: var(--dark-section);
+            /* Reduced padding for a smaller look */
+            padding: 35px 30px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            border-radius: 0px; 
+            position: relative;
+            /* MANDATORY: Add scrollbar to the form section */
+            overflow-y: auto;
+         }
+
+.login-form {
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+/* Google Sign-in Button */
+.google-signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #fff;
+    color: var(--text-color);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 30px;
+    transition: background-color 0.2s;
+}
+.google-signin-btn img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+/* Or Separator */
+.or-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9em;
+}
+.or-separator .line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.or-separator .text {
+    padding: 0 15px;
+    white-space: nowrap;
+}
+
+.or-separator {
+            margin: 19px 0 25px 10px;
+            color: #fff; 
+            position: relative;
+            width: 100%;
+            /* Reduced max-width to make form fields smaller */
+            max-width: 350px; 
+        }
+        .or-separator::before, .or-separator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background-color: #0e415b; 
+        }
+
+/* Form Groups */
+.form-group { 
+    text-align: left; 
+    margin-bottom: 15px; 
+}
+.input-with-icon { 
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+}
+.input-with-icon i { 
+    position: absolute; 
+    left: 15px; 
+    color: #333; 
+    font-size: 0.9em; 
+}
+.input-with-icon input { 
+     width: 100%;
+    height: 33px ;
+    padding: 12px 12px 12px 40px; /* Left padding for icon */
+    border: none;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #020202;
+    font-size: 0.9em;
+    outline: none;
+    
+}
+.input-with-icon .toggle-password {
+    left: unset;
+    right: 15px;
+    cursor: pointer;
+    color: #333;
+    z-index: 2;
+}
+
+
+/* Form Options (Remember Me / Forgot Password) */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 0.9em;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.8);
+}
+.checkbox-group input {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.forgot-password-link {
+    color: var(--buddy-yellow);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Submit Button */
+.submit-btn {
+     background: #0c3246;
+            color: #fff;
+            border: none;
+            border-radius: 8px; 
+            padding: 10px 25px; /* Reduced padding slightly */
+            font-size: 1.05em; /* Slightly smaller font */
+            font-weight: 500;
+            cursor: pointer;
+            width: 90%;
+            margin-top: 5px; 
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(10, 109, 218, 0.4); 
+            /* Added margin-bottom to ensure scrollbar appears when content is slightly overflowing */
+            margin-bottom: 20px;
+}
+.submit-btn:hover {
+    background-color: #0d5196;
+}
+
+/* Status Message (Error/Loading) */
+#status-message {
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: 500;
+    text-align: center;
+    display: none; /* JS द्वारा नियंत्रित */
+    width: 100%;
+}
+#status-message.show.error {
+    background-color: var(--error-color);
+    color: #fff;
+    display: block;
+}
+#status-message.show.info {
+    background-color: var(--buddy-blue);
+    color: #fff;
+    display: block;
+}
+
+/* Create Account Link */
+.create-account-text {
+    margin-top: 30px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95em;
+}
+.create-account-link {
+    color: var(--buddy-yellow);
+    text-decoration: none;
+    font-weight: 600;
+}
+.create-account-link:hover {
+    text-decoration: underline;
+}
+.happylife{
+    margin-top: 115%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 950px) {
+    .left-section {
+        display: none; 
+    }
+    .registration-page {
+        width: 90%; 
+        max-width: 450px; 
+        height: auto;
+        min-height: 500px;
+    }
+    .right-section {
+        flex: 1; 
+        padding: 30px 20px; 
+    }
+}
