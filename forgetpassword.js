@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 
-// --- GLOBAL SLIDER VARIABLES (इन्हें UI लॉजिक के लिए रहने दें) ---
+// --- GLOBAL SLIDER VARIABLES ---
 let currentSlide = 0;
 let slidesContainer = null;
 let slides = [];
@@ -28,13 +28,33 @@ let totalSlides = 0;
 // --- UTILITY FUNCTIONS ---
 
 /**
- * स्टेटस मैसेज (सफलता/त्रुटि) को HTML में प्रदर्शित करता है।
+ * संदेश प्रदर्शित करें: या तो पुराना #status-message, या नया success-popup।
  */
 function showMessage(message, type) {
-    const statusMessage = document.getElementById("status-message");
-    if (statusMessage) {
-        statusMessage.textContent = message;
-        statusMessage.className = `message show ${type}`;
+    const successPopupOverlay = document.getElementById("success-popup-overlay");
+    const successPopupMessage = document.getElementById("success-popup-message");
+    const successPopupTitle = successPopupOverlay ? successPopupOverlay.querySelector('h3') : null;
+    const successPopupIcon = successPopupOverlay ? successPopupOverlay.querySelector('.success-icon') : null;
+    const oldStatusMessage = document.getElementById("status-message");
+
+    // सफलता संदेश के लिए नया POPUP दिखाएं
+    if (type === "success" && successPopupOverlay && successPopupMessage) {
+        successPopupMessage.textContent = message;
+        if (successPopupTitle) successPopupTitle.textContent = "Success!";
+        if (successPopupIcon) {
+            successPopupIcon.className = "fas fa-check-circle success-icon";
+            successPopupIcon.style.color = "#28a745";
+        }
+        successPopupOverlay.classList.add('show-popup');
+        
+        // पुराने संदेश को छिपा दें
+        if (oldStatusMessage) oldStatusMessage.style.display = 'none';
+
+    } else if (oldStatusMessage) {
+        // अन्य संदेशों ("Sending recovery link...") के लिए पुराना संदेश दिखाएं
+        oldStatusMessage.textContent = message;
+        oldStatusMessage.className = `message show ${type}`;
+        oldStatusMessage.style.display = 'block';
     }
 }
 
@@ -56,18 +76,21 @@ function nextSlide() {
 }
 
 
-// --- MAIN INITIALIZATION ---
+// --- MAIN INITIALIZATION (DOM Ready Logic) ---
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. FORM SUBMISSION LOGIC (Fix: 'click' को 'submit' से बदला गया)
-    const form = document.getElementById("forgot-password-form"); // Form ID का उपयोग करें
-
+    // DOM Elements
+    const form = document.getElementById("forgot-password-form");
+    const successPopupOverlay = document.getElementById("success-popup-overlay");
+    const successPopupCloseBtn = document.getElementById("success-popup-close-btn");
+    const successPopupOkBtn = document.getElementById("success-popup-ok-btn");
+    
+    // --- 1. FORM SUBMISSION LOGIC ---
     if (form) {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
             
-            // इनपुट फ़ील्ड से ईमेल प्राप्त करें
             const emailInput = document.getElementById("email-input");
             const email = emailInput ? emailInput.value.trim() : '';
 
@@ -78,22 +101,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             showMessage("Sending recovery link...", "info");
 
-            // 🚀 Firebase SDK का आधिकारिक तरीका
+            // Firebase SDK का आधिकारिक तरीका
             sendPasswordResetEmail(auth, email)
             .then(() => {
-                // सफलता और त्रुटि दोनों पर सुरक्षा के लिए समान संदेश दिखाएँ
                 showMessage("If this email is registered, a recovery link has been sent. Check your inbox!", "success");
             })
             .catch((error) => {
                 console.error("Firebase Auth Error:", error.code, error.message);
-                // यह संदेश किसी भी Auth त्रुटि को छिपा देगा।
                 showMessage("If this email is registered, a recovery link has been sent. Check your inbox!", "success");
             });
         });
     }
 
-
-    // 2. SLIDER INITIALIZATION
+    // --- 2. SLIDER INITIALIZATION ---
     slidesContainer = document.getElementById('slides-container'); 
     slides = document.querySelectorAll('.slide');
     totalSlides = slides.length;
@@ -102,6 +122,26 @@ document.addEventListener('DOMContentLoaded', () => {
         showSlide(currentSlide); 
         setInterval(nextSlide, 3000); 
     }
-});
 
-// end of forgetpassword.js
+    // --- 3. POPUP CLOSE LOGIC ---
+    const hideSuccessPopup = () => {
+        if (successPopupOverlay) {
+            successPopupOverlay.classList.remove('show-popup');
+            
+            // पुराने #status-message को रीसेट करें (Loading message को हटाने के लिए)
+            const oldStatusMessage = document.getElementById("status-message");
+            if (oldStatusMessage) {
+                oldStatusMessage.textContent = '';
+                oldStatusMessage.className = 'message';
+                oldStatusMessage.style.display = 'none';
+            }
+        }
+    };
+
+    if (successPopupCloseBtn) {
+        successPopupCloseBtn.addEventListener('click', hideSuccessPopup);
+    }
+    if (successPopupOkBtn) {
+        successPopupOkBtn.addEventListener('click', hideSuccessPopup);
+    }
+});
