@@ -56,12 +56,28 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("SUCCESS: User is logged in. Welcome!", user.email);
             
             // a. Display Name Update (Firebase से डेटा प्राप्त करें)
-            const userNameDisplayElement = document.getElementById('userNameDisplay');
-            if (userNameDisplayElement) {
-                // Firebase displayName का उपयोग करें
-                const userName = user.displayName || user.email.split('@')[0] || 'User'; 
-                userNameDisplayElement.innerText = `Hello, ${userName}`;
-            }
+            // home.js में onAuthStateChanged के अंदर, जब (user) मौजूद हो:
+
+// a. Display Name Update (Firebase से डेटा प्राप्त करें)
+const userNameDisplayElement = document.getElementById('userNameDisplay');
+
+if (userNameDisplayElement) {
+    let displayFirstName = 'User'; // Default value
+
+    if (user.displayName) {
+        // यदि displayName उपलब्ध है (Google Sign-in के लिए), 
+        // इसे स्पेस से विभाजित करें और केवल पहला शब्द (First Name) लें।
+        const fullNameParts = user.displayName.split(' ');
+        displayFirstName = fullNameParts[0];
+        
+    } else if (user.email) {
+        // यदि displayName उपलब्ध नहीं है, तो ईमेल का पहला भाग ('@' से पहले) लें।
+        displayFirstName = user.email.split('@')[0];
+    } 
+    
+    // आउटपुट में उपयोग करें
+    userNameDisplayElement.innerText = `Hello, ${displayFirstName}`;
+}
 
             // b. Log Out Button Setup
             const logoutButton = document.getElementById('logoutButton');
@@ -103,5 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // 5 second interval
         setInterval(nextSlide, 5000); 
     }
+
 
 });
