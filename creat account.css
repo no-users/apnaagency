@@ -530,6 +530,9 @@
             text-decoration: underline;
             font-weight: 500;
         }
+.happylife{
+    margin-top: 115%;
+}
 
         /* Responsive adjustments */
         @media (max-width: 950px) {
@@ -564,4 +567,5 @@
                 align-self: center;
             }
         }
+
 
